@@ -9,5 +9,4 @@ public class EBookServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(EBookServerApplication.class, args);
     }
-
 }
