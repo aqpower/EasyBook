@@ -2,9 +2,9 @@ use easybook;
 
 CREATE TABLE user (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    user_name VARCHAR(10),
-    password VARCHAR(16),
+    email VARCHAR(50) NOT NULL,
+    user_name VARCHAR(25),
+    password VARCHAR(30),
     avatar TINYINT NOT NULL,
     role TINYINT DEFAULT 3
 ) AUTO_INCREMENT = 10000000;
