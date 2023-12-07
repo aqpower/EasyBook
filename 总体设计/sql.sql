@@ -1,3 +1,5 @@
+use easybook;
+
 CREATE TABLE user (
     id INT PRIMARY KEY, -- 主键
     email VARCHAR(255),
@@ -67,7 +69,8 @@ CREATE TABLE collection (
     FOREIGN KEY (user_id) REFERENCES user(id), -- 外键
     FOREIGN KEY (post_id) REFERENCES post(id) -- 外键
 );
-CREATE TABLE like (
+
+CREATE TABLE easylike (
     id INT PRIMARY KEY, -- 主键
     user_id INT,
     post_id INT,
@@ -75,6 +78,7 @@ CREATE TABLE like (
     FOREIGN KEY (user_id) REFERENCES user(id), -- 外键
     FOREIGN KEY (post_id) REFERENCES post(id) -- 外键
 );
+
 CREATE TABLE review (
     id INT PRIMARY KEY, -- 主键
     admin_id INT,
