@@ -1,8 +1,8 @@
-package com.example.ebookserver.service.manage;
+package com.example.ebookserver.service;
 
-import org.apache.ibatis.annotations.Mapper;
 
+import com.example.ebookserver.pojo.User;
 
 public interface UserService {
-    void userLogin();
+    User userLogin(User user);
 }
