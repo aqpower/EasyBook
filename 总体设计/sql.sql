@@ -1,91 +1,94 @@
 use easybook;
 
 CREATE TABLE user (
-    id INT PRIMARY KEY, -- 主键
-    email VARCHAR(255),
-    user_name VARCHAR(10),
-    password VARCHAR(16),
-    avatar TINYINT,
-    role TINYINT
-);
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(50) NOT NULL,
+    user_name VARCHAR(25),
+    password VARCHAR(30),
+    avatar TINYINT NOT NULL,
+    role TINYINT DEFAULT 3
+) AUTO_INCREMENT = 10000000;
 CREATE TABLE blacklist (
-    id INT PRIMARY KEY, -- 主键
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     blcak_user_id INT,
-    FOREIGN KEY (user_id) REFERENCES user(id), -- 外键
-    FOREIGN KEY (blcak_user_id) REFERENCES user(id) -- 外键
+    FOREIGN KEY (user_id) REFERENCES user(id), 
+    FOREIGN KEY (blcak_user_id) REFERENCES user(id) 
 );
 CREATE TABLE post (
-    id INT PRIMARY KEY, -- 主键
-    type INT,
-    title VARCHAR(255),
-    content_text TEXT,
-    color VARCHAR(255),
-    lyrics TEXT,
-    like_num INT,
-    collection_num INT,
-    ip INT,
-    violation_num INT
-);
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    type INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content_text TEXT NOT NULL,
+    color SMALLINT NOT NULL, 
+    lyrics VARCHAR(255) DEFAULT '',
+    like_num INT DEFAULT 0,
+    collection_num INT DEFAULT 0,
+    ip VARCHAR(25) NOT NULL,
+    violation_num INT DEFAULT 0
+) AUTO_INCREMENT = 1;
+
 
 CREATE TABLE image (
-    id INT PRIMARY KEY, -- 主键
+    id INT AUTO_INCREMENT PRIMARY KEY, 
     user_id INT,
     post_id INT,
-    url VARCHAR(255),
-    FOREIGN KEY (user_id) REFERENCES user(id), -- 外键
-    FOREIGN KEY (post_id) REFERENCES post(id) -- 外键
+    url VARCHAR(255) NOT NULL, 
+    FOREIGN KEY (user_id) REFERENCES user(id), 
+    FOREIGN KEY (post_id) REFERENCES post(id) 
 );
 CREATE TABLE comment (
-    id INT PRIMARY KEY, -- 主键
-    content TEXT,
-    comment_time TIMESTAMP,
-    user_id INT,
-    commented_id INT,
-    type TINYINT,
-    FOREIGN KEY (user_id) REFERENCES user(id), -- 外键
-    FOREIGN KEY (commented_id) REFERENCES post(id) -- 外键
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    content TEXT NOT NULL,
+    comment_time TIMESTAMP NOT NULL,
+    user_id INT NOT NULL,
+    commented_id INT NOT NULL,
+    type TINYINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (commented_id) REFERENCES post(id)
 );
+
 CREATE TABLE violation (
-    id INT PRIMARY KEY, -- 主键
-    user_id INT,
-    post_id INT,
-    violation_time TIMESTAMP,
-    violation_reason TEXT,
-    FOREIGN KEY (user_id) REFERENCES user(id), -- 外键
-    FOREIGN KEY (post_id) REFERENCES post(id) -- 外键
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    post_id INT NOT NULL,
+    violation_time TIMESTAMP NOT NULL,
+    violation_reason TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (post_id) REFERENCES post(id)
 );
+
 CREATE TABLE admin (
-    id INT PRIMARY KEY, -- 主键
-    name VARCHAR(255),
-    password VARCHAR(16),
-    role TINYINT
-);
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    password VARCHAR(16) NOT NULL,
+    role TINYINT DEFAULT 2
+) AUTO_INCREMENT = 10000;
 CREATE TABLE collection (
-    id INT PRIMARY KEY, -- 主键
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     post_id INT,
-    collection_time TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES user(id), -- 外键
-    FOREIGN KEY (post_id) REFERENCES post(id) -- 外键
+    collection_time TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id), 
+    FOREIGN KEY (post_id) REFERENCES post(id) 
 );
 
 CREATE TABLE easylike (
-    id INT PRIMARY KEY, -- 主键
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     post_id INT,
-    like_time TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES user(id), -- 外键
-    FOREIGN KEY (post_id) REFERENCES post(id) -- 外键
+    like_time TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id), 
+    FOREIGN KEY (post_id) REFERENCES post(id) 
 );
 
 CREATE TABLE review (
-    id INT PRIMARY KEY, -- 主键
+    id INT AUTO_INCREMENT PRIMARY KEY,
     admin_id INT,
     violation_id INT,
-    review_time TIMESTAMP,
-    review_result TINYINT,
-    FOREIGN KEY (admin_id) REFERENCES admin(id), -- 外键
-    FOREIGN KEY (violation_id) REFERENCES violation(id) -- 外键
+    review_time TIMESTAMP NOT NULL,
+    review_result TINYINT NOT NULL,
+    FOREIGN KEY (admin_id) REFERENCES admin(id), 
+    FOREIGN KEY (violation_id) REFERENCES violation(id) 
 );
 
