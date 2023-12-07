@@ -1,6 +1,7 @@
-<div style="text-align: center;">
-    <img src="./Logo/logo-text-nobg.png" alt="Logo" style="width: 50%;">
+<div align="center">
+  <img src="./Logo/logo-text-nobg.png" alt="Logo" style="width: 50%;">
 </div>
+
 
 
 ## 这是什么
