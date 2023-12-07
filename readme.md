@@ -1,4 +1,7 @@
-![](./Logo/logo-text-nobg.png)
+<div style="text-align: center;">
+    <img src="./Logo/logo-text-nobg.png" alt="Logo" style="width: 50%;">
+</div>
+
 
 ## 这是什么
 
@@ -27,3 +30,5 @@
 2023.12.7
 
 - 完善ER图，完成数据库表的设计
+- 完成建表SQL语句
+- 开始使用Apifox进行接口设计
