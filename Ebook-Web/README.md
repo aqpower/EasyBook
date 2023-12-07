@@ -11,3 +11,8 @@ pnpm install
 ```
 pnpm run dev
 ```
+
+
+```
+pnpm i pinia-plugin-persistedstate
+```
