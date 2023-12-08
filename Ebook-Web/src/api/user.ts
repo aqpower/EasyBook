@@ -10,8 +10,8 @@ export const getUserInfoApi = (userId: number): Promise<any> =>
 
 /**
  * 向服务器发送一个POST请求，进行用户登录请求
- * @param {{password: string; email: string; id:string}} data 
+ * @param {{password: string; email: string; user_id:string}} data 
  * @returns {Promise} 一个Promise
  */
-export const UserloginApi = (data: any): Promise<any> => httpInstance.post("/api/v1/user/login", data);
+export const UserLoginApi = (data: { password: string; email: string; user_id: string; }): Promise<any> => httpInstance.post("/api/v1/user/login", data);
 
