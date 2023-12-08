@@ -28,7 +28,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         //4.判断令牌是否操作，如果不存在返回错误结果（未登录）
         if (!StringUtils.hasText(jwt)){
             log.info("请求头为空，返回为登录的信息");
-
             Result error = Result.error("NOT_LOGIN");
             response.setStatus(error.getCode());
             String notLogin = JSONObject.toJSONString(error);

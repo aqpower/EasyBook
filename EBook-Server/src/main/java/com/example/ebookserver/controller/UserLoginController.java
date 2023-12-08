@@ -33,12 +33,16 @@ public class UserLoginController {
         }
         return Result.error("账号或者密码有问题，登录失败了哦");
     }
-    @GetMapping("/login/hello")
-    public Result hello(){
-        return Result.success("hello~I am in login");
+    @PostMapping("/api/v1/login")
+    public Result register(@RequestBody User user){
+        log.info("实现账号注册功能");
+        int result = userService.register(user);
+        if (result == 1){
+            return Result.success("注册成功");
+        }else {
+            return Result.error("该邮箱已绑定账号");
+        }
+
     }
-    @GetMapping("/api/v1/login/hello")
-    public Result hello_vi(){
-        return Result.success("hello~I am in api/v1/login");
-    }
+
 }

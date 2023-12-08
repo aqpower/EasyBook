@@ -23,4 +23,15 @@ public class UserServiceIml implements UserService {
 
 
     }
+
+    @Override
+    public int register(User user) {
+        String email = user.getEmail();
+        if (userMapper.selectByEmail(email) != null){
+            return 0;
+        }else {
+            userMapper.registerNewUser(user);
+            return 1;
+        }
+    }
 }
