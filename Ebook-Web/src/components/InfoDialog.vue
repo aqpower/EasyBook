@@ -5,7 +5,11 @@ import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogTitle } fro
 const props = defineProps({
   title: String,
   content: String,
-  isOpen: Boolean
+  isOpen: Boolean,
+  close: {
+    type: Function,
+    default: (fun: () => any) => fun()
+  }
 })
 
 const emits = defineEmits(['update:isOpen'])
@@ -47,7 +51,7 @@ function closeModal() {
                 {{ props.title }}
               </DialogTitle>
               <div class="mt-2">
-                <p class=" text-base text-gray-500">
+                <p class="text-base text-gray-500">
                   {{ props.content }}
                 </p>
               </div>
@@ -55,13 +59,8 @@ function closeModal() {
               <div class="mt-4 flex justify-end">
                 <button
                   type="button"
-                  class="inline-flex rounded-md 
-                  border border-transparent
-                   bg-rose-100 px-4 py-2 text-sm 
-                   font-medium text-blue-900 hover:bg-rose-200 
-                   focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 
-                   focus-visible:ring-offset-2"
-                  @click="closeModal"
+                  class="inline-flex rounded-md border border-transparent bg-rose-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-rose-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
+                  @click="close(closeModal)"
                 >
                   👌
                 </button>

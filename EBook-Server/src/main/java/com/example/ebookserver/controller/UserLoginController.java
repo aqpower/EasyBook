@@ -3,6 +3,7 @@ package com.example.ebookserver.controller;
 import com.example.ebookserver.pojo.LoginData;
 import com.example.ebookserver.pojo.Result;
 import com.example.ebookserver.pojo.User;
+import com.example.ebookserver.service.EmailService;
 import com.example.ebookserver.service.UserService;
 import com.example.ebookserver.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,12 @@ import java.util.Map;
 public class UserLoginController {
     @Autowired
     private UserService userService;
+    private EmailService emailService;
+    @Autowired
+    public UserLoginController(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
     @PostMapping("/api/v1/login/users")
     public Result user_login(@RequestBody User user){
         log.info("用户登录功能");
@@ -39,6 +46,12 @@ public class UserLoginController {
     }
     @GetMapping("/api/v1/login/hello")
     public Result hello_vi(){
+        String from = "2529949859@qq.com"; // 发件人邮箱
+        String to = "jiongxnext0809@gmail.com"; // 收件人邮箱
+        String subject = "Test Email"; // 邮件主题
+        String text = "This is a test email!"; // 邮件内容
+
+        emailService.send(from, to, subject, text);
         return Result.success("hello~I am in api/v1/login");
     }
 }
