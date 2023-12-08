@@ -12,7 +12,15 @@ public class UserServiceIml implements UserService {
     private UserMapper userMapper;
     @Override
     public User userLogin(User user) {
-        return userMapper.userLogin(user);
+        String password = user.getPassword();
+        if(user.getId() != null){
+            Integer id = user.getId();
+            return userMapper.getById(id,password);
+        } else if (user.getEmail() != null) {
+            String email = user.getEmail();
+            return userMapper.getByEmail(email,password);
+        }else return null;
+
 
     }
 }

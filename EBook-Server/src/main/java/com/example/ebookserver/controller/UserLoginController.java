@@ -1,5 +1,6 @@
 package com.example.ebookserver.controller;
 
+import com.example.ebookserver.pojo.LoginData;
 import com.example.ebookserver.pojo.Result;
 import com.example.ebookserver.pojo.User;
 import com.example.ebookserver.service.UserService;
@@ -18,7 +19,7 @@ import java.util.Map;
 public class UserLoginController {
     @Autowired
     private UserService userService;
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public Result user_login(@RequestBody User user){
         log.info("用户登录功能");
         User u = userService.userLogin(user);
@@ -28,8 +29,9 @@ public class UserLoginController {
             claims.put("name",u.getUserName());
             claims.put("email",u.getEmail());
             String jwt = JwtUtils.generateJwt(claims);
-            return Result.success(jwt);
+            LoginData loginData = new LoginData(jwt,u.getId(),u.getEmail());
+            return Result.success(loginData);
         }
-        return Result.error("登录失败了哦");
+        return Result.error("账号或者密码有问题，登录失败了哦");
     }
 }
