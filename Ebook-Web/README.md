@@ -11,3 +11,12 @@ pnpm install
 ```
 pnpm run dev
 ```
+
+
+```
+pnpm i pinia-plugin-persistedstate
+```
+
+```
+pnpm install @headlessui/vue
+```

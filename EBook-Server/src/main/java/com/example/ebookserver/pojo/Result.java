@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Result {
-    private Integer code;//响应码，1 代表成功; 0 代表失败
+    private Integer code;//响应码，200 代表成功; 401 代表失败
     private String msg;  //响应信息 描述字符串
     private Object data; //返回的数据
 

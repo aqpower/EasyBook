@@ -91,4 +91,3 @@ CREATE TABLE review (
     FOREIGN KEY (admin_id) REFERENCES admin(id), 
     FOREIGN KEY (violation_id) REFERENCES violation(id) 
 );
-
