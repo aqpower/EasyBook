@@ -11,10 +11,10 @@ const httpInstance = axios.create({
 })
 
 // 拦截器
-const userStore = useUserStore()
 // axios请求拦截器
 httpInstance.interceptors.request.use(
   (config) => {
+    const userStore = useUserStore()
     const token = userStore.user == null ? '' : userStore.user.token
     config.headers.Authorization = `Bearer ${token}`
     return config
@@ -32,11 +32,9 @@ httpInstance.interceptors.response.use(
       // }).then(() => {
       //     router.replace({path: '/login'}).then();
       // })
-      
     } else {
       // 统一错误提示
       //   ElMessage.error('网络错误，请稍后重试')
-      
     }
 
     return Promise.reject(e)

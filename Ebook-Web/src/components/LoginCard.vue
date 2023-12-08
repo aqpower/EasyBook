@@ -72,24 +72,26 @@
 import { UserLoginApi } from '@/api/user'
 import { ref } from 'vue'
 import InfoDialog from './InfoDialog.vue'
-const emailIdInput = ref(' ')
+import { useUserStore, type User } from '@/stores/userStores'
+import { useRouter } from 'vue-router'
+const emailIdInput = ref('')
 const passwordInput = ref('')
 
 const dialogOpen = ref(false)
 const dialogTitle = ref('')
 const dialogContent = ref('')
+const router = useRouter()
 
 function validateInputs() {
+  const passwordRegex = /^(?=.*[A-Za-z\d])[A-Za-z\d]{6,}$/
   const emailRegex = /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/
-
   const isValidEmailId = emailIdInput.value.length === 8 || emailRegex.test(emailIdInput.value)
-  const isValidPassword = passwordInput.value.length >= 6 && passwordRegex.test(passwordInput.value)
+  const isValidPassword = passwordRegex.test(passwordInput.value)
 
   if (!isValidEmailId && !isValidPassword) {
     return {
       valid: false,
-      msg: '账户必须是8个字符长的ID或有效的邮箱。密码必须至少为6个字符，并包含至少一个字母和一个数字。'
+      msg: '账户必须是8个字符长的ID或有效的邮箱。密码位数至少为6位字符，且仅含数字字符或字母字符。'
     }
   } else if (!isValidEmailId) {
     return {
@@ -99,7 +101,7 @@ function validateInputs() {
   } else if (!isValidPassword) {
     return {
       valid: false,
-      msg: '密码必须至少为6个字符，并包含至少一个字母和一个数字。'
+      msg: '密码位数至少为6位字符，且仅含数字字符或字母字符。'
     }
   }
 
@@ -114,15 +116,37 @@ const userLogin = () => {
     dialogContent.value = validationResult.msg
     dialogOpen.value = true
   } else {
-    let userInfo: { password: string; email?: string; id?: string } = {
+    let userLoginForm: { password: string; email?: string; id?: string } = {
       password: passwordInput.value
     }
 
     if (emailIdInput.value.includes('@')) {
-      userInfo.email = emailIdInput.value
+      userLoginForm.email = emailIdInput.value
     } else {
-      userInfo.id = emailIdInput.value
+      userLoginForm.id = emailIdInput.value
     }
+    UserLoginApi(userLoginForm).then((res) => {
+      console.log(res)
+      const data = res.data
+      if (res.code == 200) {
+        dialogTitle.value = '😊'
+        dialogContent.value = '登录成功'
+        dialogOpen.value = true
+        const userStore = useUserStore()
+        const user: User = {
+          id: data.id,
+          name: '',
+          email: data.email,
+          token: data.token
+        }
+        userStore.setUser(user)
+        router.push('/home')
+      } else {
+        dialogTitle.value = '😥'
+        dialogContent.value = res.msg
+        dialogOpen.value = true
+      }
+    })
   }
 }
 </script>
