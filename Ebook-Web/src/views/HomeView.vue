@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import httpInstance from '../utils/http'
 
-  httpInstance.get('/hello')
+  httpInstance.get('/api/v1/hello')
 
 
 </script>

@@ -18,8 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override  //目标资源方法运行前运行
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 预检请求（OPTIONS）的特征是请求方法为 OPTIONS
+        if ("OPTIONS".equals(request.getMethod())) {
+            // 如果是预检请求，直接放行
+            return true;
+        }
         //3.获取请求头中的token
-        String jwt = request.getHeader("token");
+        String jwt = request.getHeader("Authorization");
         //4.判断令牌是否操作，如果不存在返回错误结果（未登录）
         if (!StringUtils.hasText(jwt)){
             log.info("请求头为空，返回为登录的信息");
@@ -35,7 +40,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             JwtUtils.parseJWT(jwt);
         }catch (Exception e){
             e.printStackTrace();
-            log.info("解析令牌失败，返回未登录错误信息");
+            LoginCheckInterceptor.log.info("解析令牌失败，返回未登录错误信息");
             Result error = Result.error("NOT_LOGIN");
             response.setStatus(error.getCode());
             String notLogin = JSONObject.toJSONString(error);
@@ -44,7 +49,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
 
         //6.放行
-        log.info("令牌合法，放行");
+        LoginCheckInterceptor.log.info("令牌合法，放行");
         return true;
     }
 

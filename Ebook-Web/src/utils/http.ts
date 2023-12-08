@@ -16,7 +16,9 @@ httpInstance.interceptors.request.use(
   (config) => {
     const userStore = useUserStore()
     const token = userStore.user == null ? '' : userStore.user.token
-    config.headers.Authorization = `Bearer ${token}`
+    if (token) {
+      config.headers.Authorization = `${token}`
+    }
     return config
   },
   (error) => Promise.reject(error)
@@ -26,6 +28,7 @@ httpInstance.interceptors.request.use(
 httpInstance.interceptors.response.use(
   (res: AxiosResponse) => res.data,
   (e: AxiosError) => {
+    console.log(e)
     if (e.request.status === 401 || e.request.status === 403) {
       // ElMessageBox.alert('账户token过期，请重新登录...', '提示', {
       //     confirmButtonText: '确认',
