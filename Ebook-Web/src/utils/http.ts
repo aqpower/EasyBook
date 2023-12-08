@@ -32,35 +32,13 @@ httpInstance.interceptors.response.use(
       // }).then(() => {
       //     router.replace({path: '/login'}).then();
       // })
-      const alertElement = document.createElement('div')
-      alertElement.textContent = 'This is an alert message'
-      alertElement.classList.add(
-        'bg-red-100',
-        'border',
-        'border-red-400',
-        'text-red-700',
-        'px-4',
-        'py-3',
-        'rounded',
-        'relative',
-        'mb-4',
-        'shadow-md'
-      )
-
-      const closeButton = document.createElement('span')
-      closeButton.textContent = '×'
-      closeButton.classList.add('absolute', 'top-0', 'right-0', 'px-2', 'py-1', 'cursor-pointer')
-
-      closeButton.addEventListener('click', () => {
-        alertElement.remove()
-      })
-
-      alertElement.appendChild(closeButton)
-      document.body.appendChild(alertElement)
+      
     } else {
       // 统一错误提示
-    //   ElMessage.error('网络错误，请稍后重试')
+      //   ElMessage.error('网络错误，请稍后重试')
+      
     }
+
     return Promise.reject(e)
   }
 )
