@@ -20,7 +20,7 @@ import java.util.Map;
 public class UserLoginController {
     @Autowired
     private UserService userService;
-    @PostMapping("/login/user")
+    @PostMapping("/api/v1/login/users")
     public Result user_login(@RequestBody User user){
         log.info("用户登录功能");
         User u = userService.userLogin(user);
@@ -38,5 +38,9 @@ public class UserLoginController {
     @GetMapping("/login/hello")
     public Result hello(){
         return Result.success("hello~I am in login");
+    }
+    @GetMapping("/api/v1/login/hello")
+    public Result hello_vi(){
+        return Result.success("hello~I am in api/v1/login");
     }
 }
