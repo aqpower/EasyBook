@@ -31,18 +31,25 @@ httpInstance.interceptors.response.use(
   (res: AxiosResponse) => res.data,
   (e: AxiosError) => {
     console.log(e)
+    const dialog = useCommandComponent(InfoDialogVue)
     if (e.request.status === 401 || e.request.status === 403) {
       // createDialog("ni",'nn');
-      const dialog = useCommandComponent(InfoDialogVue)
-      dialog({ title: '父组件弹窗' })
+      dialog({
+        title: '😢',
+        content: '账户token过期，请重新登录...',
+        btnContent: '👌',
+        onClose: () => {
+          console.log('a')
+          router.replace('/account/login')
+        }
+      })
       // ElMessageBox.alert('账户token过期，请重新登录...', '提示', {
       //     confirmButtonText: '确认',
       // }).then(() => {
       //     router.replace({path: '/login'}).then();
       // })
     } else {
-      // 统一错误提示
-      //   ElMessage.error('网络错误，请稍后重试')
+      dialog({ title: '😢', content: '网络不太好，请重新尝试...', btnContent: '👌' })
     }
 
     return Promise.reject(e)

@@ -7,6 +7,7 @@ const props = defineProps({
   visible: Boolean,
   title: String,
   content: String,
+  btnContent: String,
   close: {
     type: Function,
     default: (fun: () => any) => fun()
@@ -75,7 +76,7 @@ const dialogVisible = computed<boolean>({
                   class="inline-flex rounded-md border border-transparent bg-rose-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-rose-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
                   @click="dialogVisible = false"
                 >
-                  👌
+                  {{ props.btnContent }}
                 </button>
               </div>
             </DialogPanel>

@@ -2,24 +2,29 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
-  content: [
-    './src/**/*.{vue,js,ts,jsx,tsx}'
-  ],
+  content: ['./src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-      },
-    },
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans]
+      }
+    }
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require("daisyui"),
-    require("@tailwindcss/typography")
-  ],
+  plugins: [require('@tailwindcss/forms'), require('daisyui'), require('@tailwindcss/typography')],
   darkMode: 'class',
   daisyui: {
-    themes: true,
-    darkTheme: "forest", 
-  },
+    themes: [
+      {
+        light: {
+          ...require('daisyui/src/theming/themes')['light'],
+          primary: '#fb7185'
+        },
+        dark: {
+          ...require('daisyui/src/theming/themes')['dark'],
+          primary: '#fb7185'
+        }
+      }
+    ],
+    darkTheme: 'dark'
+  }
 }

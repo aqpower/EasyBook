@@ -19,6 +19,10 @@ const router = createRouter({
         {
           path: 'resetPassword',
           component: () => import('@/components/ResetPasswordForm.vue')
+        },
+        {
+          path:'register',
+          component:() => import('@/components/RegisterCard.vue')
         }
       ]
     },
