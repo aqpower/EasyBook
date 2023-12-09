@@ -14,6 +14,12 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require("daisyui"),
+    require("@tailwindcss/typography")
   ],
   darkMode: 'class',
+  daisyui: {
+    themes: true,
+    darkTheme: "forest", 
+  },
 }

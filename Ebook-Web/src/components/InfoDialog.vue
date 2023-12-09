@@ -1,26 +1,39 @@
 <script setup lang="ts">
 import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogTitle } from '@headlessui/vue'
+import { computed } from 'vue';
 
 // 声明 props
 const props = defineProps({
+  visible: Boolean,
   title: String,
   content: String,
-  isOpen: Boolean,
   close: {
     type: Function,
     default: (fun: () => any) => fun()
   }
 })
 
-const emits = defineEmits(['update:isOpen'])
-function closeModal() {
-  emits('update:isOpen', false)
-}
+const emits = defineEmits<{
+  (event: 'update:visible', visible: boolean): void
+  (event: 'close'): void
+}>()
+
+const dialogVisible = computed<boolean>({
+  get() {
+    return props.visible;
+  },
+  set(visible) {
+    emits('update:visible', visible);
+    if (!visible) {
+      emits('close');
+    }
+  },
+});
 </script>
 
 <template>
-  <TransitionRoot appear :show="isOpen" as="template">
-    <Dialog as="div" @close="closeModal" class="relative z-10">
+  <TransitionRoot appear :show="visible" as="template">
+    <Dialog as="div" @close="dialogVisible = false" class="relative z-10">
       <TransitionChild
         as="template"
         enter="duration-300 ease-out"
@@ -60,7 +73,7 @@ function closeModal() {
                 <button
                   type="button"
                   class="inline-flex rounded-md border border-transparent bg-rose-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-rose-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
-                  @click="close(closeModal)"
+                  @click="dialogVisible = false"
                 >
                   👌
                 </button>

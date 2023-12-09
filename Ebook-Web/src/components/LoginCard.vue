@@ -1,24 +1,26 @@
 <template>
-  <h2 class="mt-1 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+  <h2 class="text-base-content mt-1 text-center text-2xl font-bold leading-9 tracking-tight">
     登录你的账户
   </h2>
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <div class="space-y-6">
       <div>
-        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">账户</label>
+        <label for="email" class="block text-sm font-medium leading-6 text-base-content"
+          >账户</label
+        >
         <div class="mt-2">
           <input
             id="email"
             v-model="emailIdInput"
             placeholder="请输入邮箱或用户ID"
-            class="peer block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 sm:text-sm sm:leading-6"
+            class="peer block rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 sm:text-sm sm:leading-5 input input-bordered w-full h-10"
           />
         </div>
       </div>
 
       <div>
         <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900"
+          <label for="password" class="block text-sm font-medium leading-6 text-base-content"
             >密码</label
           >
           <div class="text-sm">
@@ -35,7 +37,7 @@
             id="password"
             type="password"
             placeholder="请输入密码"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 sm:text-sm sm:leading-6"
+            class="peer block rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 sm:text-sm sm:leading-6 input input-bordered w-full h-10"
           />
         </div>
       </div>
@@ -50,7 +52,7 @@
       </div>
     </div>
 
-    <p class="mt-10 text-center text-sm text-gray-500">
+    <p class="mt-10 text-base-content text-center text-sm">
       还没有账户🤔
       {{ ' ' }}
       <a
@@ -61,10 +63,10 @@
     </p>
   </div>
   <InfoDialog
-    :isOpen="dialogOpen"
+    :visible="dialogOpen"
     :title="dialogTitle"
     :content="dialogContent"
-    @update:isOpen="dialogOpen = $event"
+    @update:visible="dialogOpen = $event"
   ></InfoDialog>
 </template>
 
@@ -74,6 +76,9 @@ import { ref } from 'vue'
 import InfoDialog from './InfoDialog.vue'
 import { useUserStore, type User } from '@/stores/userStores'
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
+import SuccessAlert from '@/components/alerts/SuccessAlert.vue'
+const toast = useToast()
 const emailIdInput = ref('')
 const passwordInput = ref('')
 
@@ -140,6 +145,7 @@ const userLogin = () => {
           token: data.token
         }
         userStore.setUser(user)
+
         router.push('/home')
       } else {
         dialogTitle.value = '😥'
