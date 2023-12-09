@@ -18,3 +18,6 @@ export const UserLoginApi = (data: {
   id?: string
   password: string
 }): Promise<any> => httpInstance.post('/api/v1/login/users', data)
+
+
+export const emailRegisterApi = (data: any) => httpInstance.post('/api/v1/email-verification', data)

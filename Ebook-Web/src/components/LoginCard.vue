@@ -1,24 +1,28 @@
 <template>
-  <h2 class="mt-1 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+  <h2 class="text-base-content mt-1 text-center text-2xl font-bold leading-9 tracking-tight">
     登录你的账户
   </h2>
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <div class="space-y-6">
       <div>
-        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">账户</label>
+        <label for="email" class="block text-sm font-medium leading-6 text-base-content"
+          >账户</label
+        >
         <div class="mt-2">
           <input
             id="email"
             v-model="emailIdInput"
+            autocomplete="off"
             placeholder="请输入邮箱或用户ID"
-            class="peer block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 sm:text-sm sm:leading-6"
+            class="input input-bordered input-primary w-full 
+               sm:text-sm sm:leading-5 h-10"
           />
         </div>
       </div>
 
       <div>
         <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900"
+          <label for="password" class="block text-sm font-medium leading-6 text-base-content"
             >密码</label
           >
           <div class="text-sm">
@@ -35,7 +39,8 @@
             id="password"
             type="password"
             placeholder="请输入密码"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 sm:text-sm sm:leading-6"
+            class="input input-bordered input-primary w-full 
+               sm:text-sm sm:leading-5 h-10"
           />
         </div>
       </div>
@@ -45,26 +50,29 @@
           class="flex w-full justify-center rounded-md bg-rose-400 active:bg-rose-200 hover:bg-rose-300 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
           @click="userLogin"
         >
-          登录
+          <span v-if="loadingShow" class="loading loading-bars loading-xs"></span>
+          <span v-if="!loadingShow">登录</span>
         </button>
       </div>
     </div>
 
-    <p class="mt-10 text-center text-sm text-gray-500">
+    <p class="mt-10 text-base-content text-center text-sm">
       还没有账户🤔
       {{ ' ' }}
       <a
-        @click="userLogin()"
+        href="#/account/register"
         class="font-semibold leading-6 text-rose-400 hover:text-rose-300 hover:cursor-pointer"
         >点击注册！</a
       >
     </p>
   </div>
   <InfoDialog
-    :isOpen="dialogOpen"
+    :visible="dialogOpen"
     :title="dialogTitle"
     :content="dialogContent"
-    @update:isOpen="dialogOpen = $event"
+    @update:visible="dialogOpen = $event"
+    :btnContent="dialogBtnContent"
+    :onClose="dialogCloseHandler"
   ></InfoDialog>
 </template>
 
@@ -76,10 +84,12 @@ import { useUserStore, type User } from '@/stores/userStores'
 import { useRouter } from 'vue-router'
 const emailIdInput = ref('')
 const passwordInput = ref('')
-
+const loadingShow = ref(false)
 const dialogOpen = ref(false)
 const dialogTitle = ref('')
 const dialogContent = ref('')
+const dialogBtnContent = ref('👌')
+let dialogCloseHandler = () => {}
 const router = useRouter()
 
 function validateInputs() {
@@ -109,6 +119,7 @@ function validateInputs() {
 }
 
 const userLogin = () => {
+  loadingShow.value = true
   const validationResult = validateInputs()
 
   if (!validationResult.valid) {
@@ -132,6 +143,7 @@ const userLogin = () => {
         dialogTitle.value = '😊'
         dialogContent.value = '登录成功'
         dialogOpen.value = true
+
         const userStore = useUserStore()
         const user: User = {
           id: data.id,
@@ -140,13 +152,16 @@ const userLogin = () => {
           token: data.token
         }
         userStore.setUser(user)
-        router.push('/home')
+        dialogCloseHandler = () => {
+          router.push('/home')
+        }
       } else {
         dialogTitle.value = '😥'
         dialogContent.value = res.msg
         dialogOpen.value = true
       }
     })
+    loadingShow.value = false
   }
 }
 </script>

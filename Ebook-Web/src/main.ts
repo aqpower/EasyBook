@@ -1,12 +1,11 @@
 import './assets/tailwind.css'
-
+import './assets/base.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createPersistedState } from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
 import router from './router'
-
 const app = createApp(App)
 
 const pinia = createPinia()
