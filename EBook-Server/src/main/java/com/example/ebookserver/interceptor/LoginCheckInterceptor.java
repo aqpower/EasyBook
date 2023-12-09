@@ -54,6 +54,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
     @Override  //目标资源方法运行后运行
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        //response.setStatus(error.getCode());
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 
