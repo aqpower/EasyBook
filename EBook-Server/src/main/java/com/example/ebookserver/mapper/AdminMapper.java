@@ -1,7 +1,9 @@
-package com.book.ebookserver.mapper;
+package com.example.ebookserver.mapper;
+
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.book.ebookserver.pojo.Admin;
+import com.example.ebookserver.pojo.Admin;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -13,4 +15,8 @@ public interface AdminMapper extends BaseMapper<Admin> {
 
     @Select("select * from admin where username = #{username} and password = #{password}")
     Admin getByUsername(String username, String password);
+
+    @Insert("insert into admin (name, password, role) VALUES (#{name}, #{password}, #{role})")
+    void insertAdmin(String name, String password, short role);
+
 }

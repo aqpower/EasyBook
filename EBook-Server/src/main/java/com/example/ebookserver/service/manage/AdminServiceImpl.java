@@ -1,8 +1,10 @@
-package com.book.ebookserver.service.manage;
+package com.example.ebookserver.service.manage;
 
-import com.book.ebookserver.mapper.AdminMapper;
-import com.book.ebookserver.pojo.Admin;
-import com.book.ebookserver.service.AdminService;
+import com.example.ebookserver.mapper.AdminMapper;
+import com.example.ebookserver.pojo.Admin;
+import com.example.ebookserver.service.AdminService;
+import com.example.ebookserver.utils.MD5Util;
+import jdk.jpackage.internal.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +34,10 @@ public class AdminServiceImpl implements AdminService {
         short role = 2;
         admin.setRole(role);
         //TODO:自定义密码
-        admin.setPassword(this.generatePassword());
-        adminMapper.insert(admin);
+        String password = this.generatePassword();
+
+        admin.setPassword(password);
+        adminMapper.insertAdmin(admin.getName(), MD5Util.encode(password), (short) 2);
         return admin;
     }
 

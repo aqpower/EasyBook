@@ -1,4 +1,4 @@
-package com.book.ebookserver.pojo;
+package com.example.ebookserver.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author wzb
+ */
 @Data
 @TableName("admin")
 @NoArgsConstructor
