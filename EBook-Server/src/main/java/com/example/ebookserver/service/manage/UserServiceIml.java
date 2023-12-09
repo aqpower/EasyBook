@@ -6,6 +6,7 @@ import com.example.ebookserver.pojo.LoginData;
 import com.example.ebookserver.pojo.User;
 import com.example.ebookserver.service.UserService;
 import com.example.ebookserver.utils.JwtUtils;
+import com.example.ebookserver.utils.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class UserServiceIml implements UserService {
         if(user.getId() != null){  //id登录
             String name = userMapper.getById(user.getId());
             if (name !=null){  //账号存在
-                if(userMapper.getByIdAndPassword(user.getId(),user.getPassword()) != null){  //登录成功
+                if(userMapper.getByIdAndPassword(user.getId(), MD5Util.encode(user.getPassword())) != null){  //登录成功
                     loginData.setId(user.getId());
                     loginData.setName(name);
                     claims.put("id",user.getId());
@@ -44,7 +45,7 @@ public class UserServiceIml implements UserService {
         } else if (user.getEmail() != null) {   //邮箱登录
             String name = userMapper.getByEmail(user.getEmail());
             if (name != null){  //账号存在
-                if(userMapper.getByEmailAndPassword(user.getEmail(),user.getPassword()) != null){  //登录成功
+                if(userMapper.getByEmailAndPassword(user.getEmail(),MD5Util.encode(user.getPassword())) != null){  //登录成功
                     claims.put("name",name);
                     claims.put("email",user.getEmail());
                     loginData.setName(name);
@@ -69,6 +70,8 @@ public class UserServiceIml implements UserService {
     * */
     @Override
     public int register(User user) {
+        String password = user.getPassword();
+        user.setPassword(MD5Util.encode(password));  //MD5加密后存储
         return userMapper.registerNewUser(user);
     }
 
@@ -88,7 +91,7 @@ public class UserServiceIml implements UserService {
     * */
     @Override
     public boolean delete(Integer id, String password) {
-        if (userMapper.getByIdAndPassword(id,password) != null){
+        if (userMapper.getByIdAndPassword(id,MD5Util.encode(password)) != null){
             userMapper.deleteById(id);
             return true;
         }
