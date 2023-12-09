@@ -31,6 +31,8 @@ dependencies {
     // 邮箱服务
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     testImplementation 'com.icegreen:greenmail-junit5:1.6.9'
+    implementation 'com.baomidou:mybatis-plus-core:3.4.3'
+
 }
 
 
