@@ -2,7 +2,6 @@
 import { useUserStore } from '@/stores/userStores'
 import axios, { AxiosError, type AxiosResponse } from 'axios'
 import router from '../router'
-import createDialog from '@/components/InfoDialog'
 import useCommandComponent from '@/hooks/useCommandComponent'
 import InfoDialogVue from '@/components/InfoDialog.vue'
 
@@ -33,7 +32,6 @@ httpInstance.interceptors.response.use(
     console.log(e)
     const dialog = useCommandComponent(InfoDialogVue)
     if (e.request.status === 401 || e.request.status === 403) {
-      // createDialog("ni",'nn');
       dialog({
         title: '😢',
         content: '账户token过期，请重新登录...',
