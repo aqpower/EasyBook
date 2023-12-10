@@ -27,3 +27,4 @@ pnpm i -D daisyui@latest
 
 install -D @tailwindcss/typography
 
+npm install --save-dev @iconify/vue

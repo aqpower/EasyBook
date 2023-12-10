@@ -20,4 +20,5 @@ export const UserLoginApi = (data: {
 }): Promise<any> => httpInstance.post('/api/v1/login/users', data)
 
 
-export const emailRegisterApi = (data: any) => httpInstance.post('/api/v1/email-verification', data)
+export const emailVerifyApi = (email: string) =>
+  httpInstance.get(`/api/v1/login/${email}`)
