@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+//    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
@@ -31,7 +31,8 @@ dependencies {
     // 邮箱服务
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     testImplementation 'com.icegreen:greenmail-junit5:1.6.9'
-    implementation 'com.baomidou:mybatis-plus-core:3.4.3'
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.1'
+//    implementation 'com.baomidou:mybatis-plus-core:3.4.3'
 
 }
 
