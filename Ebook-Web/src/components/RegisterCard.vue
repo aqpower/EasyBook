@@ -46,7 +46,7 @@
             timeCount == 0,
           'badge-outline': timeCount != 0
         }"
-        @click="timeCount == 0 ? sendCode() : 1"
+        @click="timeCount == 0 ? reSendCode() : 1"
       >
         <Icon
           v-show="timeCount != 0"
@@ -54,15 +54,16 @@
           icon="svg-spinners:clock"
           color="#fb7185"
         />
+        <span v-show="loadingCodeShow" class="loading loading-bars loading-xs h-6"></span>
         <p v-show="timeCount != 0">{{ timeCount }} 秒后可重新发送</p>
-        <span v-if="loadingCodeShow" class="loading loading-bars loading-xs h-6"></span>
-        <p v-show="timeCount == 0">点击重新发送</p>
+        <p v-show="timeCount == 0 && !loadingCodeShow">点击重新发送</p>
       </div>
     </div>
     <button
+      @click="checkVerifyCode"
       class="h-9 min-h-0 btn btn-primary flex w-full justify-center rounded-md hover:bg-rose-300 px-3 py-1.5 leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
     >
-      <span @click="checkVerifyCode">验证</span>
+      <span>验证</span>
     </button>
   </div>
 </template>
@@ -73,6 +74,8 @@ import { ref } from 'vue'
 import useCommandComponent from '@/hooks/useCommandComponent'
 import InfoDialog from './InfoDialog.vue'
 import { Icon } from '@iconify/vue'
+import router from '@/router/index'
+
 const emailInput = ref('')
 const verifyCodeInput = ref('')
 const tipText = ref('注册账号')
@@ -80,7 +83,7 @@ const emailSubmit = ref(false)
 const dialog = useCommandComponent(InfoDialog)
 const loadingShow = ref(false)
 const loadingCodeShow = ref(false)
-const timeCount = ref(6)
+const timeCount = ref(60)
 let timer = null
 
 const isValidEmail = (email: string) => {
@@ -123,6 +126,26 @@ const executeAnotherOperation = () => {
   // 在倒计时结束后执行的操作
 }
 
+const reSendCode = () => {
+  loadingCodeShow.value = true
+  emailVerifyApi(emailInput.value)
+    .then(() => {
+      dialog({
+        title: '🎉',
+        content: '验证码已经发送到你的邮箱，请注意查收',
+        btnContent: '👌',
+        onClose: () => {
+          loadingCodeShow.value = false
+        }
+      })
+      timeCount.value = 60
+      startTimer()
+    })
+    .catch(() => {
+      loadingCodeShow.value = false
+    })
+}
+
 const sendCode = () => {
   emailVerifyApi(emailInput.value)
     .then(() => {
@@ -135,7 +158,7 @@ const sendCode = () => {
           emailSubmit.value = true
         }
       })
-      timeCount.value = 6
+      timeCount.value = 60
       startTimer()
     })
     .catch(() => {
@@ -143,7 +166,15 @@ const sendCode = () => {
     })
 }
 
-const checkVerifyCode = () => {}
+const checkVerifyCode = () => {
+  dialog({
+    content: '验证码验证通过！',
+    btnContent: '👌',
+    onClose: () => {
+      router.push(`/account/init-profile/${emailInput.value}`)
+    }
+  })
+}
 </script>
 
 <style scoped></style>
