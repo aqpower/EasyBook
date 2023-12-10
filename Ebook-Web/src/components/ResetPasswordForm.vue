@@ -18,8 +18,11 @@
       </div>
       <div>
         <button
-          class="flex w-full justify-center rounded-md bg-rose-400 active:bg-rose-200 hover:bg-rose-300 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
-        >
+        class="h-9 min-h-0 btn btn-primary flex w-full justify-center rounded-md
+          hover:bg-rose-300 px-3 py-1.5 
+           leading-6 text-white shadow-sm 
+         focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+          focus-visible:outline-rose-600">
           确定
         </button>
       </div>

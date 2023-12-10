@@ -1,7 +1,9 @@
 package com.example.ebookserver.service.manage;
 
 import com.example.ebookserver.mapper.PostMapper;
+import com.example.ebookserver.pojo.PageBean;
 import com.example.ebookserver.pojo.Post;
+import com.example.ebookserver.pojo.PostShow;
 import com.example.ebookserver.service.PostService;
 import com.example.ebookserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> allPOst(Integer id) {
+    public PageBean allPOst(Integer id, Integer page, Integer pageSize) {
         /*
         1.查询使用者拉黑了的用户
         2.查询拉黑了使用者的用户
@@ -37,6 +39,18 @@ public class PostServiceImpl implements PostService {
         List<Integer> users = new ArrayList<>();
         users.addAll(userService.selectBlackUsers(id));
         users.addAll(userService.selectBlackedUsers(id));
-        return postMapper.postById(users);
+
+        //查询帖子总数
+        Long count = postMapper.count(users);
+        Integer start = (page -1) * pageSize;
+        //分页查询帖子得到的数据
+        List<PostShow> postShows = postMapper.page(users,start,pageSize);
+        for (PostShow postShow : postShows) {
+            //通过帖子id查url集合
+            postShow.setUrl(postMapper.getUrl(postShow.getId()));
+        }
+        //返回的类
+        PageBean pageBean = new PageBean(count,postShows);
+        return pageBean;
     }
 }

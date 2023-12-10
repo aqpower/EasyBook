@@ -3,11 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.ebookserver.mapper.PostMapper">
+    <sql id="selectNotInBlackList">
+        <!--foreach方法-->
+        <!--作用：完成对sql语句的拼接-->
+        <!-- collection="集合名字" item="集合中每一项的名字" separator="间隔符号" open="开始符号" close="结束符号"-->
+        where user_id not in
+        <foreach collection="users" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </sql>
     <insert id="post"  >
         insert into post (type, title, content_text, color, lyrics, ip, user_id) values
         (#{type},#{title},#{contentText},#{color},#{lyrics},#{ip},#{userId})
     </insert>
-    <select id="postById" resultType="com.example.ebookserver.pojo.Post">
-        select * from post where user_id not in #{users}
+    <select id="count" resultType="long">
+        select count(*) from post <include refid="selectNotInBlackList"></include>
+    </select>
+    <select id="page" resultType="com.example.ebookserver.pojo.PostShow">
+        select post.id,avatar,name,title,content_text,color,lyrics,like_num,collection_num,ip
+        from user,post where user.id=post.user_id and user.id not in
+        <foreach collection="users" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        limit #{start},#{pageSize}
     </select>
 </mapper>

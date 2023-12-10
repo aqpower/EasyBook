@@ -14,8 +14,7 @@
             v-model="emailIdInput"
             autocomplete="off"
             placeholder="请输入邮箱或用户ID"
-            class="input input-bordered input-primary w-full 
-               sm:text-sm sm:leading-5 h-10"
+            class="input input-bordered input-primary w-full sm:text-sm sm:leading-5 h-10"
           />
         </div>
       </div>
@@ -39,19 +38,18 @@
             id="password"
             type="password"
             placeholder="请输入密码"
-            class="input input-bordered input-primary w-full 
-               sm:text-sm sm:leading-5 h-10"
+            class="input input-bordered input-primary w-full sm:text-sm sm:leading-5 h-10"
           />
         </div>
       </div>
 
       <div>
         <button
-          class="flex w-full justify-center rounded-md bg-rose-400 active:bg-rose-200 hover:bg-rose-300 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+          class="min-h-0 h-9 btn btn-primary flex w-full justify-center rounded-md hover:bg-rose-300 px-3 py-1.5 leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
           @click="userLogin"
         >
-          <span v-if="loadingShow" class="loading loading-bars loading-xs"></span>
-          <span v-if="!loadingShow">登录</span>
+          <span v-if="loadingShow" class="loading loading-bars loading-xs h-6"></span>
+          <span v-if="!loadingShow" class="h-6">登录</span>
         </button>
       </div>
     </div>
@@ -89,7 +87,9 @@ const dialogOpen = ref(false)
 const dialogTitle = ref('')
 const dialogContent = ref('')
 const dialogBtnContent = ref('👌')
-let dialogCloseHandler = () => {}
+let dialogCloseHandler = () => {
+  loadingShow.value = false
+}
 const router = useRouter()
 
 function validateInputs() {
@@ -136,32 +136,37 @@ const userLogin = () => {
     } else {
       userLoginForm.id = emailIdInput.value
     }
-    UserLoginApi(userLoginForm).then((res) => {
-      console.log(res)
-      const data = res.data
-      if (res.code == 200) {
-        dialogTitle.value = '😊'
-        dialogContent.value = '登录成功'
-        dialogOpen.value = true
+    UserLoginApi(userLoginForm)
+      .then((res) => {
+        console.log(res)
+        const data = res.data
+        if (res.code == 200) {
+          dialogTitle.value = '😊'
+          dialogContent.value = '登录成功'
+          dialogOpen.value = true
 
-        const userStore = useUserStore()
-        const user: User = {
-          id: data.id,
-          name: '',
-          email: data.email,
-          token: data.token
+          const userStore = useUserStore()
+          const user: User = {
+            id: data.id,
+            name: '',
+            email: data.email,
+            token: data.token
+          }
+          userStore.setUser(user)
+          dialogCloseHandler = () => {
+            router.push('/home')
+          }
+        } else {
+          dialogTitle.value = '😥'
+          dialogContent.value = res.msg
+          dialogOpen.value = true
         }
-        userStore.setUser(user)
-        dialogCloseHandler = () => {
-          router.push('/home')
-        }
-      } else {
-        dialogTitle.value = '😥'
-        dialogContent.value = res.msg
-        dialogOpen.value = true
-      }
-    })
-    loadingShow.value = false
+      })
+      .finally(() => {
+        setTimeout(() => {
+          loadingShow.value = false
+        }, 3000)
+      })
   }
 }
 </script>
