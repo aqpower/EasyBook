@@ -1,46 +1,75 @@
 package com.example.ebookserver.controller;
 
-import com.example.ebookserver.pojo.LoginData;
-import com.example.ebookserver.pojo.Result;
-import com.example.ebookserver.pojo.User;
+import com.example.ebookserver.pojo.*;
+import com.example.ebookserver.service.EmailService;
 import com.example.ebookserver.service.UserService;
-import com.example.ebookserver.utils.JwtUtils;
+import com.example.ebookserver.utils.RandomPasswordGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
+@CrossOrigin
+@RequestMapping("/api/v1/login")
 public class UserLoginController {
     @Autowired
     private UserService userService;
-    @PostMapping("/api/v1/login/users")
+    private EmailService emailService;
+    @Autowired
+    public UserLoginController(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
+    /*
+    * 用户登录功能实现
+    * 获取参数：json{id/email,password}
+    * 返回参数：json{code,msg,data{token,name}}
+    * */
+    @PostMapping("/users")
     public Result user_login(@RequestBody User user){
         log.info("用户登录功能");
-        User u = userService.userLogin(user);
-        if (u != null){
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("id",u.getId());
-            claims.put("name",u.getUserName());
-            claims.put("email",u.getEmail());
-            String jwt = JwtUtils.generateJwt(claims);
-            LoginData loginData = new LoginData(jwt,u.getId(),u.getEmail());
+        LoginData loginData = userService.userLogin(user);
+        if (loginData.getCode() == 1){
+            return Result.error("账户不存在，请检查是否输入正确");
+        }else if (loginData.getCode() == 2){
+            return Result.error("密码错误，请重新输入");
+        } else{
             return Result.success(loginData);
         }
-        return Result.error("账号或者密码有问题，登录失败了哦");
     }
-    @GetMapping("/login/hello")
-    public Result hello(){
-        return Result.success("hello~I am in login");
+
+    /*
+     * 用户注册获取邮箱验证码实现
+     * 获取参数：email
+     * 返回参数：json{code,msg,data}
+     * */
+    @GetMapping("/{email}")
+    public Result hello_vi(@PathVariable String email){
+        boolean verifyResult = userService.verifyEmail(email);
+        if (verifyResult){
+            String from = "2529949859@qq.com"; // 发件人邮箱
+            String to = email; // 收件人邮箱
+            String subject = "Verification code"; // 邮件主题：验证码
+            String text = RandomPasswordGenerator.generatePassword(6); // 邮件内容 :随机生成6位验证码
+            emailService.send(from, to, subject, text);
+            return Result.success("邮箱验证成功，验证码为：" + text);
+        }
+        return Result.error("该邮箱已绑定用户，请更改邮箱");
     }
-    @GetMapping("/api/v1/login/hello")
-    public Result hello_vi(){
-        return Result.success("hello~I am in api/v1/login");
+    /*
+     * 用户注册功能实现
+     * 获取参数：json{user{email,name，password,avatar},verCode}
+     * 返回参数：json{code,msg,data}
+     * */
+    @PostMapping("")
+    public Result register(@RequestBody RegisterData registerData) {
+        log.info("实现账号注册功能");
+        int result = userService.register(registerData.getUser());
+        if (result == 1){
+            return Result.success("注册成功");
+        }
+        return Result.error("注册失败，请查看信息是否填写有误");
     }
+
 }

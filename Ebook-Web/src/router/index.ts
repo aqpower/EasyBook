@@ -17,10 +17,22 @@ const router = createRouter({
           component: () => import('@/components/LoginCard.vue')
         },
         {
-            path:'resetPassword',
-            component: ()=>import('@/components/ResetPasswordForm.vue')
+          path: 'resetPassword',
+          component: () => import('@/components/ResetPasswordForm.vue')
+        },
+        {
+          path: 'register',
+          component: () => import('@/components/RegisterCard.vue')
+        },
+        {
+          path: 'init-profile/:email',
+          component: () => import('@/components/InitProfile.vue')
         }
       ]
+    },
+    {
+      path: '/home',
+      component: () => import('@/views/HomeView.vue')
     }
   ]
 })

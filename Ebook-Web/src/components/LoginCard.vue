@@ -1,24 +1,27 @@
 <template>
-  <h2 class="mt-1 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+  <h2 class="text-base-content mt-1 text-center text-2xl font-bold leading-9 tracking-tight">
     登录你的账户
   </h2>
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <div class="space-y-6">
       <div>
-        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">账户</label>
+        <label for="email" class="block text-sm font-medium leading-6 text-base-content"
+          >账户</label
+        >
         <div class="mt-2">
           <input
             id="email"
             v-model="emailIdInput"
+            autocomplete="off"
             placeholder="请输入邮箱或用户ID"
-            class="peer block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 sm:text-sm sm:leading-6"
+            class="input input-bordered input-primary w-full sm:text-sm sm:leading-5 h-10"
           />
         </div>
       </div>
 
       <div>
         <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900"
+          <label for="password" class="block text-sm font-medium leading-6 text-base-content"
             >密码</label
           >
           <div class="text-sm">
@@ -35,36 +38,39 @@
             id="password"
             type="password"
             placeholder="请输入密码"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-rose-500 sm:text-sm sm:leading-6"
+            class="input input-bordered input-primary w-full sm:text-sm sm:leading-5 h-10"
           />
         </div>
       </div>
 
       <div>
         <button
-          class="flex w-full justify-center rounded-md bg-rose-400 active:bg-rose-200 hover:bg-rose-300 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+          class="min-h-0 h-9 btn btn-primary flex w-full justify-center rounded-md hover:bg-rose-300 px-3 py-1.5 leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
           @click="userLogin"
         >
-          登录
+          <span v-if="loadingShow" class="loading loading-bars loading-xs h-6"></span>
+          <span v-if="!loadingShow" class="h-6">登录</span>
         </button>
       </div>
     </div>
 
-    <p class="mt-10 text-center text-sm text-gray-500">
+    <p class="mt-10 text-base-content text-center text-sm">
       还没有账户🤔
       {{ ' ' }}
       <a
-        @click="userLogin()"
+        href="#/account/register"
         class="font-semibold leading-6 text-rose-400 hover:text-rose-300 hover:cursor-pointer"
         >点击注册！</a
       >
     </p>
   </div>
   <InfoDialog
-    :isOpen="dialogOpen"
+    :visible="dialogOpen"
     :title="dialogTitle"
     :content="dialogContent"
-    @update:isOpen="dialogOpen = $event"
+    @update:visible="dialogOpen = $event"
+    :btnContent="dialogBtnContent"
+    :onClose="dialogCloseHandler"
   ></InfoDialog>
 </template>
 
@@ -72,24 +78,30 @@
 import { UserLoginApi } from '@/api/user'
 import { ref } from 'vue'
 import InfoDialog from './InfoDialog.vue'
-const emailIdInput = ref(' ')
+import { useUserStore, type User } from '@/stores/userStores'
+import { useRouter } from 'vue-router'
+const emailIdInput = ref('')
 const passwordInput = ref('')
-
+const loadingShow = ref(false)
 const dialogOpen = ref(false)
 const dialogTitle = ref('')
 const dialogContent = ref('')
+const dialogBtnContent = ref('👌')
+let dialogCloseHandler = () => {
+  loadingShow.value = false
+}
+const router = useRouter()
 
 function validateInputs() {
+  const passwordRegex = /^(?=.*[A-Za-z\d])[A-Za-z\d]{6,}$/
   const emailRegex = /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/
-
   const isValidEmailId = emailIdInput.value.length === 8 || emailRegex.test(emailIdInput.value)
-  const isValidPassword = passwordInput.value.length >= 6 && passwordRegex.test(passwordInput.value)
+  const isValidPassword = passwordRegex.test(passwordInput.value)
 
   if (!isValidEmailId && !isValidPassword) {
     return {
       valid: false,
-      msg: '账户必须是8个字符长的ID或有效的邮箱。密码必须至少为6个字符，并包含至少一个字母和一个数字。'
+      msg: '账户必须是8个字符长的ID或有效的邮箱。密码位数至少为6位字符，且仅含数字字符或字母字符。'
     }
   } else if (!isValidEmailId) {
     return {
@@ -99,7 +111,7 @@ function validateInputs() {
   } else if (!isValidPassword) {
     return {
       valid: false,
-      msg: '密码必须至少为6个字符，并包含至少一个字母和一个数字。'
+      msg: '密码位数至少为6位字符，且仅含数字字符或字母字符。'
     }
   }
 
@@ -107,6 +119,7 @@ function validateInputs() {
 }
 
 const userLogin = () => {
+  loadingShow.value = true
   const validationResult = validateInputs()
 
   if (!validationResult.valid) {
@@ -114,15 +127,46 @@ const userLogin = () => {
     dialogContent.value = validationResult.msg
     dialogOpen.value = true
   } else {
-    let userInfo: { password: string; email?: string; id?: string } = {
+    let userLoginForm: { password: string; email?: string; id?: string } = {
       password: passwordInput.value
     }
 
     if (emailIdInput.value.includes('@')) {
-      userInfo.email = emailIdInput.value
+      userLoginForm.email = emailIdInput.value
     } else {
-      userInfo.id = emailIdInput.value
+      userLoginForm.id = emailIdInput.value
     }
+    UserLoginApi(userLoginForm)
+      .then((res) => {
+        console.log(res)
+        const data = res.data
+        if (res.code == 200) {
+          dialogTitle.value = '😊'
+          dialogContent.value = '登录成功'
+          dialogOpen.value = true
+
+          const userStore = useUserStore()
+          const user: User = {
+            id: data.id,
+            name: '',
+            email: data.email,
+            token: data.token
+          }
+          userStore.setUser(user)
+          dialogCloseHandler = () => {
+            router.push('/home')
+          }
+        } else {
+          dialogTitle.value = '😥'
+          dialogContent.value = res.msg
+          dialogOpen.value = true
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          loadingShow.value = false
+        }, 3000)
+      })
   }
 }
 </script>

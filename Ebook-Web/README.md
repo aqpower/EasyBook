@@ -20,3 +20,11 @@ pnpm i pinia-plugin-persistedstate
 ```
 pnpm install @headlessui/vue
 ```
+
+```
+pnpm i -D daisyui@latest
+```
+
+install -D @tailwindcss/typography
+
+npm install --save-dev @iconify/vue
