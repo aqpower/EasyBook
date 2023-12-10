@@ -1,10 +1,7 @@
 package com.example.ebookserver.mapper;
 
 import com.example.ebookserver.pojo.User;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -50,8 +47,16 @@ public interface UserMapper {
     List<Integer> selectBlackList(Integer userId);
 
     /*
+    * 查询拉黑了用户的列表
+    * */
+    @Select("select user_id from blacklist where black_user_id = #{blackUserId}")
+    List<Integer> selectBlackedList(Integer blackUserId);
+    /*
     * 拉黑用户：插入数据
     * */
     @Insert("insert into blacklist(user_id, black_user_id) values (#{userId},#{blackUserid})")
     int insertToBlackList(Integer userId, Integer blackUserid);
+
+    @Update("update user set name = #{name},avatar = #{avatar} where id = #{id}")
+    int updateById(User user);
 }
