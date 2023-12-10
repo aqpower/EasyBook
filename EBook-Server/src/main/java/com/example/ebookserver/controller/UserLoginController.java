@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @CrossOrigin
+@RequestMapping("/api/v1/login")
 public class UserLoginController {
     @Autowired
     private UserService userService;
@@ -25,7 +26,7 @@ public class UserLoginController {
     * 获取参数：json{id/email,password}
     * 返回参数：json{code,msg,data{token,name}}
     * */
-    @PostMapping("/api/v1/login/users")
+    @PostMapping("/users")
     public Result user_login(@RequestBody User user){
         log.info("用户登录功能");
         LoginData loginData = userService.userLogin(user);
@@ -43,7 +44,7 @@ public class UserLoginController {
      * 获取参数：email
      * 返回参数：json{code,msg,data}
      * */
-    @GetMapping("/api/v1/login/{email}")
+    @GetMapping("/{email}")
     public Result hello_vi(@PathVariable String email){
         boolean verifyResult = userService.verifyEmail(email);
         if (verifyResult){
@@ -61,7 +62,7 @@ public class UserLoginController {
      * 获取参数：json{user{email,name，password,avatar},verCode}
      * 返回参数：json{code,msg,data}
      * */
-    @PostMapping("/api/v1/login")
+    @PostMapping("")
     public Result register(@RequestBody RegisterData registerData) {
         log.info("实现账号注册功能");
         int result = userService.register(registerData.getUser());
@@ -70,27 +71,5 @@ public class UserLoginController {
         }
         return Result.error("注册失败，请查看信息是否填写有误");
     }
-    /*
-     * 用户注销功能实现
-     * 获取参数：json{password}
-     * 返回参数：json{code,msg,data}
-     * */
-    @DeleteMapping("/api/v1/delete/user")
-    public Result user_delete(@RequestBody User user){
-        log.info("实现用户注销功能");
-        boolean result = userService.delete(user.getId(),user.getPassword());
-        if (result){
-            return Result.success("用户注销成功");
-        }
-        return Result.error("密码输入错误，删除失败了");
-    }
-    @PostMapping("/api/v1/blackList")
-    public Result user_blackList(@RequestBody BlackList blackList){
-        log.info("实现用户拉黑功能");
-        int result = userService.toBlackList(blackList);
-        if (result == 1){
-            return Result.success("拉黑成功");
-        }
-        return Result.error("拉黑失败，请确保id有效");
-    }
+
 }

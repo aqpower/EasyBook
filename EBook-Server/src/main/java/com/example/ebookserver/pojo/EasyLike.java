@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @author wzb
- */
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Admin {
-    Integer id;
-    String name;
-    String password;
-    short role;
+public class EasyLike {
+    private Integer id;
+    private Integer userId;
+    private Integer postId;
+    private LocalDateTime likeTime;
 }

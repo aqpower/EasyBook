@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserServiceIml implements UserService {
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Override
@@ -105,7 +105,7 @@ public class UserServiceIml implements UserService {
     public int toBlackList(BlackList blackList) {
         int userId = blackList.getUserId();
         int blackUserId = blackList.getBlackUserId();
-        List<Integer> integers = userMapper.selectBlackList(userId); //查找用户的拉黑列表
+        List<Integer> integers = selectBlackUsers(userId); //查找用户的拉黑列表
         for (Integer integer : integers) {
             /*
             * 如果已经拉黑该用户则无法再次拉黑
@@ -122,5 +122,27 @@ public class UserServiceIml implements UserService {
             return userMapper.insertToBlackList(userId, blackUserId);
         }
         return 0;
+    }
+
+    @Override
+    public int update(User user) {
+        int result = userMapper.updateById(user);
+        return result;
+    }
+
+    /*
+    * 查找用户的拉黑列表
+    * */
+    @Override
+    public List<Integer> selectBlackUsers(Integer id) {
+        return userMapper.selectBlackList(id);
+    }
+
+    /*
+     * 查找拉黑了用户的列表
+     * */
+    @Override
+    public List<Integer> selectBlackedUsers(Integer id) {
+        return userMapper.selectBlackedList(id);
     }
 }
