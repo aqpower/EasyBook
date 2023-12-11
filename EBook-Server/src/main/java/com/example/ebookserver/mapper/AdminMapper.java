@@ -1,23 +1,13 @@
 package com.example.ebookserver.mapper;
 
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.ebookserver.pojo.Admin;
 import com.example.ebookserver.pojo.LoginData;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
-public interface AdminMapper extends BaseMapper<Admin> {
-
-    @Select("select * from admin where id = #{id} and password = #{password}")
-    LoginData getById(Integer id, String password);
-
-    @Select("select * from admin where name = #{name} and password = #{password}")
-    LoginData getByUsername(String name, String password);
-
-    @Insert("insert into admin (name, password, role) VALUES (#{name}, #{password}, #{role})")
-    void insertAdmin(String name, String password, short role);
-
+public interface AdminMapper {
+    LoginData getByIdAndPassword(@Param("id") Integer id, @Param("password") String password);
+    LoginData getByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+    void insertAdmin(Admin admin);
 }
