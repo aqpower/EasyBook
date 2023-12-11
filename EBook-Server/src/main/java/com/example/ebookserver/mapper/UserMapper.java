@@ -59,4 +59,9 @@ public interface UserMapper {
 
     @Update("update user set name = #{name},avatar = #{avatar} where id = #{id}")
     int updateById(User user);
+
+    @Select("select role from user where id = #{id}")
+    short getRoleById(Integer id);
+    @Select("select role from user where email = #{email}")
+    short getRoleByEmail(String email);
 }

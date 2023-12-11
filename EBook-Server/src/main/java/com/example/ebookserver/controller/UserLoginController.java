@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @CrossOrigin
-@RequestMapping("/api/v1/login")
+@RequestMapping("/api/v1")
 public class UserLoginController {
     @Autowired
     private UserService userService;
     private EmailService emailService;
+    private String code;
     @Autowired
     public UserLoginController(EmailService emailService) {
         this.emailService = emailService;
@@ -26,12 +27,14 @@ public class UserLoginController {
     * 获取参数：json{id/email,password}
     * 返回参数：json{code,msg,data{token,name}}
     * */
-    @PostMapping("/users")
+    @PostMapping("/login/users")
     public Result user_login(@RequestBody User user){
         log.info("用户登录功能");
         LoginData loginData = userService.userLogin(user);
         if (loginData.getCode() == 1){
             return Result.error("账户不存在，请检查是否输入正确");
+        } else if (loginData.getCode() == 5) {
+            return Result.error("很抱歉，您已被禁止登录");
         }else if (loginData.getCode() == 2){
             return Result.error("密码错误，请重新输入");
         } else{
@@ -44,16 +47,16 @@ public class UserLoginController {
      * 获取参数：email
      * 返回参数：json{code,msg,data}
      * */
-    @GetMapping("/{email}")
-    public Result hello_vi(@PathVariable String email){
+    @GetMapping("/login/email-verification")
+    public Result hello_vi(@RequestParam String email){
         boolean verifyResult = userService.verifyEmail(email);
         if (verifyResult){
             String from = "2529949859@qq.com"; // 发件人邮箱
             String to = email; // 收件人邮箱
             String subject = "Verification code"; // 邮件主题：验证码
-            String text = RandomPasswordGenerator.generatePassword(6); // 邮件内容 :随机生成6位验证码
-            emailService.send(from, to, subject, text);
-            return Result.success("邮箱验证成功，验证码为：" + text);
+            this.code = RandomPasswordGenerator.generatePassword(6); // 邮件内容 :随机生成6位验证码
+            emailService.send(from, to, subject, code);
+            return Result.success();
         }
         return Result.error("该邮箱已绑定用户，请更改邮箱");
     }
@@ -62,14 +65,19 @@ public class UserLoginController {
      * 获取参数：json{user{email,name，password,avatar},verCode}
      * 返回参数：json{code,msg,data}
      * */
-    @PostMapping("")
+    @PostMapping("/users")
     public Result register(@RequestBody RegisterData registerData) {
         log.info("实现账号注册功能");
-        int result = userService.register(registerData.getUser());
-        if (result == 1){
-            return Result.success("注册成功");
+        if(registerData.getVerCode().equals(code)){
+            int result = userService.register(registerData.getUser());
+            this.code=null;
+            if (result == 1){
+                return Result.success("注册成功");
+            }else {
+                return Result.error("注册失败，请查看信息是否填写有误");
+            }
+        }else {
+            return Result.error("注册失败，验证码填写错误");
         }
-        return Result.error("注册失败，请查看信息是否填写有误");
     }
-
 }

@@ -35,7 +35,7 @@ public class PostController {
     /*
     * 系统主页展示所有的帖子，除了使用者拉黑的用户，和拉黑了使用者的用户
     * */
-    @GetMapping("/page")
+    @GetMapping("/posts")
     public Result page(@RequestParam Integer id,
                        @RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer pageSize){
