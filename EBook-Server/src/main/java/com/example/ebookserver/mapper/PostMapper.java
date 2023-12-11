@@ -37,4 +37,6 @@ public interface PostMapper {
 
     @Select("select count(*) from image where post_id = 1")
     long count1();
+
+    int toImages(int postId, List<String> urls);
 }

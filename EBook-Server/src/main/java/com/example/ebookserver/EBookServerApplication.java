@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EBookServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(EBookServerApplication.class, args);
+        //System.out.printf(MD5Util.encode("easybook123"));
     }
 
 }

@@ -8,6 +8,7 @@ import com.example.ebookserver.service.PostService;
 import com.example.ebookserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,9 @@ public class PostServiceImpl implements PostService {
     private PostMapper postMapper;
     @Autowired
     private UserService userService;
+
+
+    @Transactional   //事务管理
     @Override
     public int toPost(Post post) {
         int role = postMapper.selectRole(post.getUserId());
@@ -25,6 +29,9 @@ public class PostServiceImpl implements PostService {
             return 3;
         }else {
             int result = postMapper.post(post);
+            if (post.getUrls() != null){
+               postMapper.toImages(post.getId(),post.getUrls());
+            }
             return result;
         }
     }
