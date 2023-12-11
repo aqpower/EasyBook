@@ -33,7 +33,10 @@ dependencies {
     testImplementation 'com.icegreen:greenmail-junit5:1.6.9'
  //   implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.1'
 //    implementation 'com.baomidou:mybatis-plus-core:3.4.3'
-
+    implementation 'com.aliyun.oss:aliyun-sdk-oss:3.15.1'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'javax.activation:activation:1.1.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
 }
 
 

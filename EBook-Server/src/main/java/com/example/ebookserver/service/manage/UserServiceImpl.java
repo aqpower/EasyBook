@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean delete(Integer id, String password) {
         if (userMapper.getByIdAndPassword(id,MD5Util.encode(password)) != null){
-            userMapper.deleteById(id);
+            if (userMapper.deleteById(id) == 1)
             return true;
         }
         return false;
