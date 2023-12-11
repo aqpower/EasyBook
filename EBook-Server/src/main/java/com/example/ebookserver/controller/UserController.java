@@ -24,9 +24,9 @@ public class UserController {
         log.info("实现用户注销功能");
         boolean result = userService.delete(user.getId(),user.getPassword());
         if (result){
-            return Result.success("用户注销成功");
+            return Result.success();
         }
-        return Result.error("密码输入错误，删除失败了");
+        return Result.error("密码输入错误，注销失败了");
     }
     /*
      * 用户拉黑功能实现

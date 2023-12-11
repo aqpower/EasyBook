@@ -37,8 +37,8 @@ public interface UserMapper {
     /*
     * 注销用户：通过id删除
     * */
-    @Delete("delete from user where id = #{id}")
-    void deleteById(Integer id);
+    @Update("update user set role = 100 where id = #{id}")
+    int deleteById(Integer id);
 
     /*
     * 查找用户的拉黑列表

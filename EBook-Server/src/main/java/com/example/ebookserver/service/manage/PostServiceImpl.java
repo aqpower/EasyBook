@@ -24,8 +24,9 @@ public class PostServiceImpl implements PostService {
         if (role >= 4){   //用户不能发帖
             return 3;
         }else {
-            int result = postMapper.post(post);
-            return result;
+            int result1 = postMapper.post(post);
+            int result2 = postMapper.toImages(post.getId(),post.getUrls());
+            return (result1 == 1 && result2 == 1) ? 1:0;
         }
     }
 

@@ -4,9 +4,15 @@ import com.example.ebookserver.pojo.PageBean;
 import com.example.ebookserver.pojo.Post;
 import com.example.ebookserver.pojo.Result;
 import com.example.ebookserver.service.PostService;
+import com.example.ebookserver.utils.AliOSSUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -15,6 +21,23 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     @Autowired
     private PostService postService;
+    @Autowired
+    private AliOSSUtils aliOSSUtils;
+
+    private List<String> urls = new ArrayList<>();
+
+    /*
+    * 用户上传图片
+    * */
+    @PostMapping("/upload")
+    public Result upload(MultipartFile[] image) throws IOException {
+        log.info("文件上传");
+        for (MultipartFile multipartFile : image) {
+            String url = aliOSSUtils.upload(multipartFile);
+            urls.add(url);
+        }
+        return Result.success(urls);
+    }
 
     /*
     *
@@ -43,10 +66,12 @@ public class PostController {
         PageBean pageBean = postService.allPOst(id,page,pageSize);
         return Result.success(pageBean);
     }
+   // List<MultipartFile> multipartFiles;
 //    @GetMapping("/allPost")
 //    public Result allPost(Integer id){
 //        log.info("展示主页全部帖子");
 //        List<PostShow> posts = postService.allPOst(id, pageSize, page);
 //        return Result.success(posts);
 //    }
+
 }

@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
-    private Integer id;
+    private int id;
     private short type;
     private String title;
     private String contentText;
@@ -19,4 +21,5 @@ public class Post {
     private String ip;
     private Integer violationNum;
     private Integer userId;
+    private List<String> urls;
 }

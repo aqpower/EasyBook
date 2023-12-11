@@ -12,10 +12,30 @@
             #{id}
         </foreach>
     </sql>
-    <insert id="post"  >
+
+
+    <insert id="post"  useGeneratedKeys="true" keyProperty="id">
         insert into post (type, title, content_text, color, lyrics, ip, user_id) values
         (#{type},#{title},#{contentText},#{color},#{lyrics},#{ip},#{userId})
     </insert>
+
+    <insert id="insertImages" parameterType="java.util.List">
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id();
+        </selectKey>
+        insert into image (url, id) values
+        <foreach collection="list" item="url" separator=",">
+            (#{url}, #{id})
+        </foreach>
+    </insert>
+
+    <insert id="toImages">
+        insert into image (post_id,url) values
+        <foreach collection="urls" item="url" separator=",">
+            (#{postId},#{url})
+        </foreach>
+    </insert>
+
     <select id="count" resultType="long">
         select count(*) from post <include refid="selectNotInBlackList"></include>
     </select>
