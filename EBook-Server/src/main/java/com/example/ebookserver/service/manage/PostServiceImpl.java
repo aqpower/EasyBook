@@ -8,6 +8,7 @@ import com.example.ebookserver.service.PostService;
 import com.example.ebookserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +19,20 @@ public class PostServiceImpl implements PostService {
     private PostMapper postMapper;
     @Autowired
     private UserService userService;
+
+
+    @Transactional   //事务管理
     @Override
     public int toPost(Post post) {
         int role = postMapper.selectRole(post.getUserId());
         if (role >= 4){   //用户不能发帖
             return 3;
         }else {
-            int result1 = postMapper.post(post);
-            int result2 = postMapper.toImages(post.getId(),post.getUrls());
-            return (result1 == 1 && result2 >= 1) ? 1:0;
+            int result = postMapper.post(post);
+            if (post.getUrls() != null){
+               postMapper.toImages(post.getId(),post.getUrls());
+            }
+            return result;
         }
     }
 
