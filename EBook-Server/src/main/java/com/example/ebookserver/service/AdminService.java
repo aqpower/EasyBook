@@ -1,6 +1,8 @@
 package com.example.ebookserver.service;
 
 import com.example.ebookserver.pojo.Admin;
+import com.example.ebookserver.pojo.LoginData;
+import com.example.ebookserver.pojo.User;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 /**
@@ -8,7 +10,7 @@ import org.springframework.stereotype.Service;
  */
 @Component
 public interface AdminService  {
-    Admin adminLogin(Admin admin);
-
+    //Admin adminLogin(Admin admin);
+    LoginData adminLogin(Admin admin);
     Admin createAdmin(Admin admin);
 }

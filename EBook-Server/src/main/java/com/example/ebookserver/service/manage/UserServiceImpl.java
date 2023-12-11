@@ -26,39 +26,50 @@ public class UserServiceImpl implements UserService {
         * 生成返回对象
         * */
         LoginData loginData = new LoginData();
+
         Map<String, Object> claims = new HashMap<>();
         if(user.getId() != null){  //id登录
             String name = userMapper.getById(user.getId());
             if (name !=null){  //账号存在
-                if(userMapper.getByIdAndPassword(user.getId(), MD5Util.encode(user.getPassword())) != null){  //登录成功
-                    loginData.setId(user.getId());
-                    loginData.setName(name);
-                    claims.put("id",user.getId());
-                    claims.put("name",name);
-                    loginData.setCode(3);
-                }else {  //密码错误
-                    loginData.setCode(2);
+                short role = userMapper.getRoleById(user.getId());
+                if (role <= 4){
+                    if(userMapper.getByIdAndPassword(user.getId(), MD5Util.encode(user.getPassword())) != null){  //登录成功
+                        loginData.setId(user.getId());
+                        loginData.setName(name);
+                        claims.put("id",user.getId());
+                        claims.put("name",name);
+                        loginData.setCode(3);
+                    }else {  //密码错误
+                        loginData.setCode(2);
+                    }
+                }else {
+                    loginData.setCode(5);
                 }
+
             }else{   //账号不存在
                 loginData.setCode(1);
             }
         } else if (user.getEmail() != null) {   //邮箱登录
             String name = userMapper.getByEmail(user.getEmail());
             if (name != null){  //账号存在
-                if(userMapper.getByEmailAndPassword(user.getEmail(),MD5Util.encode(user.getPassword())) != null){  //登录成功
-                    claims.put("name",name);
-                    claims.put("email",user.getEmail());
-                    loginData.setName(name);
-                    loginData.setCode(3);
-                }else {  //密码错误
-                    loginData.setCode(2);
+                short role = userMapper.getRoleByEmail(user.getEmail());
+                if (role <= 4){
+                    if(userMapper.getByEmailAndPassword(user.getEmail(),MD5Util.encode(user.getPassword())) != null){  //登录成功
+                        claims.put("name",name);
+                        claims.put("email",user.getEmail());
+                        loginData.setName(name);
+                        loginData.setCode(3);
+                    }else {  //密码错误
+                        loginData.setCode(2);
+                    }
+                }else {
+                    loginData.setCode(5);
                 }
             }else{   //账号不存在
                 loginData.setCode(1);
             }
         }
         if(loginData.getCode() == 3){
-
             String jwt = JwtUtils.generateJwt(claims);
             loginData.setToken(jwt);
         }
@@ -92,7 +103,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean delete(Integer id, String password) {
         if (userMapper.getByIdAndPassword(id,MD5Util.encode(password)) != null){
-            userMapper.deleteById(id);
+            if (userMapper.deleteById(id) == 1)
             return true;
         }
         return false;

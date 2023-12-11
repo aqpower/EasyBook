@@ -12,19 +12,33 @@
             #{id}
         </foreach>
     </sql>
-    <insert id="post"  >
+
+
+    <insert id="post"  useGeneratedKeys="true" keyProperty="id">
         insert into post (type, title, content_text, color, lyrics, ip, user_id) values
         (#{type},#{title},#{contentText},#{color},#{lyrics},#{ip},#{userId})
     </insert>
+
+    <insert id="toImages">
+        insert into image (post_id,url) values
+        <foreach collection="urls" item="url" separator=",">
+            (#{postId},#{url})
+        </foreach>
+    </insert>
+
     <select id="count" resultType="long">
         select count(*) from post <include refid="selectNotInBlackList"></include>
     </select>
+
     <select id="page" resultType="com.example.ebookserver.pojo.PostShow">
         select post.id,avatar,name,title,content_text,color,lyrics,like_num,collection_num,ip
-        from user,post where user.id=post.user_id and user.id not in
-        <foreach collection="users" item="id" separator="," open="(" close=")">
-            #{id}
-        </foreach>
+        from user,post where user.id=post.user_id and user.id
+        <if test="users != null">
+            not in
+            <foreach collection="users" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
         limit #{start},#{pageSize}
     </select>
 </mapper>
