@@ -26,7 +26,7 @@ public class PostServiceImpl implements PostService {
         }else {
             int result1 = postMapper.post(post);
             int result2 = postMapper.toImages(post.getId(),post.getUrls());
-            return (result1 == 1 && result2 == 1) ? 1:0;
+            return (result1 == 1 && result2 >= 1) ? 1:0;
         }
     }
 
