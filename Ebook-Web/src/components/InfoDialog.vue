@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { TransitionRoot, TransitionChild, Dialog, DialogPanel, DialogTitle } from '@headlessui/vue'
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 // 声明 props
 const props = defineProps({
@@ -21,19 +21,19 @@ const emits = defineEmits<{
 
 const dialogVisible = computed<boolean>({
   get() {
-    return props.visible;
+    return props.visible
   },
   set(visible) {
-    emits('update:visible', visible);
+    emits('update:visible', visible)
     if (!visible) {
-      emits('close');
+      emits('close')
     }
-  },
-});
+  }
+})
 </script>
 
 <template>
-  <TransitionRoot appear :show="visible" as="template">
+  <TransitionRoot appear :show="visible" as="template" class="z-[1000]">
     <Dialog as="div" @close="dialogVisible = false" class="relative z-10">
       <TransitionChild
         as="template"
@@ -73,7 +73,7 @@ const dialogVisible = computed<boolean>({
               <div class="mt-4 flex justify-end">
                 <button
                   type="button"
-                  class="btn btn-active btn-primary inline-flex rounded-md border border-transparent bg-rose-100 px-4 py-2 text-sm font-medium  hover:bg-rose-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
+                  class="btn btn-active btn-primary inline-flex rounded-md border border-transparent bg-rose-100 px-4 py-2 text-sm font-medium hover:bg-rose-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
                   @click="dialogVisible = false"
                 >
                   {{ props.btnContent }}
