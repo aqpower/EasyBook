@@ -141,7 +141,6 @@ const userLogin = () => {
         console.log(res)
         const data = res.data
         if (res.code == 200) {
-          console.log(res)
           dialogTitle.value = '😊'
           dialogContent.value = '登录成功'
           dialogOpen.value = true
@@ -149,7 +148,7 @@ const userLogin = () => {
           const userStore = useUserStore()
           const user: User = {
             id: data.id,
-            name: '',
+            name: data.name,
             email: data.email,
             token: data.token
           }

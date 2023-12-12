@@ -31,6 +31,7 @@ public class PostController {
     * */
     @PostMapping("/upload")
     public Result upload(MultipartFile[] image) throws IOException {
+        urls.clear();
         log.info("文件上传");
         for (MultipartFile multipartFile : image) {
             String url = aliOSSUtils.upload(multipartFile);
@@ -66,6 +67,8 @@ public class PostController {
         PageBean pageBean = postService.allPOst(id,page,pageSize);
         return Result.success(pageBean);
     }
+
+
    // List<MultipartFile> multipartFiles;
 //    @GetMapping("/allPost")
 //    public Result allPost(Integer id){
