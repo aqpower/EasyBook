@@ -65,6 +65,7 @@ const dialogVisible = computed<boolean>({
                 {{ props.title }}
               </DialogTitle>
               <div class="mt-2">
+                <slot name="content" />
                 <p class="text-base text-gray-500">
                   {{ props.content }}
                 </p>
@@ -77,6 +78,7 @@ const dialogVisible = computed<boolean>({
                   @click="dialogVisible = false"
                 >
                   {{ props.btnContent }}
+                  <slot name="btn-content" />
                 </button>
               </div>
             </DialogPanel>

@@ -10,4 +10,6 @@ public interface AdminMapper {
     LoginData getByIdAndPassword(@Param("id") Integer id, @Param("password") String password);
     LoginData getByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
     void insertAdmin(Admin admin);
+    int updateRole(int role, int adminId);
+
 }
