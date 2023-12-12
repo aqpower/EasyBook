@@ -141,6 +141,7 @@ const userLogin = () => {
         console.log(res)
         const data = res.data
         if (res.code == 200) {
+          console.log(res)
           dialogTitle.value = '😊'
           dialogContent.value = '登录成功'
           dialogOpen.value = true

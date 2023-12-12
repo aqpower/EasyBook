@@ -1,4 +1,4 @@
-package com.book.ebookserver.pojo;
+package com.example.ebookserver.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
