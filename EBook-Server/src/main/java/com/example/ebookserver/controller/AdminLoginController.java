@@ -22,10 +22,10 @@ public class AdminLoginController {
         log.info("管理员登录功能");
         LoginData loginData = adminService.adminLogin(admin);
         if (loginData.getCode() == 1) {
-            return Result.error("账户不存在，请检查是否输入正确");
-        } else if (loginData.getCode() == 2) {
-            return Result.error("密码错误，请重新输入");
-        } else {
+            return Result.error("账户不存在或密码错误，请检查是否输入正确");
+        } else if (loginData.getCode() == 100) {
+            return Result.error("账户已注销，登录失败");
+        } else{
             return Result.success(loginData);
         }
     }

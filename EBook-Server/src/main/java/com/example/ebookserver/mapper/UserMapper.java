@@ -64,4 +64,10 @@ public interface UserMapper {
     short getRoleById(Integer id);
     @Select("select role from user where email = #{email}")
     short getRoleByEmail(String email);
+
+    @Select("select avatar from user where user.id = #{id}")
+    short selectAvatarById(Integer id);
+
+    @Select("select avatar from user where user.email = #{email}")
+    short selectAvatarByEmail(String email);
 }

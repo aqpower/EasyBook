@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
                     if(userMapper.getByIdAndPassword(user.getId(), MD5Util.encode(user.getPassword())) != null){  //登录成功
                         loginData.setId(user.getId());
                         loginData.setName(name);
+                        loginData.setAvatar(userMapper.selectAvatarById(user.getId()));
                         claims.put("id",user.getId());
                         claims.put("name",name);
                         loginData.setCode(3);
@@ -59,6 +60,7 @@ public class UserServiceImpl implements UserService {
                         claims.put("email",user.getEmail());
                         loginData.setName(name);
                         loginData.setCode(3);
+                        loginData.setAvatar(userMapper.selectAvatarByEmail(user.getEmail()));
                     }else {  //密码错误
                         loginData.setCode(2);
                     }

@@ -4,14 +4,18 @@
 <mapper namespace="com.example.ebookserver.mapper.AdminMapper">
 
     <!-- 对应insertAdmin方法 -->
-    <insert id="insertAdmin">
+    <insert id="insertAdmin" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.ebookserver.pojo.Admin">
         INSERT INTO admin (name, password, role)
-        VALUES (#{admin.name}, #{admin.password}, #{admin.role})
+        VALUES (#{name}, #{password}, #{role})
     </insert>
 
     <!-- 对应getByIdAndPassword方法 -->
     <select id="getByIdAndPassword" resultType="com.example.ebookserver.pojo.LoginData">
         SELECT * FROM admin WHERE id = #{id} AND password = #{password}
     </select>
+    <!-- 对应updateRole方法 -->
+    <update id="updateRole" parameterType="map">
+        UPDATE admin SET role = #{role} WHERE id = #{adminId}
+    </update>
 
 </mapper>
