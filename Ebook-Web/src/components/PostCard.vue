@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full m-2 break-inside-avoid">
+  <div class="w-full break-inside-avoid">
     <figure>
-      <img class="rounded-3xl AqImage" :src="post.url[0]" :alt="post.title" />
+      <img class="rounded-2xl AqImage" :src="post.url[0]" :alt="post.title" />
     </figure>
     <div class="mx-4 my-3">
       <h1 class="text-sm font-medium font-sans">{{ post.title }}</h1>

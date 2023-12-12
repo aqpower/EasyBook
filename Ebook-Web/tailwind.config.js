@@ -6,8 +6,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter var', 'Noto Sans SC', ...defaultTheme.fontFamily.sans],
-        note: ['Noto Sans SC', 'sans-serif', ...defaultTheme.fontFamily.sans]
+        sans: ['PingFang SC', 'system-ui', 'Noto Sans SC', ...defaultTheme.fontFamily.sans],
+        note: ['PingFang SC', 'Noto Sans SC', 'sans-serif', ...defaultTheme.fontFamily.sans]
       }
     }
   },
@@ -18,8 +18,8 @@ module.exports = {
       {
         light: {
           ...require('daisyui/src/theming/themes')['light'],
-          'primary': '#fb7185',
-          'primary-content': '#FFF',
+          primary: '#fb7185',
+          'primary-content': '#FFF'
         },
         dark: {
           ...require('daisyui/src/theming/themes')['dark'],

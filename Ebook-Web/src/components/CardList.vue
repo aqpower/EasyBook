@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-3">
     <div class="sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5">
       <PostCard v-for="(item, index) in postList" :key="index" :post="item"></PostCard>
     </div>
@@ -7,14 +7,22 @@
 </template>
 
 <script setup lang="ts">
-import { getPostsApi } from '@/api/posts';
-import type { GetPostResType } from '@/types/post';
-import { onMounted, ref } from 'vue';
-import PostCard from './PostCard.vue';
+import { getPostsApi } from '@/api/posts'
+import type { GetPostResType } from '@/types/post'
+import { onMounted, ref } from 'vue'
+import PostCard from './PostCard.vue'
+import eventBus from '@/libs/eventBus'
 const page = ref(1)
 const pageSize = ref(100)
 
 const postList = ref([])
+
+eventBus.on('postFinish', (e) => {
+  console.log(e)
+  if (e == true) {
+    getPosts()
+  }
+})
 
 const getPosts = () => {
   const data = {
@@ -33,7 +41,6 @@ const getPosts = () => {
 onMounted(() => {
   getPosts()
 })
-
 </script>
 
 <style scoped></style>
