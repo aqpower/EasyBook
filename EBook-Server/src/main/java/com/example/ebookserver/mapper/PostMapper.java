@@ -1,7 +1,8 @@
 package com.example.ebookserver.mapper;
 
+import com.example.ebookserver.pojo.Comments;
 import com.example.ebookserver.pojo.Post;
-import com.example.ebookserver.pojo.PostShow;
+import com.example.ebookserver.pojo.Posts;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -28,7 +29,7 @@ public interface PostMapper {
     /*
     * 分页查询帖子
     * */
-    List<PostShow> page(List<Integer> users,Integer start,Integer pageSize);
+    List<Posts> page(List<Integer> users, Integer start, Integer pageSize);
 
     /*
     * 查询帖子总数
@@ -39,4 +40,10 @@ public interface PostMapper {
     long count1();
 
     int toImages(int postId, List<String> urls);
+
+    Posts selectPost(Integer postId);
+
+    List<Comments> selectComments(Integer postId);
+
+    List<Posts> getPostsByUserId(Integer id);
 }
