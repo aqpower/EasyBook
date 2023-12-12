@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full">
+  <div class="w-full h-full">
     <div
       class="flex overflow-x-auto overflow-y-hidden border-b border-gray-200 dark:border-gray-700"
     >
@@ -27,8 +27,8 @@
         <span class="mx-1 text-sm sm:text-base"> 上传歌词 </span>
       </button>
     </div>
-    <div class="m-5">
-      <NewImgPost v-if="tabImgValue"></NewImgPost>
+    <div class="m-3 h-full">
+      <NewImgPost v-if="tabImgValue" ref="imagePostRef"></NewImgPost>
       <NewLyicPost v-else></NewLyicPost>
     </div>
   </div>
@@ -36,10 +36,18 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import NewImgPost from './NewImgPost.vue'
 import NewLyicPost from './NewLyicPost.vue'
 const tabImgValue = ref(true)
+
+const imagePostRef = ref<any>()
+
+const newPost = () => {
+  imagePostRef.value.newImgPost()
+}
+
+defineExpose({ newPost })
 </script>
 
 <style scoped></style>
