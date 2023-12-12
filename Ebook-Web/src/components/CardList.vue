@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3">
+  <div class="pr-6">
     <div class="sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5">
       <PostCard v-for="(item, index) in postList" :key="index" :post="item"></PostCard>
     </div>

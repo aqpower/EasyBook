@@ -31,7 +31,7 @@ const router = createRouter({
       ]
     },
     {
-      path: '/home',
+      path: '/explore',
       component: () => import('@/views/HomeView.vue')
     }
   ]
