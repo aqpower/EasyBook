@@ -12,4 +12,13 @@ public class LoginData {
     String token;
     Integer id;
     String name;
+    Short role; // 用户角色
+
+    public Short getRole() {
+        return role;
+    }
+
+    public void setRole(Short role) {
+        this.role = role;
+    }
 }

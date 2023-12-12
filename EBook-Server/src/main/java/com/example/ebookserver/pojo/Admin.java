@@ -8,9 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Admin {
-    private Integer id;
-    private String name;
-    private String password;
-    private short role;
-}
+    public Integer id;
+    public String name;
+    public String password;
+    public short role;
 
+    public short getRole() {
+        return this.role;
+    }
+}

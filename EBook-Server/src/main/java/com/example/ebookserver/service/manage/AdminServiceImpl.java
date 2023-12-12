@@ -41,7 +41,13 @@ public class AdminServiceImpl implements AdminService {
             return loginData;
         }
         loginData.setName(result.getName());
-        loginData.setCode(3);
+        loginData.setRole(result.getRole());
+        if (result.getRole() == 100) {
+            // 如果角色为100，则设置code为100
+            loginData.setCode(100);
+        } else {
+            loginData.setCode(3);
+        }
         return loginData;
     }
 
@@ -51,9 +57,36 @@ public class AdminServiceImpl implements AdminService {
         admin.setRole(role);
         //TODO:自定义密码
         String password = this.generatePassword();
-        admin.setPassword(password);
+        admin.setPassword(MD5Util.encode(password));
+        admin.setName(admin.getName());
         adminMapper.insertAdmin(admin);
+        System.out.println("admin" + admin);
+        admin.setPassword(password);
         return admin;
+    }
+    @Override
+    public boolean updateRole(int adminId, int role) {
+        try {
+            // 编写 SQL 语句
+            String sql = "UPDATE admin SET role=? WHERE id=?";
+
+            // 创建 PreparedStatement 对象，并设置参数
+            adminMapper.updateRole(role, adminId);
+
+            // 执行更新操作
+            int rows = adminMapper.updateRole(role, adminId);
+
+            // 根据返回结果判断是否更新成功
+            if (rows > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            // 异常处理
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private String generatePassword() {

@@ -13,4 +13,5 @@ public interface AdminService  {
     //Admin adminLogin(Admin admin);
     LoginData adminLogin(Admin admin);
     Admin createAdmin(Admin admin);
+    boolean updateRole(int adminId, int role);
 }
