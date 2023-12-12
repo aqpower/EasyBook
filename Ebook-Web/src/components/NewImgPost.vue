@@ -71,6 +71,7 @@ import { colorList } from '@/utils/var'
 import { uploadImgApi, newPostApi } from '@/api/posts'
 import { type PostApiType } from '@/types/post'
 import { useUserStore } from '@/stores/userStores'
+import eventBus from '@/libs/eventBus'
 const imagePreviews = ref([])
 let imageFiles = ref([])
 const initUpload = ref(true)
@@ -114,23 +115,32 @@ const newImgPost = () => {
   for (let i = 0; i < imageFiles.value.length; i++) {
     formData.append('image', imageFiles.value[i])
   }
-  uploadImgApi(formData).then((res) => {
-    console.log(res)
-    const userId: number = userStore.user?.id // 假设默认值为 0
-    const data: PostApiType = {
-      type: 0,
-      title: titleInput.value,
-      contentText: contentInput.value,
-      color: activateColor.value,
-      lyrics: null,
-      ip: '',
-      userId: parseInt(userStore.user?.id),
-      urls: res.data
-    }
-    newPostApi(data).then((res) => {
+  uploadImgApi(formData)
+    .then((res) => {
       console.log(res)
+      const userId: number = userStore.user?.id // 假设默认值为 0
+      const data: PostApiType = {
+        type: 0,
+        title: titleInput.value,
+        contentText: contentInput.value,
+        color: activateColor.value,
+        lyrics: null,
+        ip: '',
+        userId: parseInt(userStore.user?.id),
+        urls: res.data
+      }
+      newPostApi(data)
+        .then((res) => {
+          console.log(res)
+          eventBus.emit('postFinish', true)
+        })
+        .catch((e) => {
+          eventBus.emit('postFinish', false)
+        })
     })
-  })
+    .catch((e) => {
+      eventBus.emit('postFinish', false)
+    })
 }
 
 defineExpose({ newImgPost })
