@@ -39,7 +39,8 @@
           :class="{ '': menuVar == 4, ' bg-transparent shadow-transparent border-0': menuVar != 4 }"
           @click="menuHandler"
         >
-          <Icon class="ml-1 w-5 h-5" icon="line-md:home-md" />
+          <Icon class="ml-1 w-5 h-5" :icon="avatarList[userStore.user?.avatar]" />
+
           <span class="text-base font-medium font-sans">我</span>
         </button>
       </div>
@@ -98,6 +99,8 @@ import { Icon } from '@iconify/vue/dist/iconify.js'
 import NewPost from '@/components/NewPost.vue'
 import eventBus from '@/libs/eventBus'
 import InfoDialogVue from '@/components/InfoDialog.vue'
+import { avatarList } from '@/utils/icon'
+import { useUserStore } from '@/stores/userStores'
 const newModelShow = ref(false)
 const newPostRef = ref<any>()
 const loadingShow = ref(false)
@@ -107,6 +110,8 @@ const newPostHandler = () => {
   newPostRef.value.newPost()
   loadingShow.value = true
 }
+
+const userStore = useUserStore()
 
 eventBus.on('postFinish', (e) => {
   console.log(e)

@@ -1,4 +1,4 @@
-export const iconList = [
+export const avatarList = [
   'noto-v1:angry-face-with-horns',
   'noto-v1:face-blowing-a-kiss',
   'noto-v1:confounded-face',

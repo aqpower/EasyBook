@@ -14,7 +14,6 @@ import PostCard from './PostCard.vue'
 import eventBus from '@/libs/eventBus'
 const page = ref(1)
 const pageSize = ref(100)
-
 const postList = ref([])
 
 eventBus.on('postFinish', (e) => {
@@ -34,7 +33,7 @@ const getPosts = () => {
     const data: GetPostResType = res.data
     if (res.code == 200) {
       console.log(data)
-      postList.value = data.postShows
+      postList.value = data.posts
     }
   })
 }

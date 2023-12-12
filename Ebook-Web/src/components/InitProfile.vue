@@ -8,7 +8,7 @@
       class="hover:opacity-75 hover:scale-90 ease-in-out duration-300 active:scale-75"
       onclick="my_modal_1.showModal()"
     >
-      <Icon class="w-24 h-24 m-3" :icon="iconList[avatarIndex]" />
+      <Icon class="w-24 h-24 m-3" :icon="avatarList[avatarIndex]" />
     </button>
   </div>
 
@@ -17,7 +17,7 @@
       <div class="modal-action">
         <form method="dialog" class="flex flex-col justify-center">
           <div class="flex flex-wrap">
-            <div v-for="(link, index) in iconList" :key="index">
+            <div v-for="(link, index) in avatarList" :key="index">
               <div class="indicator relative">
                 <Icon
                   class="w-20 h-20 m-3 hover:opacity-75 ease-in-out duration-300 active:scale-75"
@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue/dist/iconify.js'
-import { iconList } from '@/utils/icon'
+import { avatarList } from '@/utils/icon'
 import { ref } from 'vue'
 
 const avatarIndex = ref(1)
