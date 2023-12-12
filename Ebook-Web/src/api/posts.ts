@@ -1,3 +1,4 @@
+import type { type PostApiType } from '@/types/post'
 import httpInstance from '@/utils/http'
 
 export const getPostsApi = (data: { id: any; page: any; pageSize: any }): Promise<any> =>
@@ -8,3 +9,12 @@ export const getPostsApi = (data: { id: any; page: any; pageSize: any }): Promis
       pageSize: data.pageSize
     }
   })
+
+export const uploadImgApi = (data) =>
+  httpInstance.post('/api/v1/upload', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+
+export const newPostApi = (data: PostApiType) => httpInstance.post('/api/v1/post', data)

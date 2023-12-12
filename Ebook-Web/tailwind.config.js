@@ -18,7 +18,8 @@ module.exports = {
       {
         light: {
           ...require('daisyui/src/theming/themes')['light'],
-          primary: '#fb7185'
+          'primary': '#fb7185',
+          'primary-content': '#FFF',
         },
         dark: {
           ...require('daisyui/src/theming/themes')['dark'],

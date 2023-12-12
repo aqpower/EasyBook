@@ -8,7 +8,7 @@ import InfoDialogVue from '@/components/InfoDialog.vue'
 const baseUrl: string = import.meta.env.VITE_BASE_URL // 添加类型注解
 const httpInstance = axios.create({
   baseURL: baseUrl,
-  timeout: 5000
+  timeout: 10000
 })
 
 // 拦截器
