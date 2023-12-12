@@ -66,6 +66,8 @@ public class PostController {
         PageBean pageBean = postService.allPOst(id,page,pageSize);
         return Result.success(pageBean);
     }
+
+
    // List<MultipartFile> multipartFiles;
 //    @GetMapping("/allPost")
 //    public Result allPost(Integer id){
