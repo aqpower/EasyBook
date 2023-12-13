@@ -60,6 +60,10 @@ public class FeedBackPostController {
     @PostMapping("/violation")
     public Result violation(@RequestBody Violation violation){
         log.info("用户举报帖子");
+        int result = feedBackPostService.toViolation(violation);
+        if (result == 1){
+            return Result.success();
+        }
         return Result.error("举报失败");
     }
 }

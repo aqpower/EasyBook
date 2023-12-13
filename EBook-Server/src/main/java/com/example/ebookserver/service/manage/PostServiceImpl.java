@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostService {
         }else {
             int result = postMapper.post(post);
             if (post.getUrls() != null){
-               postMapper.toImages(post.getId(),post.getUrls());
+                postMapper.toImages(post.getId(),post.getUrls());
             }
             return result;
         }
@@ -78,5 +78,10 @@ public class PostServiceImpl implements PostService {
             post.setUrl(postMapper.getUrl(post.getId()));
         }
         return posts;
+    }
+
+    @Override
+    public void deletePost(Integer id) {
+        postMapper.deleteById(id);
     }
 }
