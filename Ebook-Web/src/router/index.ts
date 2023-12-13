@@ -32,7 +32,23 @@ const router = createRouter({
     },
     {
       path: '/home',
-      component: () => import('@/views/HomeView.vue')
+      component: () => import('@/views/HomeView.vue'),
+      children: [
+        {
+          path: 'explore',
+          component: () => import('@/components/CardList.vue'),
+          children: [
+            {
+              path: ':postId',
+              component: () => import('@/components/CardDetail.vue')
+            }
+          ]
+        },
+        {
+          path: 'profile/:userId',
+          component: () => import('@/components/UserFile.vue')
+        }
+      ]
     }
   ]
 })

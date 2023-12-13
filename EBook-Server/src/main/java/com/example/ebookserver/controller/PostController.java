@@ -2,6 +2,7 @@ package com.example.ebookserver.controller;
 
 import com.example.ebookserver.pojo.PageBean;
 import com.example.ebookserver.pojo.Post;
+import com.example.ebookserver.pojo.PostDetails;
 import com.example.ebookserver.pojo.Result;
 import com.example.ebookserver.service.PostService;
 import com.example.ebookserver.utils.AliOSSUtils;
@@ -31,6 +32,7 @@ public class PostController {
     * */
     @PostMapping("/upload")
     public Result upload(MultipartFile[] image) throws IOException {
+        urls.clear();
         log.info("文件上传");
         for (MultipartFile multipartFile : image) {
             String url = aliOSSUtils.upload(multipartFile);
@@ -66,12 +68,11 @@ public class PostController {
         PageBean pageBean = postService.allPOst(id,page,pageSize);
         return Result.success(pageBean);
     }
-   // List<MultipartFile> multipartFiles;
-//    @GetMapping("/allPost")
-//    public Result allPost(Integer id){
-//        log.info("展示主页全部帖子");
-//        List<PostShow> posts = postService.allPOst(id, pageSize, page);
-//        return Result.success(posts);
-//    }
 
+    @GetMapping("/posts/{postId}")
+    public Result postDetails(@PathVariable Integer postId){
+        log.info("查看某个帖子的详细信息");
+        PostDetails postDetails = postService.selectDetails(postId);
+        return Result.success(postDetails);
+    }
 }

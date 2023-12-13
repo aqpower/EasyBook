@@ -1,9 +1,7 @@
 package com.example.ebookserver.service.manage;
 
 import com.example.ebookserver.mapper.PostMapper;
-import com.example.ebookserver.pojo.PageBean;
-import com.example.ebookserver.pojo.Post;
-import com.example.ebookserver.pojo.PostShow;
+import com.example.ebookserver.pojo.*;
 import com.example.ebookserver.service.PostService;
 import com.example.ebookserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,13 +49,33 @@ public class PostServiceImpl implements PostService {
         Long count = postMapper.count(users);
         Integer start = (page -1) * pageSize;
         //分页查询帖子得到的数据
-        List<PostShow> postShows = postMapper.page(users,start,pageSize);
-        for (PostShow postShow : postShows) {
+        List<Posts> posts = postMapper.page(users,start,pageSize);
+        for (Posts post : posts) {
             //通过帖子id查url集合
-            postShow.setUrl(postMapper.getUrl(postShow.getId()));
+            post.setUrl(postMapper.getUrl(post.getId()));
         }
         //返回的类
-        PageBean pageBean = new PageBean(count,postShows);
+        PageBean pageBean = new PageBean(count, posts);
         return pageBean;
+    }
+
+    @Override
+    public PostDetails selectDetails(Integer postId) {
+        Posts post = postMapper.selectPost(postId);
+        post.setUrl(postMapper.getUrl(postId));
+        List<Comments> commentsList= postMapper.selectComments(postId);
+        PostDetails postDetails= new PostDetails();
+        postDetails.setPosts(post);
+        postDetails.setCommentsList(commentsList);
+        return postDetails;
+    }
+
+    @Override
+    public List<Posts> getPosts(Integer id) {
+        List<Posts> posts = postMapper.getPostsByUserId(id);
+        for (Posts post : posts) {
+            post.setUrl(postMapper.getUrl(post.getId()));
+        }
+        return posts;
     }
 }

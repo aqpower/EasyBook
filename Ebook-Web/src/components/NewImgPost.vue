@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div v-show="!initUpload" class="flex items-center">
-      <p class="text-lg font-note font-medium">图片编辑</p>
-    </div>
     <label
       v-show="initUpload"
       for="imgInput"
@@ -20,9 +17,46 @@
       @change="handleFileChange"
       multiple
     />
-    <div class="flex flex-row flex-nowrap mt-10">
-      <div v-for="(imageData, index) in imagePreviews" :key="index">
-        <img :src="imageData" alt="Uploaded Image" class="w-48 h-32 object-cover mr-2" />
+    <div class="flex mt-1" v-show="!initUpload">
+      <div class="carousel rounded-box">
+        <div v-for="(imageData, index) in imagePreviews" :key="index" class="carousel-item">
+          <img
+            :src="imageData"
+            alt="Uploaded Image"
+            class="w-48 h-32 object-cover mr-2 rounded-md AqImage"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="space-y-3 mt-5 flex flex-col justify-center" v-show="!initUpload">
+      <input
+        v-model="titleInput"
+        type="text"
+        placeholder="填写标题，会有更多赞哦"
+        class="input input-bordered w-full h-10"
+      />
+      <textarea
+        v-model="contentInput"
+        class="textarea textarea-bordered"
+        placeholder="填写更全面的描述信息"
+      >
+      </textarea>
+      <label>请选择颜色分区</label>
+      <div class="flex">
+        <div
+          v-for="(item, index) in colorList"
+          :key="index"
+          class="btn flex mr-3 p-1 items-center gap-1"
+          :style="hovered === index || index == activateColor ? { backgroundColor: item.var } : {}"
+          @mouseover="hovered = index"
+          @click="activateColor = index"
+          @mouseleave="hovered = -1"
+        >
+          <div :style="{ backgroundColor: item.var }" class="h-2 w-2 p-2 rounded-lg"></div>
+          <div class="badge">
+            <p>{{ item.name }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -30,23 +64,37 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-const imagePreviews = ref([])
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import useCommandComponent from '@/hooks/useCommandComponent'
 import InfoDialog from './InfoDialog.vue'
+import { colorList } from '@/utils/var'
+import { uploadImgApi, newPostApi } from '@/api/posts'
+import { type PostApiType } from '@/types/post'
+import { useUserStore } from '@/stores/userStores'
+import eventBus from '@/libs/eventBus'
+const imagePreviews = ref([])
+let imageFiles = ref([])
 const initUpload = ref(true)
 const dialog = useCommandComponent(InfoDialog)
-function handleFileChange(event: any) {
+const hovered = ref(-1)
+const activateColor = ref(-1)
+const titleInput = ref('')
+const contentInput = ref('')
+const handleFileChange = (event: any) => {
   if (initUpload.value == true) {
     initUpload.value = false
   }
   const files = event.target.files
+  console.log(files)
   if (files) {
+    imageFiles.value = files
     getImagePreviews(files)
   }
 }
 
-function getImagePreviews(files: any) {
+const userStore = useUserStore()
+
+const getImagePreviews = (files: any) => {
   for (let i = 0; i < files.length; i++) {
     const reader = new FileReader()
     reader.onload = () => {
@@ -58,7 +106,44 @@ function getImagePreviews(files: any) {
     }
     reader.readAsDataURL(files[i])
   }
+  console.log(imagePreviews.value)
 }
+
+const newImgPost = () => {
+  const formData = new FormData()
+  console.log('files: ', imageFiles.value)
+  for (let i = 0; i < imageFiles.value.length; i++) {
+    formData.append('image', imageFiles.value[i])
+  }
+  uploadImgApi(formData)
+    .then((res) => {
+      console.log(res)
+      const userId: number = userStore.user?.id // 假设默认值为 0
+      const data: PostApiType = {
+        type: 0,
+        title: titleInput.value,
+        contentText: contentInput.value,
+        color: activateColor.value,
+        lyrics: null,
+        ip: '',
+        userId: parseInt(userStore.user?.id),
+        urls: res.data
+      }
+      newPostApi(data)
+        .then((res) => {
+          console.log(res)
+          eventBus.emit('postFinish', true)
+        })
+        .catch((e) => {
+          eventBus.emit('postFinish', false)
+        })
+    })
+    .catch((e) => {
+      eventBus.emit('postFinish', false)
+    })
+}
+
+defineExpose({ newImgPost })
 </script>
 
 <style scoped></style>
