@@ -16,6 +16,7 @@ import { onMounted, ref } from 'vue'
 import PostCard from './PostCard.vue'
 import eventBus from '@/libs/eventBus'
 import { useUserStore } from '@/stores/userStores'
+import httpInstance from '@/utils/http'
 const page = ref(1)
 const pageSize = ref(100)
 const postList = ref([])

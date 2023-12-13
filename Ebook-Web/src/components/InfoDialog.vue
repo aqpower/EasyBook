@@ -48,7 +48,7 @@ const dialogVisible = computed<boolean>({
       </TransitionChild>
 
       <div class="fixed inset-0 overflow-y-auto">
-        <div class="flex min-h-full items-center justify-center p-4 text-center">
+        <div class="flex min-h-full min-w-full items-center justify-center p-4 text-center">
           <TransitionChild
             as="template"
             enter="duration-300 ease-out"
@@ -59,19 +59,23 @@ const dialogVisible = computed<boolean>({
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+              class="transform w-full
+               overflow-scroll rounded-2xl mx-20
+                bg-white p-6 text-left align-middle 
+                shadow-xl transition-all"
+              style="height: 75vh;"
             >
               <DialogTitle class="text-xl font-medium leading-9 text-gray-900">
                 {{ props.title }}
               </DialogTitle>
-              <div class="mt-2">
+              <div class="w-full h-full">
                 <slot name="content" />
                 <p class="text-base text-gray-500">
                   {{ props.content }}
                 </p>
               </div>
 
-              <div class="mt-4 flex justify-end">
+              <div v-show="props.btnContent" class="mt-4 flex justify-end">
                 <button
                   type="button"
                   class="btn btn-active btn-primary inline-flex rounded-md border border-transparent bg-rose-100 px-4 py-2 text-sm font-medium hover:bg-rose-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"

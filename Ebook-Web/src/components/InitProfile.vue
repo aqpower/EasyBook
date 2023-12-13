@@ -1,7 +1,4 @@
 <template>
-
-
-
   <div class="flex justify-center items-center">
     <h2 class="text-lg font-bold">头像:</h2>
     <button
