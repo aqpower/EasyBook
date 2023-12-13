@@ -71,4 +71,14 @@ public class UserController {
         }
         return Result.error("修改失败");
     }
+
+    /*
+    * 用户主页展示信息
+    * */
+    @GetMapping("/users/info/{id}")
+    public Result userDetail(@PathVariable Integer id){
+        log.info("用户主页展示");
+
+        return Result.success();
+    }
 }
