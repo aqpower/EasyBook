@@ -155,7 +155,7 @@ const userLogin = () => {
           }
           userStore.setUser(user)
           dialogCloseHandler = () => {
-            router.push('/explore')
+            router.push('/home/explore')
           }
         } else {
           dialogTitle.value = '😥'

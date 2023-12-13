@@ -6,7 +6,7 @@ export interface User {
   name: string
   email: string
   token: string
-  avatar: string
+  avatar: number
 }
 
 interface UserStore {

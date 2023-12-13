@@ -101,11 +101,12 @@ import eventBus from '@/libs/eventBus'
 import InfoDialogVue from '@/components/InfoDialog.vue'
 import { avatarList } from '@/utils/icon'
 import { useUserStore } from '@/stores/userStores'
+import { useRouter } from 'vue-router'
 const newModelShow = ref(false)
 const newPostRef = ref<any>()
 const loadingShow = ref(false)
 const menuVar = ref(1)
-
+const router = useRouter()
 const newPostHandler = () => {
   newPostRef.value.newPost()
   loadingShow.value = true
@@ -122,6 +123,7 @@ const menuHandler = (e: any) => {
   console.log(e)
   switch (e.srcElement.innerText) {
     case '发现':
+      router.push('/home/explore')
       menuVar.value = 1
       break
     case '发布':
@@ -132,9 +134,9 @@ const menuHandler = (e: any) => {
       break
     case '我':
       menuVar.value = 4
+      router.push(`/home/profile/${userStore.user?.id}`)
       break
     case '更多':
-      menuVar.value = 5
   }
 }
 </script>

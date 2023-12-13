@@ -12,10 +12,11 @@ import type { GetPostResType } from '@/types/post'
 import { onMounted, ref } from 'vue'
 import PostCard from './PostCard.vue'
 import eventBus from '@/libs/eventBus'
+import { useUserStore } from '@/stores/userStores'
 const page = ref(1)
 const pageSize = ref(100)
 const postList = ref([])
-
+const userStore = useUserStore()
 eventBus.on('postFinish', (e) => {
   console.log(e)
   if (e == true) {
@@ -25,7 +26,7 @@ eventBus.on('postFinish', (e) => {
 
 const getPosts = () => {
   const data = {
-    id: 10000002,
+    id: userStore.user.id,
     page: page.value,
     pageSize: pageSize.value
   }
