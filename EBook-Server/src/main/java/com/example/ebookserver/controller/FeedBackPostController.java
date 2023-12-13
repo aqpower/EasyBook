@@ -49,7 +49,10 @@ public class FeedBackPostController {
     public Result comment(@RequestBody Comment comment){
         log.info("用户发表评论");
         int result = feedBackPostService.toComment(comment);
-        return Result.success();
+        if(result == 1){
+            return Result.success();
+        }
+        return Result.error("评论失败");
     }
     /*
     * 用户举报帖子

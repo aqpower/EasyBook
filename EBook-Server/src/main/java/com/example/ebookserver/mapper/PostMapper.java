@@ -46,4 +46,7 @@ public interface PostMapper {
     List<Comments> selectComments(Integer postId);
 
     List<Posts> getPostsByUserId(Integer id);
+
+    @Select("select count(*) from comment where post_id = #{postId}")
+    Integer countComments(Integer postId);
 }

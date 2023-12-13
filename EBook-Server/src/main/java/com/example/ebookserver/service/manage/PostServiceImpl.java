@@ -65,6 +65,7 @@ public class PostServiceImpl implements PostService {
         post.setUrl(postMapper.getUrl(postId));
         List<Comments> commentsList= postMapper.selectComments(postId);
         PostDetails postDetails= new PostDetails();
+        postDetails.setCommentsNum(postMapper.countComments(postId));
         postDetails.setPosts(post);
         postDetails.setCommentsList(commentsList);
         return postDetails;
