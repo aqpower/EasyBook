@@ -1,8 +1,10 @@
 package com.example.ebookserver.service.manage;
 
+import com.example.ebookserver.mapper.PostMapper;
 import com.example.ebookserver.mapper.UserMapper;
 import com.example.ebookserver.pojo.BlackList;
 import com.example.ebookserver.pojo.LoginData;
+import com.example.ebookserver.pojo.Notify;
 import com.example.ebookserver.pojo.User;
 import com.example.ebookserver.service.UserService;
 import com.example.ebookserver.utils.JwtUtils;
@@ -18,13 +20,15 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private PostMapper postMapper;
     @Override
     public LoginData userLogin(User user) {
         /*
-        * 查询账号是否存在
-        * 查询账号对应密码是否正确
-        * 生成返回对象
-        * */
+         * 查询账号是否存在
+         * 查询账号对应密码是否正确
+         * 生成返回对象
+         * */
         LoginData loginData = new LoginData();
 
         Map<String, Object> claims = new HashMap<>();
@@ -79,8 +83,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /*
-    * 注册用户
-    * */
+     * 注册用户
+     * */
     @Override
     public int register(User user) {
         String password = user.getPassword();
@@ -89,31 +93,29 @@ public class UserServiceImpl implements UserService {
     }
 
     /*
-    * 验证邮箱是否有效
-    * */
+     * 验证邮箱是否有效
+     * */
     @Override
     public boolean verifyEmail(String email) {
-        if (userMapper.selectByEmail(email) != null) {
-            return false;
-        }
+        if (userMapper.selectByEmail(email) != null)  return false;
         return true;
     }
 
     /*
-    * 注销用户
-    * */
+     * 注销用户
+     * */
     @Override
     public boolean delete(Integer id, String password) {
         if (userMapper.getByIdAndPassword(id,MD5Util.encode(password)) != null){
             if (userMapper.deleteById(id) == 1)
-            return true;
+                return true;
         }
         return false;
     }
 
     /*
-    * 拉黑用户
-    * */
+     * 拉黑用户
+     * */
     @Override
     public int toBlackList(BlackList blackList) {
         int userId = blackList.getUserId();
@@ -121,8 +123,8 @@ public class UserServiceImpl implements UserService {
         List<Integer> integers = selectBlackUsers(userId); //查找用户的拉黑列表
         for (Integer integer : integers) {
             /*
-            * 如果已经拉黑该用户则无法再次拉黑
-            * */
+             * 如果已经拉黑该用户则无法再次拉黑
+             * */
             if (integer == blackUserId)
                 return 0;
         }
@@ -130,8 +132,8 @@ public class UserServiceImpl implements UserService {
         String black_user_name = userMapper.getById(blackUserId);
         if ((userId != blackUserId) && user_name != null && black_user_name != null) {
             /*
-            * 确保拉黑用户与被拉黑用户都存在且不为同一人
-            * */
+             * 确保拉黑用户与被拉黑用户都存在且不为同一人
+             * */
             return userMapper.insertToBlackList(userId, blackUserId);
         }
         return 0;
@@ -139,13 +141,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int update(User user) {
-        int result = userMapper.updateById(user);
-        return result;
+        return userMapper.updateById(user);
     }
 
     /*
-    * 查找用户的拉黑列表
-    * */
+     * 查找用户的拉黑列表
+     * */
     @Override
     public List<Integer> selectBlackUsers(Integer id) {
         return userMapper.selectBlackList(id);
@@ -157,5 +158,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Integer> selectBlackedUsers(Integer id) {
         return userMapper.selectBlackedList(id);
+    }
+
+    @Override
+    public User selectUserDetails(Integer id) {
+        return userMapper.selectUserDetailsByid(id);
+    }
+
+    @Override
+    public List<Notify> selectNotifies(Integer id) {
+        List<Integer> list = postMapper.selectIdByUserId(id);
+        return userMapper.selectNotifies(list);
     }
 }
