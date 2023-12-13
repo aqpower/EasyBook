@@ -14,7 +14,7 @@ export type PostType = {
 
 export type GetPostResType = {
   count: number
-  postShows: PostType[]
+  posts: PostType[]
 }
 
 export type PostApiType = {

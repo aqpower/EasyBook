@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3">
+  <div class="pr-6">
     <div class="sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5">
       <PostCard v-for="(item, index) in postList" :key="index" :post="item"></PostCard>
     </div>
@@ -14,7 +14,6 @@ import PostCard from './PostCard.vue'
 import eventBus from '@/libs/eventBus'
 const page = ref(1)
 const pageSize = ref(100)
-
 const postList = ref([])
 
 eventBus.on('postFinish', (e) => {
@@ -34,7 +33,7 @@ const getPosts = () => {
     const data: GetPostResType = res.data
     if (res.code == 200) {
       console.log(data)
-      postList.value = data.postShows
+      postList.value = data.posts
     }
   })
 }

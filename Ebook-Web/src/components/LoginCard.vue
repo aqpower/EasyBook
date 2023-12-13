@@ -150,11 +150,12 @@ const userLogin = () => {
             id: data.id,
             name: data.name,
             email: data.email,
-            token: data.token
+            token: data.token,
+            avatar: data.avatar
           }
           userStore.setUser(user)
           dialogCloseHandler = () => {
-            router.push('/home')
+            router.push('/explore')
           }
         } else {
           dialogTitle.value = '😥'
