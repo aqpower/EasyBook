@@ -25,3 +25,5 @@ export const uploadImgApi = (data) =>
   })
 
 export const newPostApi = (data: PostApiType) => httpInstance.post('/api/v1/post', data)
+
+// export const newPostLikeApi = 
