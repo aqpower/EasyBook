@@ -53,7 +53,7 @@
         user.id = comment.user_id
     </select>
     <select id="getPostsByUserId" resultType="com.example.ebookserver.pojo.Posts">
-        select post.id,avatar,name,title,content_text,color,lyrics,like_num,collection_num,ip
+        select post.id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
         from user,post where user.id=post.user_id and user.id = #{id}
     </select>
 </mapper>

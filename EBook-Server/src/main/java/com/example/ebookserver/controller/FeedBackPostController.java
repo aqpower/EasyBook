@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @Slf4j
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/posts")
 public class FeedBackPostController {
 
     @Autowired
