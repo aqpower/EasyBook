@@ -11,5 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class PostDetails{
     private Posts posts;
+    private Integer commentsNum;
     private List<Comments> commentsList;
 }
