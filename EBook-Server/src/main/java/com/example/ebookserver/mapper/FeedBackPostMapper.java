@@ -1,6 +1,7 @@
 package com.example.ebookserver.mapper;
 
 import com.example.ebookserver.pojo.Collection;
+import com.example.ebookserver.pojo.Comment;
 import com.example.ebookserver.pojo.EasyLike;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,4 +32,8 @@ public interface FeedBackPostMapper {
      * */
     @Insert("insert into collection (user_id, post_id, collection_time) values (#{userId},#{postId},#{collectionTime})")
     int toCollection(Collection collection);
+
+
+    @Insert("insert into comment (user_id, post_id, content, comment_time) values (#{userId},#{postId},#{content},#{commentTime})")
+    int toComment(Comment comment);
 }

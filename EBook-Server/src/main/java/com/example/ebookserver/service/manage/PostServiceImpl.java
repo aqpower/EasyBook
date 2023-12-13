@@ -72,6 +72,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Posts> getPosts(Integer id) {
-        return postMapper.getPostsByUserId(id);
+        List<Posts> posts = postMapper.getPostsByUserId(id);
+        for (Posts post : posts) {
+            post.setUrl(postMapper.getUrl(post.getId()));
+        }
+        return posts;
     }
 }

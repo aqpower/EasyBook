@@ -1,9 +1,6 @@
 package com.example.ebookserver.controller;
 
-import com.example.ebookserver.pojo.Collection;
-import com.example.ebookserver.pojo.EasyLike;
-import com.example.ebookserver.pojo.Result;
-import com.example.ebookserver.pojo.Violation;
+import com.example.ebookserver.pojo.*;
 import com.example.ebookserver.service.FeedBackPostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +41,15 @@ public class FeedBackPostController {
             return Result.error("已经收藏过了");
         }
         return Result.error("收藏失败");
+    }
+    /*
+    * 用户评论帖子
+    * */
+    @PostMapping("/comment")
+    public Result comment(@RequestBody Comment comment){
+        log.info("用户发表评论");
+        int result = feedBackPostService.toComment(comment);
+        return Result.success();
     }
     /*
     * 用户举报帖子
