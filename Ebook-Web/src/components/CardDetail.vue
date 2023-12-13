@@ -59,13 +59,15 @@ const handleClose = () => {
         <div class="flex flex-col flex-1">
           <div class="ml-4 mr-1">
             <div class="flex justify-between items-center gap-1">
-              <div>
-                <Icon class="w-4 h-4 m-1" :icon="avatarList[post.avatar]"></Icon>
+              <div class="flex items-center gap-2">
+                <Icon class="w-8 h-8 m-1" :icon="avatarList[post.avatar]"></Icon>
                 <p class="font-medium">{{ post.name }}</p>
               </div>
               <button class="btn" @click="handleClose">❌</button>
             </div>
-            <p>{{ post.contentText }}</p>
+            <div class="mt-3 mb-96">
+              <p class="whitespace-pre-line">{{ post.contentText }}</p>
+            </div>
           </div>
         </div>
       </div>
