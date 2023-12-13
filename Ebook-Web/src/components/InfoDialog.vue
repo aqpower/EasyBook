@@ -8,6 +8,10 @@ const props = defineProps({
   title: String,
   content: String,
   btnContent: String,
+  bigDialogEnable: {
+    type: Boolean,
+    default: false
+  },
   close: {
     type: Function,
     default: (fun: () => any) => fun()
@@ -59,12 +63,13 @@ const dialogVisible = computed<boolean>({
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="transform w-full
-               overflow-scroll rounded-2xl mx-20
-                bg-white p-6 text-left align-middle 
-                shadow-xl transition-all"
-              style="height: 75vh;"
+              class="transform overflow-scroll rounded-2xl  bg-white p-6 text-left align-middle shadow-xl transition-all"
+              :class="{ 'w-full mx-20': bigDialogEnable, 'w-96': !bigDialogEnable}"
+              :style="{
+                height: bigDialogEnable ? '75vh' : ''
+              }"
             >
+              <!-- style qudiao -->
               <DialogTitle class="text-xl font-medium leading-9 text-gray-900">
                 {{ props.title }}
               </DialogTitle>

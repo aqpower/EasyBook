@@ -40,7 +40,7 @@ const handleClose = () => {
 </script>
 
 <template>
-  <InfoDialogVue :visible="showDig">
+  <InfoDialogVue :visible="showDig" :big-dialog-enable="true">
     <template #content>
       <div v-if="post != null" class="flex w-full h-full">
         <div class="w-full h-full flex-1 relative">
