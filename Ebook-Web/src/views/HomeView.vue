@@ -9,7 +9,7 @@ import CardList from '@/components/CardList.vue'
     <LeftBar></LeftBar>
     <div class="ml-64">
       <EasyHead></EasyHead>
-      <CardList></CardList>
+      <RouterView class="mt-20"></RouterView>
     </div>
   </div>
 </template>
