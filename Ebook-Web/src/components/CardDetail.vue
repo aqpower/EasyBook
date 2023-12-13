@@ -1,4 +1,5 @@
 <template>
+  aaaaa
   <div>{{ post }}</div>
 </template>
 
