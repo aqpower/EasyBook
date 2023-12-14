@@ -62,12 +62,15 @@ import { avatarList } from '@/utils/icon'
 import { ref } from 'vue'
 import useCommandComponent from '@/hooks/useCommandComponent'
 import InfoDialog from './InfoDialog.vue'
+import { useRoute } from 'vue-router'
 import router from '@/router'
+import type { UserRegisterType } from '@/types/user'
+import { userRegisterApi } from '@/api/user'
 const nameInput = ref('')
 const passwordInput = ref('')
 const avatarIndex = ref(1)
 const dialog = useCommandComponent(InfoDialog)
-
+const route = useRoute()
 function validateInputs() {
   const passwordRegex = /^(?=.*[A-Za-z\d])[A-Za-z\d]{6,}$/
   const isValidPassword = passwordRegex.test(passwordInput.value)
@@ -87,8 +90,18 @@ const handleIconClick = (link: String, index: number) => {
 }
 
 const navToLogin = () => {
-  dialog({ title: '🥳', content: '用户注册成功,欢迎来到EasyBook~', btnContent: '🎉' })
-  router.replace('/account/login')
+  let user: UserRegisterType = {
+    email: route.params.email,
+    name: nameInput.value,
+    password: passwordInput.value,
+    avatar: avatarIndex.value
+  }
+  userRegisterApi(user).then((res) => {
+    if (res.code == 200) {
+      dialog({ title: '🥳', content: '用户注册成功,欢迎来到EasyBook~', btnContent: '🎉' })
+      router.replace('/account/login')
+    }
+  })
 }
 </script>
 

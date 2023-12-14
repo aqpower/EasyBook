@@ -1,5 +1,6 @@
 import type { ResType } from '@/types'
 import httpInstance from '../utils/http'
+import type { UserRegisterType } from '@/types/user'
 
 /**
  * 向服务器发送一个GET请求，根据user_id获取用户信息
@@ -31,3 +32,6 @@ export const newUserApi = (data: any) => httpInstance.post('/api/v1/users', data
 
 export const emailVerifyApi = (code: string): Promise<ResType<any>> =>
   httpInstance.post(`/api/v1/login/email-verification/?verfityCode=${code}`)
+
+export const userRegisterApi = (data: UserRegisterType): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/users', data)
