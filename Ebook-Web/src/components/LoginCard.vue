@@ -140,7 +140,7 @@ const userLogin = () => {
       .then((res) => {
         console.log(res)
         const data = res.data
-        if (res.code == 200) {
+        if (res.msg == 'success') {
           dialogTitle.value = '😊'
           dialogContent.value = '登录成功'
           dialogOpen.value = true
