@@ -159,7 +159,7 @@ public class UserServiceImpl implements UserService {
 
         //查询该用户所有帖子的id
         List<Integer> ids = postMapper.selectIdByUserId(id);
-        if (ids != null){
+        if (ids.size() != 0){
             //与该用户关联的所有通知
             Long count = userMapper.countNotify(ids);
             Integer start = (page-1) * pageSize;
