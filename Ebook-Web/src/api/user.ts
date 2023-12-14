@@ -1,3 +1,4 @@
+import type { ResType } from '@/types'
 import httpInstance from '../utils/http'
 
 /**
@@ -19,8 +20,7 @@ export const UserLoginApi = (data: {
   password: string
 }): Promise<any> => httpInstance.post('/api/v1/login/users', data)
 
-
-export const emailVerifyApi = (email: string) =>
+export const sendEmailApi = (email: string) =>
   httpInstance.get('/api/v1/login/email-verification/', {
     params: {
       email: email
@@ -28,3 +28,6 @@ export const emailVerifyApi = (email: string) =>
   })
 
 export const newUserApi = (data: any) => httpInstance.post('/api/v1/users', data)
+
+export const emailVerifyApi = (code: string): Promise<ResType<any>> =>
+  httpInstance.post(`/api/v1/login/email-verification/?verfityCode=${code}`)

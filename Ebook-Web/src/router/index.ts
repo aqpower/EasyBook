@@ -50,9 +50,13 @@ const router = createRouter({
           children: [
             {
               path: 'posts/:postId',
-              component: import('@/components/CardDetail.vue')
+              component: () => import('@/components/CardDetail.vue')
             }
           ]
+        },
+        {
+          path: 'message',
+          component: () => import('@/components/MessageList.vue')
         }
       ]
     }

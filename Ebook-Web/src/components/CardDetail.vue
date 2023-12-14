@@ -65,7 +65,7 @@ const handleClose = () => {
               </div>
               <button class="btn" @click="handleClose">❌</button>
             </div>
-            <div class="mt-3 mb-96">
+            <div class="mt-3">
               <p class="whitespace-pre-line">{{ post.contentText }}</p>
             </div>
           </div>

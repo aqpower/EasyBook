@@ -131,6 +131,7 @@ const menuHandler = (e: any) => {
       break
     case '通知':
       menuVar.value = 3
+      router.push('/home/message')
       break
     case '我':
       menuVar.value = 4

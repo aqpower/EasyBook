@@ -69,12 +69,13 @@
 </template>
 
 <script setup lang="ts">
-import { emailVerifyApi } from '@/api/user'
+import { sendEmailApi, emailVerifyApi } from '@/api/user'
 import { ref } from 'vue'
 import useCommandComponent from '@/hooks/useCommandComponent'
 import InfoDialog from './InfoDialog.vue'
 import { Icon } from '@iconify/vue'
 import router from '@/router/index'
+import type { ResType } from '@/types'
 
 const emailInput = ref('')
 const verifyCodeInput = ref('')
@@ -128,7 +129,7 @@ const executeAnotherOperation = () => {
 
 const reSendCode = () => {
   loadingCodeShow.value = true
-  emailVerifyApi(emailInput.value)
+  sendEmailApi(emailInput.value)
     .then(() => {
       dialog({
         title: '🎉',
@@ -147,7 +148,7 @@ const reSendCode = () => {
 }
 
 const sendCode = () => {
-  emailVerifyApi(emailInput.value)
+  sendEmailApi(emailInput.value)
     .then(() => {
       dialog({
         title: '🎉',
@@ -167,11 +168,23 @@ const sendCode = () => {
 }
 
 const checkVerifyCode = () => {
-  dialog({
-    content: '验证码验证通过！',
-    btnContent: '👌',
-    onClose: () => {
-      router.push(`/account/init-profile/${emailInput.value}`)
+  emailVerifyApi(verifyCodeInput.value).then((res) => {
+    if (res.code == 200) {
+      dialog({
+        content: '验证码验证通过！',
+        btnContent: '👌',
+        onClose: () => {
+          router.push(`/account/init-profile/${emailInput.value}`)
+        }
+      })
+    } else {
+      dialog({
+        content: res.msg,
+        btnContent: '👌',
+        onClose: () => {
+          router.push(`/account/init-profile/${emailInput.value}`)
+        }
+      })
     }
   })
 }
