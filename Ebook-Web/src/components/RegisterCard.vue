@@ -149,18 +149,30 @@ const reSendCode = () => {
 
 const sendCode = () => {
   sendEmailApi(emailInput.value)
-    .then(() => {
-      dialog({
-        title: '🎉',
-        content: '验证码已经发送到你的邮箱，请注意查收',
-        btnContent: '👌',
-        onClose: () => {
-          loadingShow.value = false
-          emailSubmit.value = true
-        }
-      })
-      timeCount.value = 60
-      startTimer()
+    .then((res) => {
+      if (res.code == 200) {
+        dialog({
+          title: '🎉',
+          content: '验证码已经发送到你的邮箱，请注意查收',
+          btnContent: '👌',
+          onClose: () => {
+            loadingShow.value = false
+            emailSubmit.value = true
+          }
+        })
+        timeCount.value = 60
+        startTimer()
+      } else {
+        dialog({
+          title: '😢',
+          content: res.msg,
+          btnContent: '👌',
+          onClose: () => {
+            loadingShow.value = false
+            emailSubmit.value = true
+          }
+        })
+      }
     })
     .catch(() => {
       loadingShow.value = false
@@ -181,9 +193,7 @@ const checkVerifyCode = () => {
       dialog({
         content: res.msg,
         btnContent: '👌',
-        onClose: () => {
-          router.push(`/account/init-profile/${emailInput.value}`)
-        }
+        onClose: () => {}
       })
     }
   })
