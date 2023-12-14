@@ -22,6 +22,8 @@
           <Icon
             class="mr-1 w-3 h-3 hover:cursor-pointer active:scale-75 ease-in-out"
             icon="icon-park-outline:like"
+            :class="{ 'text-primary': likeActivate }"
+            @click="newPostLike"
           />
           <span class="text-slate-600 text-xs">{{ post.likeNum }}</span>
         </div>
@@ -37,8 +39,14 @@ import { type PostType } from '@/types/post'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 const router = useRouter()
-
+import { useUserStore } from '@/stores/userStores'
+import { newPostLikeApi } from '@/api/posts'
+import useCommandComponent from '@/hooks/useCommandComponent'
+import InfoDialog from './InfoDialog.vue'
+const dialog = useCommandComponent(InfoDialog)
+const userStore = useUserStore()
 const img = ref()
+const likeActivate = ref(false)
 const props = defineProps({
   post: {
     type: Object as () => PostType,
@@ -55,6 +63,31 @@ const navDetailHandler = () => {
     path += props.post.id
     router.push(path)
   }
+}
+
+const newPostLike = () => {
+  let data = {
+    userId: userStore.user?.id,
+    postId: props.post.id
+  }
+  newPostLikeApi(data).then((res) => {
+    if (res.code == 200) {
+      props.post.likeNum = props.post.likeNum + 1
+      likeActivate.value = true
+      dialog({
+        title: '👍',
+        content: '点赞成功',
+        btnContent: '👌'
+      })
+    } else {
+      dialog({
+        title: '👍',
+        content: res.msg,
+        btnContent: '👌'
+      })
+      likeActivate.value = true
+    }
+  })
 }
 </script>
 

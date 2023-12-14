@@ -26,4 +26,5 @@ export const uploadImgApi = (data: FormData) =>
 
 export const newPostApi = (data: PostApiType) => httpInstance.post('/api/v1/post', data)
 
-// export const newPostLikeApi = 
+export const newPostLikeApi = (data: any): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/posts/like', data)

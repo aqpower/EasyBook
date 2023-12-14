@@ -9,7 +9,7 @@ import type { MessageType } from '@/types/message'
  * @returns {Promise} 一个promise，如果成功则返回响应数据，如果失败则返回错误
  */
 export const getUserInfoApi = (userId: number): Promise<any> =>
-  httpInstance.get(`/api/v1/users/${userId}`)
+  httpInstance.get(`/api/v1/users/info/${userId}`)
 
 /**
  * 向服务器发送一个POST请求，进行用户登录请求
