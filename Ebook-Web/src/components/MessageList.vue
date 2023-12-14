@@ -11,7 +11,7 @@ import { useUserStore } from '@/stores/userStores'
 import type { MessageType } from '@/types/message'
 const page = ref(1)
 const pageSize = ref(10)
-const messageList = ref<MessageType>([])
+const messageList = ref<MessageType[]>([])
 
 const userStore = useUserStore()
 onMounted(() => {
@@ -23,7 +23,7 @@ onMounted(() => {
   getMessageApi(data).then((res) => {
     console.log(res)
     if (res.code == 200) {
-      messageList.value = res.data
+      messageList.value = res.data.notifies
     }
   })
 })
