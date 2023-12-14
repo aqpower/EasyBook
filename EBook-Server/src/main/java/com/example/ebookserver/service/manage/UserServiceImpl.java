@@ -2,10 +2,7 @@ package com.example.ebookserver.service.manage;
 
 import com.example.ebookserver.mapper.PostMapper;
 import com.example.ebookserver.mapper.UserMapper;
-import com.example.ebookserver.pojo.BlackList;
-import com.example.ebookserver.pojo.LoginData;
-import com.example.ebookserver.pojo.Notify;
-import com.example.ebookserver.pojo.User;
+import com.example.ebookserver.pojo.*;
 import com.example.ebookserver.service.UserService;
 import com.example.ebookserver.utils.JwtUtils;
 import com.example.ebookserver.utils.MD5Util;
@@ -166,8 +163,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Notify> selectNotifies(Integer id) {
-        List<Integer> list = postMapper.selectIdByUserId(id);
-        return userMapper.selectNotifies(list);
+    public NotifyPageBean selectNotifies(Integer id, Integer page, Integer pageSize) {
+
+        //查询该用户所有帖子的id
+        List<Integer> ids = postMapper.selectIdByUserId(id);
+        if (ids != null){
+            //与该用户关联的所有通知
+            Long count = userMapper.countNotify(ids);
+            Integer start = (page-1) * pageSize;
+            //分页查询的结果
+            List<Notify> notifyList = userMapper.selectNotifies(ids, start, pageSize);
+            NotifyPageBean notifyPageBean = new NotifyPageBean((count+pageSize-1)/pageSize,notifyList);
+            return notifyPageBean;
+        }
+        return null;
     }
 }

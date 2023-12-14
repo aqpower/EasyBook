@@ -83,10 +83,12 @@ public class UserController {
     /*
      * 通知展示接口
      * */
-    @GetMapping("/user/notify/{id}")
-    public Result AllNotifies(@PathVariable Integer id){
+    @GetMapping("/user/notify")
+    public Result AllNotifies(@RequestParam Integer id,
+                              @RequestParam(defaultValue = "1") Integer page,
+                              @RequestParam(defaultValue = "10") Integer pageSize){
         log.info("用户查看通知");
-        List<Notify> notifyList = userService.selectNotifies(id);
-        return Result.success(notifyList);
+        NotifyPageBean notifyPageBean = userService.selectNotifies(id, page, pageSize);
+        return Result.success(notifyPageBean);
     }
 }
