@@ -1,20 +1,24 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getPostApi } from '@/api/posts'
+import { deletePostApi, getPostApi } from '@/api/posts'
 import type { PostDetailResType, PostType } from '@/types/post'
 import type { ResType } from '@/types'
 import InfoDialogVue from '@/components/InfoDialog.vue'
 import { avatarList } from '@/utils/icon'
 import { Icon } from '@iconify/vue/dist/iconify.js'
+import { useUserStore } from '@/stores/userStores'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/20/solid'
+import useCommandComponent from '@/hooks/useCommandComponent'
 const route = useRoute()
 const router = useRouter()
 const showDig = ref(true)
 const imgIndex = ref(0)
 console.log(route)
-
+const userStore = useUserStore()
 const post = ref<PostType>()
-
+const commentList = ref({})
+const dialog = useCommandComponent(InfoDialogVue)
 const changeImg = (value) => {
   console.log(imgIndex.value, value, post.value?.url.length)
   let t = imgIndex.value + value
@@ -29,10 +33,27 @@ onMounted(() => {
     console.log(res)
     if (res.code == 200) {
       post.value = res.data.posts
+      commentList.value = res.data.commentsList
       console.log(post)
     }
   })
 })
+
+const showDelete = (): boolean => {
+  if (route.params.userId != null) {
+    if (route.params.userId == userStore.user?.id) {
+      return true
+    }
+  }
+  return false
+}
+
+const deletePost = () => {
+  deletePostApi(route.params.postId).then((res) => {
+    dialog({ content: '删除帖子成功', btnContent: '👌' })
+    router.go(-1)
+  })
+}
 
 const handleClose = () => {
   router.go(-1)
@@ -63,10 +84,28 @@ const handleClose = () => {
                 <Icon class="w-8 h-8 m-1" :icon="avatarList[post.avatar]"></Icon>
                 <p class="font-medium">{{ post.name }}</p>
               </div>
-              <button class="btn" @click="handleClose">❌</button>
+              <div class="flex flex-row justify-center items-center gap-3">
+                <button class="btn btn-primary" v-show="showDelete()" @click="deletePost">
+                  删除帖子
+                </button>
+                <button class="btn" @click="handleClose">❌</button>
+              </div>
             </div>
             <div class="mt-3">
               <p class="whitespace-pre-line">{{ post.contentText }}</p>
+            </div>
+            <div class="divider">评论</div>
+            <div class="flex flex-col mt-1">
+              <div v-for="(item, index) in commentList" :key="index" class="flex flex-col p-3">
+                <div class="flex gap-3">
+                  <Icon class="w-6 h-6" :icon="avatarList[item.avatar]"></Icon>
+                  <p class="font-medium">{{ item.name }}</p>
+                </div>
+                <p class="mt-1">{{ item.content }}</p>
+                <div class="flex justify-end mr-5">
+                  <p class="text-xs text-slate-400">{{ item.commentTime }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

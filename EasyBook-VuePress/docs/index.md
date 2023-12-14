@@ -12,7 +12,7 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /readme
+      link: 'http://localhost:5173/#/account/login'
     - theme: alt
       text: View on Github
       link: 'https://github.com/aqpower/EBook'
