@@ -75,4 +75,19 @@ public class PostController {
         PostDetails postDetails = postService.selectDetails(postId);
         return Result.success(postDetails);
     }
+
+    /*
+     * 用户删除帖子
+     * */
+    @DeleteMapping("/posts/{id}")
+    public Result deletePost(@PathVariable Integer id){
+        log.info("删除帖子");
+        postService.deletePost(id);
+        return Result.success();
+    }
+
+    /*
+     * 用户根据关键字搜索帖子
+     * */
+    //@GetMapping("/posts/")
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @Slf4j
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/posts")
 public class FeedBackPostController {
 
     @Autowired
@@ -49,7 +49,10 @@ public class FeedBackPostController {
     public Result comment(@RequestBody Comment comment){
         log.info("用户发表评论");
         int result = feedBackPostService.toComment(comment);
-        return Result.success();
+        if(result == 1){
+            return Result.success();
+        }
+        return Result.error("评论失败");
     }
     /*
     * 用户举报帖子
@@ -57,6 +60,10 @@ public class FeedBackPostController {
     @PostMapping("/violation")
     public Result violation(@RequestBody Violation violation){
         log.info("用户举报帖子");
+        int result = feedBackPostService.toViolation(violation);
+        if (result == 1){
+            return Result.success();
+        }
         return Result.error("举报失败");
     }
 }

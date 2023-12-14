@@ -1,5 +1,7 @@
 package com.example.ebookserver.mapper;
 
+import com.example.ebookserver.pojo.LoginData;
+import com.example.ebookserver.pojo.Notify;
 import com.example.ebookserver.pojo.User;
 import org.apache.ibatis.annotations.*;
 
@@ -9,8 +11,8 @@ import java.util.List;
 public interface UserMapper {
 
     /*
-    * id登录
-    * */
+     * id登录
+     * */
     @Select("select name from user where id = #{id}")
     String  getById(Integer id);
     @Select("select name from user where id = #{id} and password = #{password}")
@@ -25,8 +27,8 @@ public interface UserMapper {
     /*
      * 邮箱查重
      * */
-    @Select("select id from user where email= #{email}")
-    String selectByEmail(String email);
+    @Select("select id,name,avatar from user where email= #{email}")
+    LoginData selectByEmail(String email);
 
     /*
      * 注册，邮箱，名字，密码，头像
@@ -35,29 +37,29 @@ public interface UserMapper {
     int registerNewUser(User user);
 
     /*
-    * 注销用户：通过id删除
-    * */
+     * 注销用户：通过id删除
+     * */
     @Update("update user set role = 100 where id = #{id}")
     int deleteById(Integer id);
 
     /*
-    * 查找用户的拉黑列表
-    * */
+     * 查找用户的拉黑列表
+     * */
     @Select("select black_user_id from blacklist where user_id = #{userId}")
     List<Integer> selectBlackList(Integer userId);
 
     /*
-    * 查询拉黑了用户的列表
-    * */
+     * 查询拉黑了用户的列表
+     * */
     @Select("select user_id from blacklist where black_user_id = #{blackUserId}")
     List<Integer> selectBlackedList(Integer blackUserId);
     /*
-    * 拉黑用户：插入数据
-    * */
+     * 拉黑用户：插入数据
+     * */
     @Insert("insert into blacklist(user_id, black_user_id) values (#{userId},#{blackUserid})")
     int insertToBlackList(Integer userId, Integer blackUserid);
 
-    @Update("update user set name = #{name},avatar = #{avatar} where id = #{id}")
+
     int updateById(User user);
 
     @Select("select role from user where id = #{id}")
@@ -70,4 +72,16 @@ public interface UserMapper {
 
     @Select("select avatar from user where user.email = #{email}")
     short selectAvatarByEmail(String email);
+
+    @Select("select id,name,avatar from user where id = #{id}")
+    User selectUserDetailsByid(Integer id);
+
+
+    List<Notify> selectNotifies(List<Integer> ids, Integer start, Integer pageSize);
+
+
+    Long countNotify(List<Integer> ids);
+
+    @Select("select id,name,avatar from user where id = #{id}")
+    LoginData selectById(Integer id);
 }

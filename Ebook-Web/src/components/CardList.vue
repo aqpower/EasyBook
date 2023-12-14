@@ -1,8 +1,12 @@
 <template>
-  <div class="pr-6">
-    <div class="sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5">
-      <PostCard v-for="(item, index) in postList" :key="index" :post="item"></PostCard>
+  <div>
+    <div class="pr-6">
+      <div class="sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5">
+        <!-- <div show="skeletonShow" class="skeleton w-28 h-28"></div> -->
+        <PostCard v-for="(item, index) in postList" :key="index" :post="item"></PostCard>
+      </div>
     </div>
+    <RouterView></RouterView>
   </div>
 </template>
 
@@ -17,6 +21,7 @@ const page = ref(1)
 const pageSize = ref(100)
 const postList = ref([])
 const userStore = useUserStore()
+const skeletonShow = ref(true)
 eventBus.on('postFinish', (e) => {
   console.log(e)
   if (e == true) {
@@ -33,6 +38,7 @@ const getPosts = () => {
   getPostsApi(data).then((res) => {
     const data: GetPostResType = res.data
     if (res.code == 200) {
+      skeletonShow.value = false
       console.log(data)
       postList.value = data.posts
     }

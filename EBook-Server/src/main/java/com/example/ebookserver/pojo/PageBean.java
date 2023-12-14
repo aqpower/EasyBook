@@ -10,6 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PageBean {
-    private Long count;
+    private Long pageCount;
     private List<Posts> posts;
 }

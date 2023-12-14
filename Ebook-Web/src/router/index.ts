@@ -46,7 +46,17 @@ const router = createRouter({
         },
         {
           path: 'profile/:userId',
-          component: () => import('@/components/UserFile.vue')
+          component: () => import('@/components/UserFile.vue'),
+          children: [
+            {
+              path: 'posts/:postId',
+              component: () => import('@/components/CardDetail.vue')
+            }
+          ]
+        },
+        {
+          path: 'message',
+          component: () => import('@/components/MessageList.vue')
         }
       ]
     }

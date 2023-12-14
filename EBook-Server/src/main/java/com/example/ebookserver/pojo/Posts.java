@@ -22,5 +22,4 @@ public class Posts {
     private List<String> url;//图片链接集合 image
     private Integer likeNum;  //喜欢数量  post
     private Integer collectionNum;  //收藏数量 post
-    private String ip;  //ip地址  post
 }

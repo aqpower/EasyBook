@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterData {
-    private User user;
-    private String verCode;
+public class Notify {
+    private Integer id;
+    private Integer postId;
+    private Integer userId;
+    private String content;
 }

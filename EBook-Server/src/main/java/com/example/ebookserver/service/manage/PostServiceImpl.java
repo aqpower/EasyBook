@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostService {
         }else {
             int result = postMapper.post(post);
             if (post.getUrls() != null){
-               postMapper.toImages(post.getId(),post.getUrls());
+                postMapper.toImages(post.getId(),post.getUrls());
             }
             return result;
         }
@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
             post.setUrl(postMapper.getUrl(post.getId()));
         }
         //返回的类
-        PageBean pageBean = new PageBean(count, posts);
+        PageBean pageBean = new PageBean((count+pageSize-1)/pageSize, posts);
         return pageBean;
     }
 
@@ -65,6 +65,7 @@ public class PostServiceImpl implements PostService {
         post.setUrl(postMapper.getUrl(postId));
         List<Comments> commentsList= postMapper.selectComments(postId);
         PostDetails postDetails= new PostDetails();
+        postDetails.setCommentsNum(postMapper.countComments(postId));
         postDetails.setPosts(post);
         postDetails.setCommentsList(commentsList);
         return postDetails;
@@ -77,5 +78,10 @@ public class PostServiceImpl implements PostService {
             post.setUrl(postMapper.getUrl(post.getId()));
         }
         return posts;
+    }
+
+    @Override
+    public void deletePost(Integer id) {
+        postMapper.deleteById(id);
     }
 }

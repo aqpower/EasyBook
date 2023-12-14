@@ -1,26 +1,78 @@
-<template>
-  <div>{{ post }}</div>
-</template>
-
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { getPostApi } from '@/api/posts'
-import type { PostDetailResType } from '@/types/post'
+import type { PostDetailResType, PostType } from '@/types/post'
 import type { ResType } from '@/types'
+import InfoDialogVue from '@/components/InfoDialog.vue'
+import { avatarList } from '@/utils/icon'
+import { Icon } from '@iconify/vue/dist/iconify.js'
 const route = useRoute()
-const post = ref()
+const router = useRouter()
+const showDig = ref(true)
+const imgIndex = ref(0)
 console.log(route)
+
+const post = ref<PostType>()
+
+const changeImg = (value) => {
+  console.log(imgIndex.value, value, post.value?.url.length)
+  let t = imgIndex.value + value
+  if (t >= 0 && t < post.value?.url.length) {
+    imgIndex.value = t
+  }
+}
 
 onMounted(() => {
   const postId = route.params.postId as string
   getPostApi(postId).then((res: ResType<PostDetailResType>) => {
     console.log(res)
     if (res.code == 200) {
-      post.value = res.data
+      post.value = res.data.posts
+      console.log(post)
     }
   })
 })
+
+const handleClose = () => {
+  router.go(-1)
+}
 </script>
+
+<template>
+  <InfoDialogVue :visible="showDig" :big-dialog-enable="true">
+    <template #content>
+      <div v-if="post != null" class="flex w-full h-full">
+        <div class="w-full h-full flex-1 relative">
+          <img
+            class="h-full w-full rounded-2xl AqImage object-cover"
+            :src="post?.url[imgIndex]"
+            :alt="post.title"
+          />
+          <div class="absolute top-1/2 left-3" @click="changeImg(-1)">
+            <Icon class="w-10 h-10 text-primary" icon="line-md:arrow-small-left" />
+          </div>
+          <div class="absolute top-1/2 right-3" @click="changeImg(1)">
+            <Icon class="w-10 h-10 text-primary" icon="line-md:arrow-small-right" />
+          </div>
+        </div>
+        <div class="flex flex-col flex-1">
+          <div class="ml-4 mr-1">
+            <div class="flex justify-between items-center gap-1">
+              <div class="flex items-center gap-2">
+                <Icon class="w-8 h-8 m-1" :icon="avatarList[post.avatar]"></Icon>
+                <p class="font-medium">{{ post.name }}</p>
+              </div>
+              <button class="btn" @click="handleClose">❌</button>
+            </div>
+            <div class="mt-3">
+              <p class="whitespace-pre-line">{{ post.contentText }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </InfoDialogVue>
+</template>
 
 <style scoped></style>

@@ -13,5 +13,4 @@ public class LoginData {
     Integer id;
     short avatar;
     String name;
-    Short role; // 用户角色
 }

@@ -1,4 +1,7 @@
+import type { ResType } from '@/types'
 import httpInstance from '../utils/http'
+import type { UserRegisterType } from '@/types/user'
+import type { MessageType } from '@/types/message'
 
 /**
  * 向服务器发送一个GET请求，根据user_id获取用户信息
@@ -19,7 +22,30 @@ export const UserLoginApi = (data: {
   password: string
 }): Promise<any> => httpInstance.post('/api/v1/login/users', data)
 
-export const emailVerifyApi = (email: string) => httpInstance.get(`/api/v1/login/${email}`)
+export const sendEmailApi = (email: string): Promise<ResType<any>> =>
+  httpInstance.get('/api/v1/login/email-verification/', {
+    params: {
+      email: email
+    }
+  })
 
 export const newUserApi = (data: any) => httpInstance.post('/api/v1/users', data)
 
+export const emailVerifyApi = (code: string): Promise<ResType<any>> =>
+  httpInstance.post(`/api/v1/login/email-verification/?verfityCode=${code}`)
+
+export const userRegisterApi = (data: UserRegisterType): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/users', data)
+
+export const getMessageApi = (data: {
+  id: any
+  page: any
+  pageSize: any
+}): Promise<ResType<MessageType[]>> =>
+  httpInstance.get('/api/v1/user/notify/', {
+    params: {
+      id: data.id,
+      page: data.page,
+      pageSize: data.pageSize
+    }
+  })

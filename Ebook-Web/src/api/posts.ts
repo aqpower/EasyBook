@@ -17,7 +17,7 @@ export const getUserPostApi = (userId: any): Promise<ResType<UserPostResType>> =
 export const getPostApi = (postId: String): Promise<ResType<PostType>> =>
   httpInstance.get(`/api/v1/posts/${postId}`)
 
-export const uploadImgApi = (data) =>
+export const uploadImgApi = (data: FormData) =>
   httpInstance.post('/api/v1/upload', data, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -25,3 +25,5 @@ export const uploadImgApi = (data) =>
   })
 
 export const newPostApi = (data: PostApiType) => httpInstance.post('/api/v1/post', data)
+
+// export const newPostLikeApi = 

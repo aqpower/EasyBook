@@ -1,9 +1,6 @@
 package com.example.ebookserver.controller;
 
-import com.example.ebookserver.pojo.BlackList;
-import com.example.ebookserver.pojo.Posts;
-import com.example.ebookserver.pojo.Result;
-import com.example.ebookserver.pojo.User;
+import com.example.ebookserver.pojo.*;
 import com.example.ebookserver.service.PostService;
 import com.example.ebookserver.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -52,12 +49,13 @@ public class UserController {
     /*
     * 根据用户id查询所有帖子
     * */
-    @GetMapping("/posts/users/{id}")
-    public Result getPosts(@PathVariable Integer id){
+    @GetMapping("/posts/users/{userId}")
+    public Result getPosts(@PathVariable Integer userId){
         log.info("查询某个用户发的全部帖子");
-        List<Posts> posts = postService.getPosts(id);
+        List<Posts> posts = postService.getPosts(userId);
         return Result.success(posts);
     }
+
     /*
     * 用户更改个人信息功能实现
     * 获取参数：json{id,name,
@@ -70,5 +68,27 @@ public class UserController {
             return Result.success();
         }
         return Result.error("修改失败");
+    }
+
+    /*
+    * 用户主页展示信息
+    * */
+    @GetMapping("/users/info/{id}")
+    public Result userDetail(@PathVariable Integer id){
+        log.info("用户主页展示");
+        User user = userService.selectUserDetails(id);
+        return Result.success(user);
+    }
+
+    /*
+     * 通知展示接口
+     * */
+    @GetMapping("/user/notify")
+    public Result AllNotifies(@RequestParam Integer id,
+                              @RequestParam(defaultValue = "1") Integer page,
+                              @RequestParam(defaultValue = "10") Integer pageSize){
+        log.info("用户查看通知");
+        NotifyPageBean notifyPageBean = userService.selectNotifies(id, page, pageSize);
+        return Result.success(notifyPageBean);
     }
 }

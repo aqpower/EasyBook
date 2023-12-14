@@ -18,7 +18,6 @@ public class Post {
     private String lyrics;
     private Integer likeNum;
     private Integer collectionNum;
-    private String ip;
     private Integer violationNum;
     private Integer userId;
     private List<String> urls;
