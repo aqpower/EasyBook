@@ -1,14 +1,15 @@
 <template>
   <div>
-    <div class="flex justify-center mt-24 items-center">
+    <div class="flex justify-center mt-14 items-center">
       <Icon v-if="avatarIndex != -1" class="w-28 h-28 m-1" :icon="avatarList[avatarIndex]"></Icon>
       <div v-if="user" class="ml-3 flex flex-col gap-3">
-        <div class="badge badge-primary">{{ user.id }}</div>
+        <div class="badge badge-primary">ID: {{ user.id }}</div>
         <p class="text-xl font-bold">{{ user.name }}</p>
       </div>
     </div>
-
+    <div class="divider text-gray-400">帖子</div>
     <div class="pr-6 mt-5">
+      <div class="flex justify-center mt-10 text-xl text-gray-400" v-show="userPosts.length == 0">该用户没有发送过帖子</div>
       <div class="sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5">
         <PostCard v-for="(item, index) in userPosts" :key="index" :post="item"></PostCard>
       </div>

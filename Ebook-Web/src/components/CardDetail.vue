@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { deletePostApi, getPostApi } from '@/api/posts'
+import { deletePostApi, getPostApi, newCommentApi } from '@/api/posts'
 import type { PostDetailResType, PostType } from '@/types/post'
 import type { ResType } from '@/types'
 import InfoDialogVue from '@/components/InfoDialog.vue'
@@ -18,6 +18,7 @@ console.log(route)
 const userStore = useUserStore()
 const post = ref<PostType>()
 const commentList = ref({})
+const commentInput = ref('')
 const dialog = useCommandComponent(InfoDialogVue)
 const changeImg = (value) => {
   console.log(imgIndex.value, value, post.value?.url.length)
@@ -55,6 +56,20 @@ const deletePost = () => {
   })
 }
 
+const newComment = () => {
+  let data = {
+    userId: userStore.user?.id,
+    postId: route.params.postId,
+    content: commentInput.value
+  }
+  newCommentApi(data).then((res) => {
+    if (res.code == 200) {
+      dialog({ content: '帖子评论', btnContent: '👌' })
+      router.go(0)
+    }
+  })
+}
+
 const handleClose = () => {
   router.go(-1)
 }
@@ -71,7 +86,7 @@ const handleClose = () => {
             :alt="post.title"
           />
           <div class="absolute top-1/2 left-3" @click="changeImg(-1)">
-            <Icon class="w-10 h-10 text-primary" icon="line-md:arrow-small-left" />
+            <Icon class="w-10 h-10 text-slate-400" icon="line-md:arrow-small-left" />
           </div>
           <div class="absolute top-1/2 right-3" @click="changeImg(1)">
             <Icon class="w-10 h-10 text-primary" icon="line-md:arrow-small-right" />
@@ -95,6 +110,14 @@ const handleClose = () => {
               <p class="whitespace-pre-line">{{ post.contentText }}</p>
             </div>
             <div class="divider">评论</div>
+            <div class="flex gap-3">
+              <input
+                v-model="commentInput"
+                class="input w-full input-primary"
+                placeholder="请在这里输入评论"
+              />
+              <button class="btn btn-primary" @click="newComment">提交</button>
+            </div>
             <div class="flex flex-col mt-1">
               <div v-for="(item, index) in commentList" :key="index" class="flex flex-col p-3">
                 <div class="flex gap-3">

@@ -29,5 +29,7 @@ export const newPostApi = (data: PostApiType) => httpInstance.post('/api/v1/post
 export const newPostLikeApi = (data: any): Promise<ResType<any>> =>
   httpInstance.post('/api/v1/posts/like', data)
 
-  
 export const deletePostApi = (postId: number) => httpInstance.delete(`/api/v1/posts/${postId}`)
+
+export const newCommentApi = (data): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/posts/comment', data)
