@@ -9,6 +9,7 @@
             @click="navUserProfile(item.userId)"
           ></Icon>
           <div>
+            <h3>{{ item.name }}</h3>
             <h3 class="font-bold">{{ item.content }}</h3>
           </div>
           <button class="btn btn-sm" @click="navPost(item.postId)">看看</button>
@@ -56,6 +57,7 @@ onMounted(() => {
         getUserInfoApi(messageList.value[i].userId).then((res) => {
           console.log(messageList.value[i])
           messageList.value[i]['avatar'] = res.data.avatar
+          messageList.value[i]['name'] = res.data.name
         })
       }
     }

@@ -18,6 +18,14 @@ hero:
       link: 'https://github.com/aqpower/EBook'
 
 features:
+  - icon: 🤱🏻
+    title: OSS
+    details: 稳定的图床服务
+  - title: TailwindCSS
+    icon:
+      src: /tailwindcss.png
+      width: 95
+    details: 原子化的CSS
   - icon: 
       src: /vue-router-logo.svg
       width: 35
@@ -34,17 +42,16 @@ features:
       width: 35
     details: The official router for Vue.js, offering expressive, configurable, and convenient routing for Vue.js.
   
-  - title: Mock.js
+  - title: SpringBoot
     icon:
       src: /mock-logo.svg
       width: 25
-    details: 生成随机数据，拦截 Ajax 请求,无需依赖后端接口，提高开发效率和测试质量.
-  - icon: 🤱🏻
-    title: Pake
-    details: 利用 Rust 轻松构建轻量级多端桌面应用。
-  - title: Restful API
+    details: 好东西
+  
+  - title: 严格遵循软件工程
     icon:
       src: /rest-logo.png
       width: 95
-    details: 一种基于REST（Representational State Transfer）架构风格的应用程序编程接口（API）设计和交互规范。它是一种用于构建分布式、可伸缩、易于维护和可扩展的网络应用程序的设计原则和约定。
+    details: 软件工程结构化设计方法
+
 ---
