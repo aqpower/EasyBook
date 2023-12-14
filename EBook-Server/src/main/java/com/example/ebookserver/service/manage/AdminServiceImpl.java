@@ -41,8 +41,8 @@ public class AdminServiceImpl implements AdminService {
             return loginData;
         }
         loginData.setName(result.getName());
-        loginData.setRole(result.getRole());
-        if (result.getRole() == 100) {
+        short role = adminMapper.selectRole(admin.getId());
+        if (role == 100) {
             // 如果角色为100，则设置code为100
             loginData.setCode(100);
         } else {

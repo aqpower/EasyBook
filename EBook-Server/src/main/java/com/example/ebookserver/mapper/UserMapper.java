@@ -1,5 +1,6 @@
 package com.example.ebookserver.mapper;
 
+import com.example.ebookserver.pojo.LoginData;
 import com.example.ebookserver.pojo.Notify;
 import com.example.ebookserver.pojo.User;
 import org.apache.ibatis.annotations.*;
@@ -26,8 +27,8 @@ public interface UserMapper {
     /*
      * 邮箱查重
      * */
-    @Select("select id from user where email= #{email}")
-    String selectByEmail(String email);
+    @Select("select id,name,avatar from user where email= #{email}")
+    LoginData selectByEmail(String email);
 
     /*
      * 注册，邮箱，名字，密码，头像
@@ -80,4 +81,7 @@ public interface UserMapper {
 
 
     Long countNotify(List<Integer> ids);
+
+    @Select("select id,name,avatar from user where id = #{id}")
+    LoginData selectById(Integer id);
 }

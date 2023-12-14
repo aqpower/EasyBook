@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserService {
          * 生成返回对象
          * */
         LoginData loginData = new LoginData();
-
         Map<String, Object> claims = new HashMap<>();
         if(user.getId() != null){  //id登录
             String name = userMapper.getById(user.getId());
@@ -35,11 +34,7 @@ public class UserServiceImpl implements UserService {
                 short role = userMapper.getRoleById(user.getId());
                 if (role <= 4){
                     if(userMapper.getByIdAndPassword(user.getId(), MD5Util.encode(user.getPassword())) != null){  //登录成功
-                        loginData.setId(user.getId());
-                        loginData.setName(name);
-                        loginData.setAvatar(userMapper.selectAvatarById(user.getId()));
-                        claims.put("id",user.getId());
-                        claims.put("name",name);
+                        loginData = userMapper.selectById(user.getId());
                         loginData.setCode(3);
                     }else {  //密码错误
                         loginData.setCode(2);
@@ -47,7 +42,6 @@ public class UserServiceImpl implements UserService {
                 }else {
                     loginData.setCode(5);
                 }
-
             }else{   //账号不存在
                 loginData.setCode(1);
             }
@@ -57,11 +51,8 @@ public class UserServiceImpl implements UserService {
                 short role = userMapper.getRoleByEmail(user.getEmail());
                 if (role <= 4){
                     if(userMapper.getByEmailAndPassword(user.getEmail(),MD5Util.encode(user.getPassword())) != null){  //登录成功
-                        claims.put("name",name);
-                        claims.put("email",user.getEmail());
-                        loginData.setName(name);
+                        loginData = userMapper.selectByEmail(user.getEmail());
                         loginData.setCode(3);
-                        loginData.setAvatar(userMapper.selectAvatarByEmail(user.getEmail()));
                     }else {  //密码错误
                         loginData.setCode(2);
                     }
@@ -73,6 +64,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         if(loginData.getCode() == 3){
+            claims.put("id",user.getId());
             String jwt = JwtUtils.generateJwt(claims);
             loginData.setToken(jwt);
         }
