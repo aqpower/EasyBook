@@ -1,10 +1,7 @@
 package com.example.ebookserver.service;
 
 
-import com.example.ebookserver.pojo.BlackList;
-import com.example.ebookserver.pojo.LoginData;
-import com.example.ebookserver.pojo.Notify;
-import com.example.ebookserver.pojo.User;
+import com.example.ebookserver.pojo.*;
 
 import java.util.List;
 
@@ -25,6 +22,6 @@ public interface UserService {
 
     User selectUserDetails(Integer id);
 
-    List<Notify> selectNotifies(Integer id);
+    NotifyPageBean selectNotifies(Integer id, Integer page, Integer pageSize);
 
 }

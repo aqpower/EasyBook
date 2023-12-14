@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageBean {
+public class NotifyPageBean {
     private Long pageCount;
-    private List<Posts> posts;
+    private List<Notify> notifies;
 }

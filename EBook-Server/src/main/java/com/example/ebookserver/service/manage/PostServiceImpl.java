@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
             post.setUrl(postMapper.getUrl(post.getId()));
         }
         //返回的类
-        PageBean pageBean = new PageBean(count, posts);
+        PageBean pageBean = new PageBean((count+pageSize-1)/pageSize, posts);
         return pageBean;
     }
 

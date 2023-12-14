@@ -76,5 +76,8 @@ public interface UserMapper {
     User selectUserDetailsByid(Integer id);
 
 
-    List<Notify> selectNotifies(List<Integer> ids);
+    List<Notify> selectNotifies(List<Integer> ids, Integer start, Integer pageSize);
+
+
+    Long countNotify(List<Integer> ids);
 }
