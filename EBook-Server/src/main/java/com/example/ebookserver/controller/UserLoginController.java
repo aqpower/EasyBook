@@ -61,23 +61,29 @@ public class UserLoginController {
         return Result.error("该邮箱已绑定用户，请更改邮箱");
     }
     /*
+    * 验证码核对
+    * */
+    @PostMapping("/login/email-verification")
+    public Result VerCode(@RequestParam String verfityCode){
+        log.info("验证码核对");
+        if(verfityCode.equals(this.code)){
+            this.code=null;
+            return Result.success();
+        }else return Result.error("验证码填写错误");
+    }
+    /*
      * 用户注册功能实现
      * 获取参数：json{user{email,name，password,avatar},verCode}
      * 返回参数：json{code,msg,data}
      * */
     @PostMapping("/users")
-    public Result register(@RequestBody RegisterData registerData) {
+    public Result register(@RequestBody User user) {
         log.info("实现账号注册功能");
-        if(registerData.getVerCode().equals(code)){
-            int result = userService.register(registerData.getUser());
-            this.code=null;
-            if (result == 1){
-                return Result.success("注册成功");
-            }else {
-                return Result.error("注册失败，请查看信息是否填写有误");
-            }
+        int result = userService.register(user);
+        if (result == 1){
+            return Result.success("注册成功");
         }else {
-            return Result.error("注册失败，验证码填写错误");
+            return Result.error("注册失败");
         }
     }
 }
