@@ -48,7 +48,7 @@ const dialogVisible = computed<boolean>({
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-black/25" />
+        <div class="fixed inset-0 bg-base-content opacity-25" />
       </TransitionChild>
 
       <div class="fixed inset-0 overflow-y-auto">
@@ -63,7 +63,7 @@ const dialogVisible = computed<boolean>({
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="transform overflow-scroll rounded-2xl  bg-white dark:bg-slate-600 text-left align-middle shadow-xl transition-all"
+              class="transform overflow-scroll rounded-2xl bg-base-200 text-left align-middle shadow-xl transition-all"
               :class="{ 'w-full mx-20 p-4': bigDialogEnable, 'w-96 p-6': !bigDialogEnable}"
               :style="{
                 height: bigDialogEnable ? '94vh' : ''

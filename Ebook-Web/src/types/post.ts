@@ -10,6 +10,7 @@ export type PostType = {
   likeNum: number
   collectionNum: number
   ip: string
+  userId: number
 }
 
 export type GetPostResType = {

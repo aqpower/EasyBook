@@ -14,9 +14,9 @@
     <div class="mx-4 my-3">
       <h1 class="text-sm font-medium font-sans">{{ post.title }}</h1>
       <div class="flex justify-between">
-        <div class="flex items-center mt-1">
+        <div class="flex items-center mt-1 hover:cursor-pointer" @click="navUserProfile">
           <Icon class="w-4 h-4 m-1" :icon="avatarList[post.avatar]"></Icon>
-          <p class="text-xs dark:text-slate-100 text-slate-600">{{ post.name }}</p>
+          <p class="text-xs dark:text-slate-100 text-slate-600 hover:text-primary ease-in-out duration-200">{{ post.name }}</p>
         </div>
         <div class="flex items-center">
           <Icon
@@ -90,8 +90,8 @@ const newPostLike = () => {
   })
 }
 
-const navUserProfile = (userId: number) => {
-  router.push(`/home/profile/${userId}`)
+const navUserProfile = () => {
+  router.push(`/home/profile/${props.post.userId}`)
 }
 </script>
 

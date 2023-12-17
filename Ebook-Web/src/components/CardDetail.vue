@@ -16,7 +16,7 @@ const showArrowIcon = ref(false)
 const imgIndex = ref(0)
 console.log(route)
 const userStore = useUserStore()
-const post = ref<PostDetailResType>()
+const post = ref()
 const commentList = ref({})
 const commentInput = ref('')
 const dialog = useCommandComponent(InfoDialogVue)
@@ -89,6 +89,11 @@ const newComment = () => {
 const handleClose = () => {
   router.go(-1)
 }
+
+const navUserProfile = () => {
+  router.push(`/home/profile/${post.value.userId}`)
+}
+
 </script>
 
 <template>
@@ -125,7 +130,7 @@ const handleClose = () => {
         <div class="flex flex-col flex-1 overflow-y-auto">
           <div class="ml-4 mr-1">
             <div class="flex justify-between items-center gap-1">
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 hover:cursor-pointer" @click="navUserProfile">
                 <Icon class="w-8 h-8 m-1" :icon="avatarList[post.avatar]"></Icon>
                 <p class="font-medium">{{ post.name }}</p>
               </div>

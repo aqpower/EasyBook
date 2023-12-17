@@ -11,6 +11,10 @@
           </div>
         </div>
       </div>
+      <div class="flex gap-3 ml-4">
+        <button class="btn btn-primary min-h-0 h-8">关注</button>
+        <button class="btn btn-primary min-h-0 h-8">拉黑</button>
+      </div>
     </div>
     <div class="divider text-gray-400">帖子</div>
     <div class="pr-6 mt-5">
