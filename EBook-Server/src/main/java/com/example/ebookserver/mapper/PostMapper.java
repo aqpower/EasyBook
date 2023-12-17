@@ -27,10 +27,11 @@ public interface PostMapper {
      * */
     @Select("select url from image where post_id = #{postId}")
     List<String> getUrl(Integer postId);
+
     /*
      * 分页查询帖子
      * */
-    List<Posts> page(List<Integer> users, Integer start, Integer pageSize);
+    //List<Posts> page(List<Integer> users, Integer start, Integer pageSize);
 
     /*
      * 查询帖子总数
@@ -56,4 +57,10 @@ public interface PostMapper {
 
     @Delete("delete from post where id = #{id}")
     void deleteById(Integer id);
+
+    List<Posts> pageSearch(Short color, String text, List<Integer> users, Integer start, Integer pageSize);
+
+    Long countCarePosts(List<Integer> careList);
+
+    List<Posts> pageCare(List<Integer> careList, Integer start, Integer pageSize);
 }

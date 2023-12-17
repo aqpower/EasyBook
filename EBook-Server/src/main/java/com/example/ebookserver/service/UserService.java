@@ -24,4 +24,11 @@ public interface UserService {
 
     NotifyPageBean selectNotifies(Integer id, Integer page, Integer pageSize);
 
+    void toCare(Care care);
+
+    List<Integer> selectCareListId(Integer careUserId);
+
+    List<User> selectCareList(Integer id);
+
+    void toUnCare(Care care);
 }

@@ -26,6 +26,7 @@
         </foreach>
     </insert>
 
+
     <select id="count" resultType="long">
         select count(*) from post
         <if test="users.size() != 0">
@@ -48,16 +49,59 @@
         limit #{start},#{pageSize}
     </select>
     <select id="selectPost" resultType="com.example.ebookserver.pojo.Posts">
-        select post.id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
-        from post,user where post.user_id = user.id  and post.id = #{postId}
+        select post.id,user_id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
+        from post,user where post.user_id = user.id and post.id = #{postId}
     </select>
 
     <select id="selectComments" resultType="com.example.ebookserver.pojo.Comments">
         select comment.id,user_id,name,avatar,content,comment_time from user,comment where post_id = #{postId} and
         user.id = comment.user_id
     </select>
+
     <select id="getPostsByUserId" resultType="com.example.ebookserver.pojo.Posts">
-        select post.id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
+        select post.id,user_id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
         from user,post where user.id=post.user_id and user.id = #{id}
+    </select>
+
+    <select id="pageSearch" resultType="com.example.ebookserver.pojo.Posts">
+        select post.id,user_id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
+        from user,post
+        <where>
+            user.id=post.user_id
+            <if test="users.size() != 0">
+                and user.id not in
+                <foreach collection="users" item="id" separator="," open="(" close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="color != null">
+                and color = #{color}
+            </if>
+            <if test="text != null">
+                and (content_text like concat('%',#{text},'%')
+                or title like concat('%',#{text},'%')
+                or user.name like concat('%',#{text},'%'))
+            </if>
+        </where>
+
+        order by post.id desc
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="countCarePosts" resultType="java.lang.Long">
+        select count(*) from post where user_id in
+        <foreach collection="careList" item="userId" separator="," open="(" close=")">
+            #{userId}
+        </foreach>
+    </select>
+
+    <select id="pageCare" resultType="com.example.ebookserver.pojo.Posts">
+        select post.id,user_id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
+        from user,post where user.id=post.user_id and user_id in
+        <foreach collection="careList" item="userId" separator="," open="(" close=")">
+            #{userId}
+        </foreach>
+        order by post.id desc
+        limit #{start},#{pageSize}
     </select>
 </mapper>

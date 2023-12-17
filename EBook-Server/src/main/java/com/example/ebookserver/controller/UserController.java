@@ -46,15 +46,7 @@ public class UserController {
         }
         return Result.error("拉黑失败，请确保id有效");
     }
-    /*
-    * 根据用户id查询所有帖子
-    * */
-    @GetMapping("/posts/users/{userId}")
-    public Result getPosts(@PathVariable Integer userId){
-        log.info("查询某个用户发的全部帖子");
-        List<Posts> posts = postService.getPosts(userId);
-        return Result.success(posts);
-    }
+
 
     /*
     * 用户更改个人信息功能实现
@@ -81,6 +73,16 @@ public class UserController {
     }
 
     /*
+     * 根据用户id查询所有帖子
+     * */
+    @GetMapping("/posts/users/{userId}")
+    public Result getPosts(@PathVariable Integer userId){
+        log.info("查询某个用户发的全部帖子");
+        List<Posts> posts = postService.getPosts(userId);
+        return Result.success(posts);
+    }
+
+    /*
      * 通知展示接口
      * */
     @GetMapping("/user/notify")
@@ -90,5 +92,58 @@ public class UserController {
         log.info("用户查看通知");
         NotifyPageBean notifyPageBean = userService.selectNotifies(id, page, pageSize);
         return Result.success(notifyPageBean);
+    }
+
+    /*
+    * 用户关注其他用户
+    * */
+    @PostMapping("/user/care")
+    public Result care(@RequestBody Care care){
+        log.info("用户关注其他用户");
+        List<Integer> ids = userService.selectCareListId(care.getCareUserId());
+        if (ids.contains(care.getCaredUserId())){
+            return Result.error("已经关注过该用户了");
+        } else {
+            userService.toCare(care);
+            return Result.success();
+        }
+    }
+
+    /*
+    * 用户取消关注
+    * */
+    @DeleteMapping("/user/care")
+    public Result Uncare(@RequestBody Care care){
+        log.info("用户取消关注某用户");
+        List<Integer> ids = userService.selectCareListId(care.getCareUserId());
+        if (!ids.contains(care.getCaredUserId())){
+            return Result.error("没有关注该用户");
+        } else {
+            userService.toUnCare(care);
+            return Result.success();
+        }
+    }
+
+    /*
+     * 用户关注的用户发布的帖子
+     * */
+    @GetMapping("/posts/care")
+    public Result CarePosts(@RequestParam Integer id,
+                            @RequestParam(defaultValue = "1") Integer page,
+                            @RequestParam(defaultValue = "10") Integer pageSize){
+        log.info("用户查看关注的人的帖子");
+        List<Integer> careList = userService.selectCareListId(id);
+        PageBean pageBeanList = postService.showCarePosts(id,page,pageSize,careList);
+        return Result.success(pageBeanList);
+    }
+
+    /*
+    * 查看关注的用户
+    * */
+    @GetMapping("/user/care")
+    public Result CareList(@RequestParam Integer id){
+        log.info("查看用户的关注列表");
+        List<User> users = userService.selectCareList(id);
+        return Result.success(users);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.ebookserver.mapper;
 
+import com.example.ebookserver.pojo.Care;
 import com.example.ebookserver.pojo.LoginData;
 import com.example.ebookserver.pojo.Notify;
 import com.example.ebookserver.pojo.User;
@@ -84,4 +85,16 @@ public interface UserMapper {
 
     @Select("select id,name,avatar from user where id = #{id}")
     LoginData selectById(Integer id);
+
+    @Insert("insert into care (care_user_id, cared_user_id) values (#{careUserId},#{caredUserId})")
+    void AddCare(Care care);
+
+    @Select("select cared_user_id from care where care_user_id = #{careUserId}")
+    List<Integer> selectCaresId(Integer careUserId);
+
+    @Select("select user.id,name,avatar from user,care where cared_user_id = user.id and care_user_id = #{id}")
+    List<User> selectCares(Integer id);
+
+    @Delete("delete from care where care_user_id = #{careUserId} and cared_user_id = #{caredUserId}")
+    void UnCare(Care care);
 }

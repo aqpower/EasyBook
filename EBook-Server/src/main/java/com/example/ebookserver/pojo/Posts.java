@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Posts {
     private Integer id; //帖子id  post
+    private Integer userId;//发帖人id
     private short avatar;  //发帖人头像  user
     private String name;  //发帖人昵称   user
     private String title; //标题   post
