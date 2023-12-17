@@ -1,7 +1,8 @@
 import type { ResType } from '@/types'
 import httpInstance from '../utils/http'
-import type { UserRegisterType } from '@/types/user'
+import type { UserRegisterType, UserUpdateType } from '@/types/user'
 import type { MessageType } from '@/types/message'
+import type { an } from 'vitest/dist/reporters-5f784f42.js'
 
 /**
  * 向服务器发送一个GET请求，根据user_id获取用户信息
@@ -49,3 +50,7 @@ export const getMessageApi = (data: {
       pageSize: data.pageSize
     }
   })
+
+
+
+export const updateUserInfoApi = (data:UserUpdateType):Promise<ResType<any>> => httpInstance.put('/api/v1/user', data)

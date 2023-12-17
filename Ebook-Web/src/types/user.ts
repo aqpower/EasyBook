@@ -4,3 +4,10 @@ export type UserRegisterType = {
   password: string
   avatar: string
 }
+
+export type UserUpdateType = {
+  avatar: number
+  id: number
+  name: string
+  [property: string]: any
+}

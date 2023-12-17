@@ -1,7 +1,7 @@
 export const avatarList = [
   'noto-v1:angry-face-with-horns',
   'noto-v1:face-blowing-a-kiss',
-  'noto-v1:confounded-face',
+  'twemoji:thinking-face',
   'noto-v1:face-savoring-food',
   'noto-v1:face-screaming-in-fear',
   'noto-v1:face-with-steam-from-nose',

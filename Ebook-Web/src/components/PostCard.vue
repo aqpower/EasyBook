@@ -89,6 +89,10 @@ const newPostLike = () => {
     }
   })
 }
+
+const navUserProfile = (userId: number) => {
+  router.push(`/home/profile/${userId}`)
+}
 </script>
 
 <style scoped>

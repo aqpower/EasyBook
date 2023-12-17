@@ -63,10 +63,10 @@ const dialogVisible = computed<boolean>({
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="transform overflow-scroll rounded-2xl  bg-white p-6 text-left align-middle shadow-xl transition-all"
-              :class="{ 'w-full mx-20': bigDialogEnable, 'w-96': !bigDialogEnable}"
+              class="transform overflow-scroll rounded-2xl  bg-white dark:bg-slate-600 text-left align-middle shadow-xl transition-all"
+              :class="{ 'w-full mx-20 p-4': bigDialogEnable, 'w-96 p-6': !bigDialogEnable}"
               :style="{
-                height: bigDialogEnable ? '75vh' : ''
+                height: bigDialogEnable ? '90vh' : ''
               }"
             >
               <!-- style qudiao -->
