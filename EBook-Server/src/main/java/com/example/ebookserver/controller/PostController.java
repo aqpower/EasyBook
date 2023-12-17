@@ -73,7 +73,10 @@ public class PostController {
     public Result postDetails(@PathVariable Integer postId){
         log.info("查看某个帖子的详细信息");
         PostDetails postDetails = postService.selectDetails(postId);
-        return Result.success(postDetails);
+        if (postDetails != null){
+            return Result.success(postDetails);
+        }
+        return Result.error("该帖子不存在！");
     }
 
     /*

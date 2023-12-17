@@ -29,11 +29,14 @@
 
     <select id="count" resultType="long">
         select count(*) from post
-        <if test="users.size() != 0">
-            <include refid="selectNotInBlackList">
+        <where>
+            <if test="users.size() != 0">
+                <include refid="selectNotInBlackList">
+                </include>
+            </if>
+            and exist != 0
+        </where>
 
-            </include>
-        </if>
     </select>
 
     <select id="page" resultType="com.example.ebookserver.pojo.Posts">
@@ -50,7 +53,7 @@
     </select>
     <select id="selectPost" resultType="com.example.ebookserver.pojo.Posts">
         select post.id,user_id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
-        from post,user where post.user_id = user.id and post.id = #{postId}
+        from post,user where post.user_id = user.id and post.id = #{postId} and exist != 0
     </select>
 
     <select id="selectComments" resultType="com.example.ebookserver.pojo.Comments">
@@ -60,7 +63,7 @@
 
     <select id="getPostsByUserId" resultType="com.example.ebookserver.pojo.Posts">
         select post.id,user_id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
-        from user,post where user.id=post.user_id and user.id = #{id}
+        from user,post where user.id=post.user_id and user.id = #{id} and exist != 0
     </select>
 
     <select id="pageSearch" resultType="com.example.ebookserver.pojo.Posts">
@@ -82,6 +85,7 @@
                 or title like concat('%',#{text},'%')
                 or user.name like concat('%',#{text},'%'))
             </if>
+            and exist != 0
         </where>
 
         order by post.id desc
@@ -93,6 +97,7 @@
         <foreach collection="careList" item="userId" separator="," open="(" close=")">
             #{userId}
         </foreach>
+        and exist != 0
     </select>
 
     <select id="pageCare" resultType="com.example.ebookserver.pojo.Posts">
@@ -101,6 +106,7 @@
         <foreach collection="careList" item="userId" separator="," open="(" close=")">
             #{userId}
         </foreach>
+        and exist != 0
         order by post.id desc
         limit #{start},#{pageSize}
     </select>

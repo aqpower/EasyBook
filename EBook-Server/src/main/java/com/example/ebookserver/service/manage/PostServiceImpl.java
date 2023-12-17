@@ -75,14 +75,18 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDetails selectDetails(Integer postId) {
+
         Posts post = postMapper.selectPost(postId);
-        post.setUrl(postMapper.getUrl(postId));
-        List<Comments> commentsList= postMapper.selectComments(postId);
-        PostDetails postDetails= new PostDetails();
-        postDetails.setCommentsNum(postMapper.countComments(postId));
-        postDetails.setPosts(post);
-        postDetails.setCommentsList(commentsList);
-        return postDetails;
+        if (post != null){
+            post.setUrl(postMapper.getUrl(postId));
+            List<Comments> commentsList= postMapper.selectComments(postId);
+            PostDetails postDetails= new PostDetails();
+            postDetails.setCommentsNum(postMapper.countComments(postId));
+            postDetails.setPosts(post);
+            postDetails.setCommentsList(commentsList);
+            return postDetails;
+        }
+        return null;
     }
 
     @Override

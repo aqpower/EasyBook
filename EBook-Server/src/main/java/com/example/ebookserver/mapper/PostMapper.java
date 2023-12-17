@@ -3,9 +3,9 @@ package com.example.ebookserver.mapper;
 import com.example.ebookserver.pojo.Comments;
 import com.example.ebookserver.pojo.Post;
 import com.example.ebookserver.pojo.Posts;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public interface PostMapper {
     @Select("select id from post where user_id = #{id}")
     List<Integer> selectIdByUserId(Integer id);
 
-    @Delete("delete from post where id = #{id}")
+    @Update("update post set exist = 0 where id = #{id}")
     void deleteById(Integer id);
 
     List<Posts> pageSearch(Short color, String text, List<Integer> users, Integer start, Integer pageSize);
