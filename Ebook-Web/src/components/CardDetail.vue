@@ -2,21 +2,21 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { deletePostApi, getPostApi, newCommentApi } from '@/api/posts'
-import type { PostDetailResType, PostType } from '@/types/post'
+import type { PostDetailResType } from '@/types/post'
 import type { ResType } from '@/types'
 import InfoDialogVue from '@/components/InfoDialog.vue'
 import { avatarList } from '@/utils/icon'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import { useUserStore } from '@/stores/userStores'
-import { ArrowTopRightOnSquareIcon } from '@heroicons/vue/20/solid'
 import useCommandComponent from '@/hooks/useCommandComponent'
 const route = useRoute()
 const router = useRouter()
 const showDig = ref(true)
+const showArrowIcon = ref(false)
 const imgIndex = ref(0)
 console.log(route)
 const userStore = useUserStore()
-const post = ref<PostType>()
+const post = ref<PostDetailResType>()
 const commentList = ref({})
 const commentInput = ref('')
 const dialog = useCommandComponent(InfoDialogVue)
@@ -27,6 +27,22 @@ const changeImg = (value) => {
     imgIndex.value = t
   }
 }
+
+const imgLeftVal = computed(() => {
+  let t = imgIndex.value - 1
+  if (t >= 0 && t < post.value?.url.length) {
+    return true
+  }
+  return false
+})
+
+const imgRightVal = computed(() => {
+  let t = imgIndex.value + 1
+  if (t >= 0 && t < post.value?.url.length) {
+    return true
+  }
+  return false
+})
 
 onMounted(() => {
   const postId = route.params.postId as string
@@ -79,20 +95,34 @@ const handleClose = () => {
   <InfoDialogVue :visible="showDig" :big-dialog-enable="true">
     <template #content>
       <div v-if="post != null" class="flex w-full h-full">
-        <div class="w-full h-full flex-1 relative">
-          <img
-            class="h-full w-full rounded-2xl AqImage object-cover"
-            :src="post?.url[imgIndex]"
-            :alt="post.title"
-          />
+        <div
+          class="w-full h-full flex-1 relative"
+          @mouseenter="showArrowIcon = true"
+          @mouseleave="showArrowIcon = false"
+        >
+          <div class="w-full h-full flex items-center justify-center">
+            <img
+              class="rounded-2xl AqImage object-cover m-auto max-w-full max-h-full"
+              :src="post?.url[imgIndex]"
+              :alt="post.title"
+            />
+          </div>
           <div class="absolute top-1/2 left-3" @click="changeImg(-1)">
-            <Icon class="w-10 h-10 text-slate-400" icon="line-md:arrow-small-left" />
+            <Icon
+              v-if="showArrowIcon && imgLeftVal"
+              class="w-10 h-10 p-1 text-primary bg-slate-600 rounded-full opacity-70"
+              icon="line-md:arrow-small-left"
+            />
           </div>
           <div class="absolute top-1/2 right-3" @click="changeImg(1)">
-            <Icon class="w-10 h-10 text-primary" icon="line-md:arrow-small-right" />
+            <Icon
+              v-if="showArrowIcon && imgRightVal"
+              class="w-10 h-10 p-1 text-primary bg-slate-600 rounded-full opacity-70"
+              icon="line-md:arrow-small-right"
+            />
           </div>
         </div>
-        <div class="flex flex-col flex-1">
+        <div class="flex flex-col flex-1 overflow-y-auto">
           <div class="ml-4 mr-1">
             <div class="flex justify-between items-center gap-1">
               <div class="flex items-center gap-2">
@@ -106,7 +136,10 @@ const handleClose = () => {
                 <button class="btn" @click="handleClose">❌</button>
               </div>
             </div>
-            <div class="mt-3">
+            <div class="mt-1">
+              <p class="font-bold text-lg">{{ post.title }}</p>
+            </div>
+            <div class="mt-2">
               <p class="whitespace-pre-line">{{ post.contentText }}</p>
             </div>
             <div class="divider">评论</div>

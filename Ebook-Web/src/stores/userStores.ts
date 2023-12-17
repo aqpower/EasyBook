@@ -13,6 +13,7 @@ interface UserStore {
   user: Ref<User | null>
   setUser: (userInfo: User) => void
   clearUser: () => void
+  updateInfo: (avatar: number, name: string) => void
 }
 
 export const useUserStore = defineStore(
@@ -28,10 +29,16 @@ export const useUserStore = defineStore(
       user.value = null
     }
 
+    function updateInfo(avatar: number, name: string): void {
+      user.value.avatar  = avatar
+      user.value.name = name
+    }
+
     return {
       user,
       setUser,
-      clearUser
+      clearUser,
+      updateInfo,
     }
   },
   {

@@ -94,7 +94,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import NewPost from '@/components/NewPost.vue'
 import eventBus from '@/libs/eventBus'
@@ -111,6 +111,14 @@ const newPostHandler = () => {
   newPostRef.value.newPost()
   loadingShow.value = true
 }
+
+onMounted(() => {
+  if (router.currentRoute.value.fullPath.includes('profile')) {
+    menuVar.value = 4
+  } else if (router.currentRoute.value.fullPath.includes('message')) {
+    menuVar.value = 3
+  }
+})
 
 const userStore = useUserStore()
 

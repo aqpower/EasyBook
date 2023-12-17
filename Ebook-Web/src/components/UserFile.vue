@@ -4,36 +4,62 @@
       <Icon v-if="avatarIndex != -1" class="w-28 h-28 m-1" :icon="avatarList[avatarIndex]"></Icon>
       <div v-if="user" class="ml-3 flex flex-col gap-3">
         <div class="badge badge-primary">ID: {{ user.id }}</div>
-        <p class="text-xl font-bold">{{ user.name }}</p>
+        <div class="flex items-center gap-1">
+          <p class="text-xl font-bold">{{ user.name }}</p>
+          <div class="cursor-pointer" @click="showUpdateModal = true">
+            <Icon icon="solar:pen-2-bold" />
+          </div>
+        </div>
       </div>
     </div>
     <div class="divider text-gray-400">帖子</div>
     <div class="pr-6 mt-5">
-      <div class="flex justify-center mt-10 text-xl text-gray-400" v-show="userPosts.length == 0">该用户没有发送过帖子</div>
+      <div class="flex justify-center mt-10 text-xl text-gray-400" v-show="userPosts.length == 0">
+        该用户没有发送过帖子
+      </div>
       <div class="sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5">
         <PostCard v-for="(item, index) in userPosts" :key="index" :post="item"></PostCard>
       </div>
     </div>
   </div>
+  <InfoDialog :visible="showUpdateModal">
+    <template #content>
+      <div class="flex flex-col gap-7 items-center font-bold">
+        <p>修改个人信息</p>
+        <AvatarSelector></AvatarSelector>
+        <input class="input input-primary h-12 w-full" v-model="userNameInput" />
+        <button class="btn btn-primary min-h-0 h-9 w-full" @click="updateUserInfo">确定</button>
+      </div>
+    </template>
+  </InfoDialog>
   <RouterView></RouterView>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/userStores'
+import InfoDialog from './InfoDialog.vue'
 import { getUserPostApi } from '@/api/posts'
-import { onMounted, ref } from 'vue'
+import { onMounted, provide, ref } from 'vue'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import type { UserPostResType } from '@/types/post'
 import { useRoute } from 'vue-router'
 import PostCard from './PostCard.vue'
 import { avatarList } from '@/utils/icon'
-import { getUserInfoApi } from '@/api/user'
+import { getUserInfoApi, updateUserInfoApi } from '@/api/user'
+import AvatarSelector from './AvatarSelector.vue'
+import { useUserStore } from '@/stores/userStores'
+import useCommandComponent from '@/hooks/useCommandComponent'
+const userStore = useUserStore()
+const dialog = useCommandComponent(InfoDialog)
+const userNameInput = ref<string>(userStore.user?.name as string)
+const avatarIndex = ref(-1)
+const showUpdateModal = ref(false)
+// 声明一个响应性变量并 provide 其自身
+// 孙组件获取后可以保持响应性
+provide('avatarIndex', avatarIndex)
 const userPosts = ref<UserPostResType[]>([])
 const route = useRoute()
-const avatarIndex = ref(-1)
 const user = ref()
 onMounted(() => {
-  console.log(route)
   const userId = route.params.userId
   getUserInfoApi(userId).then((res) => {
     console.log(res)
@@ -49,6 +75,37 @@ onMounted(() => {
     }
   })
 })
+
+const updateUserInfo = () => {
+  if (userNameInput.value.length == 0) {
+    dialog({
+      title: '😢',
+      content: '用户名不可以为空',
+      btnContent: '👌👌👌'
+    })
+    return
+  }
+  let data = {
+    id: userStore.user?.id as string,
+    avatar: avatarIndex.value,
+    name: userNameInput.value
+  }
+  updateUserInfoApi(data).then((res) => {
+    console.log(res)
+    if (res.code == 200) {
+      userStore.updateInfo(avatarIndex.value, userNameInput.value)
+      user.value.name = userNameInput.value
+      dialog({
+        title: '😊',
+        content: '用户信息更改成功',
+        btnContent: '👌👌👌',
+        onClose: () => {
+          showUpdateModal.value = false
+        }
+      })
+    }
+  })
+}
 </script>
 
 <style scoped></style>
