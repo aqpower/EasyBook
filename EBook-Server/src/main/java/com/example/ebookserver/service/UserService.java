@@ -20,7 +20,7 @@ public interface UserService {
     List<Integer> selectBlackUsers(Integer id);
     List<Integer> selectBlackedUsers(Integer id);
 
-    User selectUserDetails(Integer id);
+    Home selectUserDetails(Integer id, Integer integer);
 
     NotifyPageBean selectNotifies(Integer id, Integer page, Integer pageSize);
 
@@ -31,4 +31,6 @@ public interface UserService {
     List<User> selectCareList(Integer id);
 
     void toUnCare(Care care);
+
+    List<User> selectFansList(Integer id);
 }

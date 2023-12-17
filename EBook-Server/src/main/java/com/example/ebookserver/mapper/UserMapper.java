@@ -1,9 +1,6 @@
 package com.example.ebookserver.mapper;
 
-import com.example.ebookserver.pojo.Care;
-import com.example.ebookserver.pojo.LoginData;
-import com.example.ebookserver.pojo.Notify;
-import com.example.ebookserver.pojo.User;
+import com.example.ebookserver.pojo.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -75,7 +72,7 @@ public interface UserMapper {
     short selectAvatarByEmail(String email);
 
     @Select("select id,name,avatar from user where id = #{id}")
-    User selectUserDetailsByid(Integer id);
+    Home selectUserDetailsByid(Integer id);
 
 
     List<Notify> selectNotifies(List<Integer> ids, Integer start, Integer pageSize);
@@ -92,9 +89,15 @@ public interface UserMapper {
     @Select("select cared_user_id from care where care_user_id = #{careUserId}")
     List<Integer> selectCaresId(Integer careUserId);
 
+    @Select("select care_user_id from care where cared_user_id = #{caredUserId}")
+    List<Integer> selectFansId(Integer caredUserId);
+
     @Select("select user.id,name,avatar from user,care where cared_user_id = user.id and care_user_id = #{id}")
     List<User> selectCares(Integer id);
 
     @Delete("delete from care where care_user_id = #{careUserId} and cared_user_id = #{caredUserId}")
     void UnCare(Care care);
+
+    @Select("select user.id,name,avatar from user,care where care_user_id = user.id and cared_user_id = #{id}")
+    List<User> selectFans(Integer id);
 }
