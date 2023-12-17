@@ -65,11 +65,12 @@ public class UserController {
     /*
     * 用户主页展示信息
     * */
-    @GetMapping("/users/info/{id}")
-    public Result userDetail(@PathVariable Integer id){
+    @GetMapping("/users/info/{userId},{id}")
+    public Result userDetail(@PathVariable Integer userId,
+                             @PathVariable Integer id){
         log.info("用户主页展示");
-        User user = userService.selectUserDetails(id);
-        return Result.success(user);
+        Home home = userService.selectUserDetails(userId,id);
+        return Result.success(home);
     }
 
     /*
@@ -144,6 +145,16 @@ public class UserController {
     public Result CareList(@RequestParam Integer id){
         log.info("查看用户的关注列表");
         List<User> users = userService.selectCareList(id);
+        return Result.success(users);
+    }
+
+    /*
+    * 查看粉丝列表
+    * */
+    @GetMapping("/user/fans")
+    public Result fansList(@RequestParam Integer id){
+        log.info("查看用户的粉丝列表");
+        List<User> users = userService.selectFansList(id);
         return Result.success(users);
     }
 }

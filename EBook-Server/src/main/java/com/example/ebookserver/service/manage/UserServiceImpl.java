@@ -149,9 +149,29 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectBlackedList(id);
     }
 
+    /*
+    * userId:被查看主页的id
+    * id:查看他人主页的id
+    * */
     @Override
-    public User selectUserDetails(Integer id) {
-        return userMapper.selectUserDetailsByid(id);
+    public Home selectUserDetails(Integer userId, Integer id) {
+        Home home = new Home();
+        //基本信息
+        home = userMapper.selectUserDetailsByid(userId);
+        //查看关注的数量
+        List<Integer> caresId = userMapper.selectCaresId(userId);
+        //查看粉丝的数量
+        List<Integer> fansId = userMapper.selectFansId(userId);
+
+        home.setFansNum((short) fansId.size());
+        home.setFollowNum((short) caresId.size());
+
+        if (fansId.contains(userId)){
+            home.setFollowed(true);
+        }else {
+            home.setFollowed(false);
+        }
+        return home;
     }
 
     @Override
@@ -189,5 +209,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void toUnCare(Care care) {
         userMapper.UnCare(care);
+    }
+
+    @Override
+    public List<User> selectFansList(Integer id) {
+        return userMapper.selectFans(id);
     }
 }
