@@ -5,7 +5,6 @@ import com.example.ebookserver.mapper.ViolationMapper;
 import com.example.ebookserver.pojo.PgBean;
 import com.example.ebookserver.pojo.Violation;
 import com.example.ebookserver.service.ViolationService;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service; // 注意这一行
 
@@ -25,5 +24,24 @@ public class ViolationServiceImpl implements ViolationService {
         //封装PageBean对象
         PgBean pgBean = new PgBean(count,violationList);
         return pgBean;
+    }
+
+    @Override
+    public Violation getViolationById(Integer violationId) {
+        Violation violation = violationMapper.getViolationById(violationId);
+        if (violation == null) {
+            System.out.println("Violation is null");
+        }
+        return violation;
+    }
+
+    @Override
+    public void deleteViolation(Integer id) {
+        violationMapper.deleteById(id);
+    }
+
+    @Override
+    public Violation selectById(Integer violationId) {
+        return violationMapper.getViolationById(violationId);
     }
 }

@@ -215,4 +215,11 @@ public class UserServiceImpl implements UserService {
     public List<User> selectFansList(Integer id) {
         return userMapper.selectFans(id);
     }
+
+    @Override
+    public void updateUseRole(short role, Integer id) {
+        userMapper.updateUserRoleById(id, role);
+    }
+
+
 }

@@ -21,4 +21,6 @@ public interface PostService {
     PageBean search(Short color, String text, Integer id, Integer page, Integer pageSize);
 
     PageBean showCarePosts(Integer id, Integer page, Integer pageSize, List<Integer> careList);
+
+    void deletePostByViolation(Integer violationId);
 }
