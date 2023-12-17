@@ -59,4 +59,8 @@ public interface PostMapper {
     void deleteById(Integer id);
 
     List<Posts> pageSearch(Short color, String text, List<Integer> users, Integer start, Integer pageSize);
+
+    Long countCarePosts(List<Integer> careList);
+
+    List<Posts> pageCare(List<Integer> careList, Integer start, Integer pageSize);
 }

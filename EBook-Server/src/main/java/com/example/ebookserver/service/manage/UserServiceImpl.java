@@ -170,4 +170,24 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public void toCare(Care care) {
+        userMapper.AddCare(care);
+    }
+
+    @Override
+    public List<Integer> selectCareListId(Integer careUserId) {
+        return userMapper.selectCaresId(careUserId);
+    }
+
+    @Override
+    public List<User> selectCareList(Integer id) {
+        return userMapper.selectCares(id);
+    }
+
+    @Override
+    public void toUnCare(Care care) {
+        userMapper.UnCare(care);
+    }
 }

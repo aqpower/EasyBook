@@ -4,6 +4,7 @@ import com.example.ebookserver.mapper.PostMapper;
 import com.example.ebookserver.pojo.*;
 import com.example.ebookserver.service.PostService;
 import com.example.ebookserver.service.UserService;
+import com.github.houbb.sensitive.word.core.SensitiveWordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,11 @@ public class PostServiceImpl implements PostService {
         if (role >= 4){   //用户不能发帖
             return 3;
         }else {
+            post.setContentText(SensitiveWordHelper.replace(post.getContentText()));
+            post.setTitle(SensitiveWordHelper.replace(post.getTitle()));
+            if (post.getLyrics() != null){
+                post.setLyrics(SensitiveWordHelper.replace(post.getLyrics()));
+            }
             int result = postMapper.post(post);
             if (post.getUrls() != null){
                 postMapper.toImages(post.getId(),post.getUrls());
@@ -99,12 +105,28 @@ public class PostServiceImpl implements PostService {
 
         //查询帖子总数
         Long count = postMapper.count(users);
-        Integer start = (page -1) * pageSize;
+        Integer start = (page - 1) * pageSize;
         //分页查询帖子得到的数据
-        List<Posts> posts = postMapper.pageSearch(color,text,users,start,pageSize);
+        List<Posts> posts = postMapper.pageSearch(color, text, users, start, pageSize);
         posts = setUrls(posts);
         //返回的类
-        PageBean pageBean = new PageBean((count+pageSize-1)/pageSize, posts);
+        PageBean pageBean = new PageBean((count + pageSize - 1) / pageSize, posts);
         return pageBean;
+    }
+
+    @Override
+    public PageBean showCarePosts(Integer id, Integer page, Integer pageSize, List<Integer> careList) {
+        if (careList.size() != 0){
+            //查询帖子总数
+            Long count = postMapper.countCarePosts(careList);
+            Integer start = (page - 1) * pageSize;
+            //分页查询帖子得到的数据
+            List<Posts> posts = postMapper.pageCare(careList, start, pageSize);
+            posts = setUrls(posts);
+            //返回的类
+            PageBean pageBean = new PageBean((count + pageSize - 1) / pageSize, posts);
+            return pageBean;
+        }
+        return null;
     }
 }

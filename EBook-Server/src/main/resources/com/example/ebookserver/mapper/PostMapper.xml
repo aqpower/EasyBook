@@ -26,6 +26,7 @@
         </foreach>
     </insert>
 
+
     <select id="count" resultType="long">
         select count(*) from post
         <if test="users.size() != 0">
@@ -83,6 +84,23 @@
             </if>
         </where>
 
+        order by post.id desc
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="countCarePosts" resultType="java.lang.Long">
+        select count(*) from post where user_id in
+        <foreach collection="careList" item="userId" separator="," open="(" close=")">
+            #{userId}
+        </foreach>
+    </select>
+
+    <select id="pageCare" resultType="com.example.ebookserver.pojo.Posts">
+        select post.id,user_id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
+        from user,post where user.id=post.user_id and user_id in
+        <foreach collection="careList" item="userId" separator="," open="(" close=")">
+            #{userId}
+        </foreach>
         order by post.id desc
         limit #{start},#{pageSize}
     </select>
