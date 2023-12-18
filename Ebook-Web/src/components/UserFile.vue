@@ -11,11 +11,17 @@
           </div>
         </div>
         <div class="flex ml-2 gap-2">
-          <p @click="isMe == true && (showFollowersModal = true)" :class="{ 'hover:cursor-pointer': isMe == true }">
+          <p
+            @click="isMe == true && (showFollowersModal = true)"
+            :class="{ 'hover:cursor-pointer': isMe == true }"
+          >
             <span class="font-extrabold mr-1">{{ user.followNum }}</span
             >关注
           </p>
-          <p @click="isMe == true && (showFansModal = true)" :class="{ 'hover:cursor-pointer': isMe == true }">
+          <p
+            @click="isMe == true && (showFansModal = true)"
+            :class="{ 'hover:cursor-pointer': isMe == true }"
+          >
             <span class="font-extrabold mr-1">{{ user.fansNum }}</span
             >粉丝
           </p>
@@ -23,20 +29,32 @@
       </div>
       <div class="flex gap-3 ml-4">
         <button
-          class="btn btn-primary min-h-0 h-8"
+          class="btn btn-info btn-outline min-h-0 h-8"
           @click="followUser"
-          v-show="isMe == false && follow == false"
+          v-show="isMe == false && follow == false && black == false"
         >
           关注
         </button>
         <button
-          class="btn btn-primary btn-outline min-h-0 h-8"
+          class="btn btn-success btn-outline min-h-0 h-8"
           @click="cancelFollow"
           v-show="isMe == false && follow == true"
         >
           ✅已关注
         </button>
-        <button class="btn btn-primary btn-outline min-h-0 h-8">拉黑</button>
+        <button
+          class="btn btn-error btn-outline min-h-0 h-8"
+          v-show="isMe == false && black == false && follow == false"
+          @click="newBlack"
+        >
+          拉黑
+        </button>
+        <button
+          class="btn btn-error btn-outline min-h-0 h-8"
+          v-show="isMe == false && black == true"
+        >
+          ⭕已拉黑
+        </button>
       </div>
     </div>
     <div class="divider text-gray-400">帖子</div>
@@ -89,7 +107,13 @@ import type { UserPostResType } from '@/types/post'
 import { useRoute } from 'vue-router'
 import PostCard from './PostCard.vue'
 import { avatarList } from '@/utils/icon'
-import { cancelUserFollowApi, followUserApi, getUserInfoApi, updateUserInfoApi } from '@/api/user'
+import {
+  cancelUserFollowApi,
+  followUserApi,
+  getUserInfoApi,
+  newUserBlackApi,
+  updateUserInfoApi
+} from '@/api/user'
 import AvatarSelector from './AvatarSelector.vue'
 import { useUserStore } from '@/stores/userStores'
 import useCommandComponent from '@/hooks/useCommandComponent'
@@ -102,6 +126,7 @@ const avatarIndex = ref(-1)
 const showUpdateModal = ref(false)
 const showFollowersModal = ref(false)
 const follow = ref(false)
+const black = ref(false)
 const showFansModal = ref(false)
 const page = ref(1)
 const pageSize = ref(20)
@@ -119,6 +144,7 @@ onMounted(() => {
     if (res.code == 200) {
       user.value = res.data
       follow.value = user.value.followed
+      black.value = user.value.blacked
       avatarIndex.value = user.value.avatar
     }
   })
@@ -158,6 +184,23 @@ const followUser = () => {
         content: res.msg,
         btnContent: '👌'
       })
+    }
+  })
+}
+
+const newBlack = () => {
+  let data = {
+    userId: id,
+    blackUserId: userId
+  }
+  newUserBlackApi(data).then((res) => {
+    if (res.code == 200) {
+      dialog({
+        title: '🥳',
+        content: '拉黑成功！',
+        btnContent: '👌'
+      })
+      black.value = true
     }
   })
 }

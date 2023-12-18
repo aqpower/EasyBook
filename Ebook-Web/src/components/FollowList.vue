@@ -54,6 +54,7 @@ const cancelFollow = (cancerId: string) => {
 <template>
   <div class="flex gap-3 flex-col w-full overflow-scroll max-h-96">
     <p>关注列表</p>
+    <div class="divider" v-show="followerList.length == 0">你还没有关注过用户哦~🙏</div>
     <div v-for="(item, index) in followerList" :key="index">
       <!-- {{ item }} -->
       <div class="flex gap-3 items-center justify-between hover:cursor-pointer">
