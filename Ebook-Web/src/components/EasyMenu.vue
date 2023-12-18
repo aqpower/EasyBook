@@ -1,13 +1,16 @@
 <template>
-  <div class="rounded-xl shadow-xl bg-base-100">
-    <div class="card card-compact w-56">
-      <figure>
-        <img class="w-32" src="../assets//logo-text-nobg.png" />
-      </figure>
+  <div class="rounded-xl ease-linear duration-300">
+    <div
+      class="card card-compact w-56 bg-200"
+      style="
+        box-shadow:
+          0 4px 32px 0 rgba(0, 0, 0, 0.08),
+          0 1px 4px 0 rgba(0, 0, 0, 0.04);
+      "
+    >
       <div class="card-body">
-        <h2 class="card-title"></h2>
-        <div class="dropdown mb-72">
-          <div tabindex="0" role="button" class="btn m-1">
+        <div class="dropdown">
+          <div tabindex="0" role="button" class="btn btn-primary btn-outline min-h-0 h-9 w-full">
             Theme
             <svg
               width="12px"
@@ -105,7 +108,17 @@
             </li>
           </ul>
         </div>
-        <button class="btn btn-primary btn-outline min-h-0 h-9">退出登录</button>
+        <button class="btn btn-primary btn-outline min-h-0 h-9" @click="logout">退出登录</button>
+        <figure>
+          <img class="w-32" src="../assets//logo-text-nobg.png" />
+        </figure>
+        <div class="flex justify-center items-center flex-col">
+          <p class="text-success">DESIGNED</p>
+          <p class="text-success">BY</p>
+          <p class="text-success">@aqpower</p>
+          <p class="text-success">@zhuxinr</p>
+          <p class="text-success">@wzbmkbk</p>
+        </div>
       </div>
     </div>
   </div>
@@ -114,12 +127,27 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useThemeStore } from '@/stores/theme'
-
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStores'
+import { log } from 'console'
+const userStore = useUserStore()
+const router = useRouter()
 const selectedTheme = ref('')
 const themeStore = useThemeStore()
 watch(selectedTheme, () => {
   themeStore.setTheme(selectedTheme.value)
 })
+
+const logout = () => {
+  userStore.setUser({
+    id: '',
+    name: '',
+    email: '',
+    token: '',
+    avatar: 0
+  })
+  router.replace('/')
+}
 </script>
 
 <style scoped></style>

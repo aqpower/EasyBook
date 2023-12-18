@@ -7,7 +7,7 @@
     <div>
       <div class="flex p-3 flex-col space-y-3">
         <button
-          class="btn btn-neutral h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
+          class="btn btn-neutral h-10 min-h-min w-56 justify-start items-center gap-3"
           @click="menuHandler"
           :class="{ '': menuVar == 1, ' bg-transparent shadow-transparent border-0': menuVar != 1 }"
         >
@@ -102,7 +102,7 @@
       </div>
 
       <div class="absolute bottom-2 pl-3">
-        <EasyMenuVue class="mb-4" v-show="showMenu == true"></EasyMenuVue>
+        <EasyMenuVue class="mb-3" v-show="showMenu == true"></EasyMenuVue>
         <button
           class="btn h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
           @click="menuHandler"

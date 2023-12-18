@@ -63,19 +63,19 @@ const dialogVisible = computed<boolean>({
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="transform overflow-scroll rounded-2xl bg-base-200 text-left align-middle shadow-xl transition-all"
+              class="transform overflow-scroll rounded-2xl bg-base-100 text-left align-middle shadow-xl transition-all"
               :class="{ 'w-full mx-20 p-4': bigDialogEnable, 'w-96 p-6': !bigDialogEnable}"
               :style="{
                 height: bigDialogEnable ? '94vh' : ''
               }"
             >
               <!-- style qudiao -->
-              <DialogTitle class="text-xl font-medium leading-9 text-gray-900">
+              <DialogTitle class="text-xl font-medium leading-9 text-base-content">
                 {{ props.title }}
               </DialogTitle>
               <div class="w-full h-full">
                 <slot name="content" />
-                <p class="text-base text-gray-500">
+                <p class="text-base-content">
                   {{ props.content }}
                 </p>
               </div>
@@ -83,7 +83,7 @@ const dialogVisible = computed<boolean>({
               <div v-show="props.btnContent" class="mt-4 flex justify-end">
                 <button
                   type="button"
-                  class="btn btn-active btn-primary inline-flex rounded-md border border-transparent bg-rose-100 px-4 py-2 text-sm font-medium hover:bg-rose-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2"
+                  class="btn btn-active btn-primary inline-flex rounded-md border border-transparent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                   @click="dialogVisible = false"
                 >
                   {{ props.btnContent }}

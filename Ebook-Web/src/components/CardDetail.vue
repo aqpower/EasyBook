@@ -138,7 +138,7 @@ const navUserProfile = () => {
                 <button class="btn btn-primary" v-show="showDelete()" @click="deletePost">
                   删除帖子
                 </button>
-                <button class="btn" @click="handleClose">❌</button>
+                <button class="btn btn-primary btn-outline" @click="handleClose">❌</button>
               </div>
             </div>
             <div class="mt-1">

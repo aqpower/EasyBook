@@ -9,8 +9,8 @@ import type { an } from 'vitest/dist/reporters-5f784f42.js'
  * @param {number} userId - 用户的id
  * @returns {Promise} 一个promise，如果成功则返回响应数据，如果失败则返回错误
  */
-export const getUserInfoApi = (userId: number): Promise<any> =>
-  httpInstance.get(`/api/v1/users/info/${userId}`)
+export const getUserInfoApi = (id: string, userId: number): Promise<any> =>
+  httpInstance.get(`/api/v1/users/info/${userId},${id}`)
 
 /**
  * 向服务器发送一个POST请求，进行用户登录请求
@@ -51,6 +51,10 @@ export const getMessageApi = (data: {
     }
   })
 
+export const updateUserInfoApi = (data: UserUpdateType): Promise<ResType<any>> =>
+  httpInstance.put('/api/v1/user', data)
 
-
-export const updateUserInfoApi = (data:UserUpdateType):Promise<ResType<any>> => httpInstance.put('/api/v1/user', data)
+export const followUserApi = (data: {
+  careUserId: string
+  caredUserId: string
+}): Promise<ResType<any>> => httpInstance.post('/api/v1/user/care', data)
