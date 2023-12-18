@@ -36,6 +36,6 @@ public interface UserService {
 
     CommentBean selectComments(Integer id, Integer page, Integer pageSize);
 
-    void updateUseRole(short role, Integer id);
+    void updateUseRole(Integer id, short role);
 
 }

@@ -217,7 +217,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUseRole(short role, Integer id) {
+    public void updateUseRole(Integer id, short role) {
         userMapper.updateUserRoleById(id, role);
     }
 

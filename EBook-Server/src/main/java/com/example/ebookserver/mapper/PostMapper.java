@@ -78,4 +78,8 @@ public interface PostMapper {
     @Update("update post set post.exist = 0 where id = (select post_id from violation where id = #{violationId})")
     void deletePostByViolation(@Param("violationId") Integer violationId);
 
+
+    @Select("select user_id from post where id = #{postId}")
+    Integer getUserIdById(Integer postId);
+
 }

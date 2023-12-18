@@ -163,4 +163,9 @@ public class PostServiceImpl implements PostService {
     public void deletePostByViolation(Integer violationId) {
         postMapper.deletePostByViolation(violationId);
     }
+
+    @Override
+    public Integer getUserIdById(Integer postId) {
+        return postMapper.getUserIdById(postId);
+    }
 }
