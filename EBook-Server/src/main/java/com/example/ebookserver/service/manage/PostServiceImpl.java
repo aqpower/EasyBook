@@ -133,4 +133,9 @@ public class PostServiceImpl implements PostService {
         }
         return null;
     }
+
+    @Override
+    public void deletePostByViolation(Integer violationId) {
+        postMapper.deletePostByViolation(violationId);
+    }
 }

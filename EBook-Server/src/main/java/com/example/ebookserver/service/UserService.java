@@ -33,4 +33,7 @@ public interface UserService {
     void toUnCare(Care care);
 
     List<User> selectFansList(Integer id);
+
+    void updateUseRole(short role, Integer id);
+
 }
