@@ -7,45 +7,102 @@
     <div>
       <div class="flex p-3 flex-col space-y-3">
         <button
-          class="btn h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
+          class="btn btn-neutral h-10 min-h-min w-56 justify-start items-center gap-3"
           @click="menuHandler"
           :class="{ '': menuVar == 1, ' bg-transparent shadow-transparent border-0': menuVar != 1 }"
         >
-          <Icon class="ml-1 w-5 h-5" icon="line-md:home-md" />
-          <span class="text-base font-medium">发现</span>
+          <Icon
+            class="ml-1 w-5 h-5"
+            icon="line-md:home-md"
+            :class="{
+              '': menuVar == 1,
+              'text-base-content': menuVar != 1
+            }"
+          />
+          <span
+            class="text-base font-medium"
+            :class="{
+              '': menuVar == 1,
+              'text-base-content': menuVar != 1
+            }"
+            >发现</span
+          >
         </button>
         <label
           for="my_modal_6"
-          class="btn h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
+          class="btn btn-neutral h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
           @click="menuHandler"
           :class="{
-            'btn ': menuVar == 2,
+            '': menuVar == 2,
             'border-0 shadow-transparent bg-transparent': menuVar != 2
           }"
         >
-          <Icon class="ml-1 w-5 h-5" icon="line-md:clipboard-plus" />
-          <span class="text-base font-medium font-sans">发布</span>
+          <Icon
+            class="ml-1 w-5 h-5"
+            icon="line-md:clipboard-plus"
+            :class="{
+              '': menuVar == 2,
+              'text-base-content': menuVar != 2
+            }"
+          />
+          <span
+            class="text-base font-medium font-sans"
+            :class="{
+              '': menuVar == 2,
+              'text-base-content': menuVar != 2
+            }"
+            >发布</span
+          >
         </label>
         <button
-          class="btn h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
-          :class="{ '': menuVar == 3, ' bg-transparent shadow-transparent border-0': menuVar != 3 }"
+          class="btn btn-neutral h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
+          :class="{ '': menuVar == 3, 'bg-transparent shadow-transparent border-0': menuVar != 3 }"
           @click="menuHandler"
         >
-          <Icon class="ml-1 w-5 h-5" icon="line-md:telegram" />
-          <span class="text-base font-medium font-sans">通知</span>
+          <Icon
+            class="ml-1 w-5 h-5"
+            icon="line-md:telegram"
+            :class="{
+              '': menuVar == 3,
+              'text-base-content': menuVar != 3
+            }"
+          />
+          <span
+            class="text-base font-medium font-sans"
+            :class="{
+              '': menuVar == 3,
+              'text-base-content': menuVar != 3
+            }"
+            >通知</span
+          >
         </button>
         <button
-          class="btn h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
+          class="btn btn-neutral h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
           :class="{ '': menuVar == 4, ' bg-transparent shadow-transparent border-0': menuVar != 4 }"
           @click="menuHandler"
         >
-          <Icon class="ml-1 w-5 h-5" :icon="avatarList[userStore.user?.avatar]" />
+          <Icon
+            class="ml-1 w-5 h-5"
+            :icon="avatarList[userStore.user?.avatar]"
+            :class="{
+              '': menuVar == 4,
+              'text-base-content': menuVar != 4
+            }"
+          />
 
-          <span class="text-base font-medium font-sans">我</span>
+          <span
+            class="text-base font-medium font-sans"
+            :class="{
+              '': menuVar == 4,
+              'text-base-content': menuVar != 4
+            }"
+            >我</span
+          >
         </button>
       </div>
 
       <div class="absolute bottom-2 pl-3">
+        <EasyMenuVue class="mb-3" v-show="showMenu == true"></EasyMenuVue>
         <button
           class="btn h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
           @click="menuHandler"
@@ -102,11 +159,13 @@ import InfoDialogVue from '@/components/InfoDialog.vue'
 import { avatarList } from '@/utils/icon'
 import { useUserStore } from '@/stores/userStores'
 import { useRouter } from 'vue-router'
+import EasyMenuVue from '@/components/EasyMenu.vue'
 const newModelShow = ref(false)
 const newPostRef = ref<any>()
 const loadingShow = ref(false)
 const menuVar = ref(1)
 const router = useRouter()
+const showMenu = ref(false)
 const newPostHandler = () => {
   newPostRef.value.newPost()
   loadingShow.value = true
@@ -128,7 +187,6 @@ eventBus.on('postFinish', (e) => {
 })
 
 const menuHandler = (e: any) => {
-  console.log(e)
   switch (e.srcElement.innerText) {
     case '发现':
       router.push('/home/explore')
@@ -146,6 +204,7 @@ const menuHandler = (e: any) => {
       router.push(`/home/profile/${userStore.user?.id}`)
       break
     case '更多':
+      showMenu.value = !showMenu.value
   }
 }
 </script>

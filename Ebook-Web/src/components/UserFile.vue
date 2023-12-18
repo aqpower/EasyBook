@@ -11,6 +11,10 @@
           </div>
         </div>
       </div>
+      <div class="flex gap-3 ml-4">
+        <button class="btn btn-primary min-h-0 h-8" @click="followUser">关注</button>
+        <button class="btn btn-primary min-h-0 h-8">拉黑</button>
+      </div>
     </div>
     <div class="divider text-gray-400">帖子</div>
     <div class="pr-6 mt-5">
@@ -44,7 +48,7 @@ import type { UserPostResType } from '@/types/post'
 import { useRoute } from 'vue-router'
 import PostCard from './PostCard.vue'
 import { avatarList } from '@/utils/icon'
-import { getUserInfoApi, updateUserInfoApi } from '@/api/user'
+import { followUserApi, getUserInfoApi, updateUserInfoApi } from '@/api/user'
 import AvatarSelector from './AvatarSelector.vue'
 import { useUserStore } from '@/stores/userStores'
 import useCommandComponent from '@/hooks/useCommandComponent'
@@ -59,9 +63,10 @@ provide('avatarIndex', avatarIndex)
 const userPosts = ref<UserPostResType[]>([])
 const route = useRoute()
 const user = ref()
+const id = userStore.user?.id as string
+const userId = route.params.userId
 onMounted(() => {
-  const userId = route.params.userId
-  getUserInfoApi(userId).then((res) => {
+  getUserInfoApi(id, userId).then((res) => {
     console.log(res)
     if (res.code == 200) {
       user.value = res.data
@@ -75,6 +80,28 @@ onMounted(() => {
     }
   })
 })
+
+const followUser = () => {
+  let data = {
+    careUserId: id,
+    caredUserId: userId
+  }
+  followUserApi(data).then((res) => {
+    if (res.code == 200) {
+      dialog({
+        title: '🥳',
+        content: '关注成功！',
+        btnContent: '👌'
+      })
+    } else {
+      dialog({
+        title: '😢',
+        content: res.msg,
+        btnContent: '👌'
+      })
+    }
+  })
+}
 
 const updateUserInfo = () => {
   if (userNameInput.value.length == 0) {

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div class="flex justify-center mt-10 text-xl text-gray-400" v-show="messageList.length == 0">
-        目前还没有通知哦~
+      目前还没有通知哦~
     </div>
     <div class="flex flex-col gap-y-5 justify-center items-center w-full">
       <div v-for="(item, index) in messageList" :key="index" class="w-full">
@@ -52,12 +52,13 @@ onMounted(() => {
     page: page.value,
     pageSize: pageSize.value
   }
+  const id = userStore.user?.id
   getMessageApi(data).then((res) => {
     console.log(res)
     if (res.code == 200 && res.data.notifies != null) {
       messageList.value = res.data.notifies
       for (let i = 0; i < messageList.value.length; i++) {
-        getUserInfoApi(messageList.value[i].userId).then((res) => {
+        getUserInfoApi(id, messageList.value[i].userId).then((res) => {
           console.log(messageList.value[i])
           messageList.value[i]['avatar'] = res.data.avatar
           messageList.value[i]['name'] = res.data.name

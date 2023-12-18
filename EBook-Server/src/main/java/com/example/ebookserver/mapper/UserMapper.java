@@ -101,6 +101,10 @@ public interface UserMapper {
     @Select("select user.id,name,avatar from user,care where care_user_id = user.id and cared_user_id = #{id}")
     List<User> selectFans(Integer id);
 
+    @Update("update user set role = #{role} where id = #{id}")
+    int updateUserRoleById(@Param("id") Integer id, @Param("role") short role);
+
+
     List<Comment> pageComments(Integer id, Integer start, Integer pageSize);
 
     @Select("select count(*) from comment where user_id = #{id}")

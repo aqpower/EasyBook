@@ -3,9 +3,7 @@ package com.example.ebookserver.mapper;
 import com.example.ebookserver.pojo.Comments;
 import com.example.ebookserver.pojo.Post;
 import com.example.ebookserver.pojo.Posts;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -76,4 +74,8 @@ public interface PostMapper {
     Long countCollectionPosts(Integer id);
 
     List<Posts> pageCollection(Integer id, Integer start, Integer pageSize);
+
+    @Update("update post set post.exist = 0 where id = (select post_id from violation where id = #{violationId})")
+    void deletePostByViolation(@Param("violationId") Integer violationId);
+
 }

@@ -11,6 +11,21 @@ export const getPostsApi = (data: { id: any; page: any; pageSize: any }): Promis
     }
   })
 
+export const getColorPostsApi = (data: {
+  id: any
+  page: any
+  pageSize: any
+  color: number
+}): Promise<any> =>
+  httpInstance.get('/api/v1/posts', {
+    params: {
+      id: data.id,
+      page: data.page,
+      pageSize: data.pageSize,
+      color: data.color
+    }
+  })
+
 export const getUserPostApi = (userId: any): Promise<ResType<UserPostResType>> =>
   httpInstance.get(`/api/v1/posts/users/${userId}`)
 
@@ -31,5 +46,21 @@ export const newPostLikeApi = (data: any): Promise<ResType<any>> =>
 
 export const deletePostApi = (postId: number) => httpInstance.delete(`/api/v1/posts/${postId}`)
 
-export const newCommentApi = (data): Promise<ResType<any>> =>
-  httpInstance.post('/api/v1/posts/comment', data)
+export const newCommentApi = (data: {
+  userId: string | undefined
+  postId: string | string[]
+  content: string
+}): Promise<ResType<any>> => httpInstance.post('/api/v1/posts/comment', data)
+
+export const getFollowerPostApi = (
+  id: string,
+  page: number,
+  pageSize: number
+): Promise<ResType<any>> =>
+  httpInstance.get('/api/v1/posts/care', {
+    params: {
+      id: id,
+      page: page,
+      pageSize: pageSize
+    }
+  })

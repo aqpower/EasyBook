@@ -217,6 +217,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUseRole(short role, Integer id) {
+        userMapper.updateUserRoleById(id, role);
+    }
+
+
+
+    @Override
     public CommentBean selectComments(Integer id, Integer page, Integer pageSize) {
         Integer start = (page-1) * pageSize;
         Long count = userMapper.countComment(id);

@@ -24,4 +24,6 @@ public interface PostService {
     PageBean getLikePosts(Integer id, Integer page, Integer pageSize);
 
     PageBean getCollectionPosts(Integer id, Integer page, Integer pageSize);
+
+    void deletePostByViolation(Integer violationId);
 }

@@ -158,4 +158,9 @@ public class PostServiceImpl implements PostService {
         //返回的类
         return new PageBean((count + pageSize - 1) / pageSize, posts);
     }
+
+    @Override
+    public void deletePostByViolation(Integer violationId) {
+        postMapper.deletePostByViolation(violationId);
+    }
 }
