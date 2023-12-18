@@ -168,7 +168,6 @@ const router = useRouter()
 const showMenu = ref(false)
 const newPostHandler = () => {
   newPostRef.value.newPost()
-  loadingShow.value = true
 }
 
 onMounted(() => {
@@ -181,8 +180,11 @@ onMounted(() => {
 
 const userStore = useUserStore()
 
+eventBus.on('startUpload', (e) => {
+  loadingShow.value = true
+})
+
 eventBus.on('postFinish', (e) => {
-  console.log(e)
   loadingShow.value = false
 })
 

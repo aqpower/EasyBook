@@ -52,6 +52,7 @@
         <button
           class="btn btn-error btn-outline min-h-0 h-8"
           v-show="isMe == false && black == true"
+          @click="cancelBlack"
         >
           ⭕已拉黑
         </button>
@@ -108,6 +109,7 @@ import { useRoute } from 'vue-router'
 import PostCard from './PostCard.vue'
 import { avatarList } from '@/utils/icon'
 import {
+cancelBlackApi,
   cancelUserFollowApi,
   followUserApi,
   getUserInfoApi,
@@ -201,6 +203,23 @@ const newBlack = () => {
         btnContent: '👌'
       })
       black.value = true
+    }
+  })
+}
+
+const cancelBlack = () => {
+  let data = {
+    userId: id,
+    blackUserId: userId
+  }
+  cancelBlackApi(data).then(res => {
+    if(res.code == 200){
+      dialog({
+        title: '🥳',
+        content: '取消拉黑成功！',
+        btnContent: '👌'
+      })
+      black.value = false
     }
   })
 }

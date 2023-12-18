@@ -84,4 +84,13 @@ export const getFansApi = (userId: string): Promise<ResType<any>> =>
 export const newUserBlackApi = (data: {
   balckuserId: string
   userId: string
-}): Promise<ResType<any>> => httpInstance.post('/api/v1/blackList', data)
+}): Promise<ResType<any>> => httpInstance.post('/api/v1/users/blackList', data)
+
+
+export const cancelBlackApi = (data: {
+  userId: string
+  balckuserId: string
+}): Promise<ResType<any>> =>
+  httpInstance.delete('/api/v1/users/disBlackList', {
+    data: data
+  })
