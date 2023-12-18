@@ -6,14 +6,37 @@
         <div class="badge badge-primary">ID: {{ user.id }}</div>
         <div class="flex items-center gap-1">
           <p class="text-xl font-bold">{{ user.name }}</p>
-          <div class="cursor-pointer" @click="showUpdateModal = true">
+          <div class="cursor-pointer" v-show="isMe == true" @click="showUpdateModal = true">
             <Icon icon="solar:pen-2-bold" />
           </div>
         </div>
+        <div class="flex ml-2 gap-2">
+          <p>
+            <span class="font-extrabold mr-1">{{ user.followNum }}</span
+            >关注
+          </p>
+          <p>
+            <span class="font-extrabold mr-1">{{ user.fansNum }}</span
+            >粉丝
+          </p>
+        </div>
       </div>
       <div class="flex gap-3 ml-4">
-        <button class="btn btn-primary min-h-0 h-8" @click="followUser">关注</button>
-        <button class="btn btn-primary min-h-0 h-8">拉黑</button>
+        <button
+          class="btn btn-primary min-h-0 h-8"
+          @click="followUser"
+          v-show="isMe == false && follow == false"
+        >
+          关注
+        </button>
+        <button
+          class="btn btn-primary btn-outline min-h-0 h-8"
+          @click="cancelFollow"
+          v-show="isMe == false && follow == true"
+        >
+          ✅已关注
+        </button>
+        <button class="btn btn-primary btn-outline min-h-0 h-8">拉黑</button>
       </div>
     </div>
     <div class="divider text-gray-400">帖子</div>
@@ -42,13 +65,13 @@
 <script setup lang="ts">
 import InfoDialog from './InfoDialog.vue'
 import { getUserPostApi } from '@/api/posts'
-import { onMounted, provide, ref } from 'vue'
+import { computed, onMounted, provide, ref } from 'vue'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import type { UserPostResType } from '@/types/post'
 import { useRoute } from 'vue-router'
 import PostCard from './PostCard.vue'
 import { avatarList } from '@/utils/icon'
-import { followUserApi, getUserInfoApi, updateUserInfoApi } from '@/api/user'
+import { cancelUserFollowApi, followUserApi, getUserInfoApi, updateUserInfoApi } from '@/api/user'
 import AvatarSelector from './AvatarSelector.vue'
 import { useUserStore } from '@/stores/userStores'
 import useCommandComponent from '@/hooks/useCommandComponent'
@@ -57,6 +80,7 @@ const dialog = useCommandComponent(InfoDialog)
 const userNameInput = ref<string>(userStore.user?.name as string)
 const avatarIndex = ref(-1)
 const showUpdateModal = ref(false)
+const follow = ref(false)
 // 声明一个响应性变量并 provide 其自身
 // 孙组件获取后可以保持响应性
 provide('avatarIndex', avatarIndex)
@@ -70,6 +94,7 @@ onMounted(() => {
     console.log(res)
     if (res.code == 200) {
       user.value = res.data
+      follow.value = user.value.followed
       avatarIndex.value = user.value.avatar
     }
   })
@@ -79,6 +104,15 @@ onMounted(() => {
       userPosts.value = res.data
     }
   })
+})
+
+const isMe = computed((): boolean => {
+  if (route.params.userId != null) {
+    if (route.params.userId == userStore.user?.id) {
+      return true
+    }
+  }
+  return false
 })
 
 const followUser = () => {
@@ -93,12 +127,24 @@ const followUser = () => {
         content: '关注成功！',
         btnContent: '👌'
       })
+      follow.value = true
     } else {
       dialog({
         title: '😢',
         content: res.msg,
         btnContent: '👌'
       })
+    }
+  })
+}
+
+const cancelFollow = () => {
+  let data = {
+    careUserId: id,
+    caredUserId: userId
+  }
+  cancelUserFollowApi(data).then((res) => {
+    if (res.code == 200) {
     }
   })
 }

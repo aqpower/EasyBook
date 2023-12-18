@@ -2,7 +2,6 @@ import type { ResType } from '@/types'
 import httpInstance from '../utils/http'
 import type { UserRegisterType, UserUpdateType } from '@/types/user'
 import type { MessageType } from '@/types/message'
-import type { an } from 'vitest/dist/reporters-5f784f42.js'
 
 /**
  * 向服务器发送一个GET请求，根据user_id获取用户信息
@@ -58,3 +57,12 @@ export const followUserApi = (data: {
   careUserId: string
   caredUserId: string
 }): Promise<ResType<any>> => httpInstance.post('/api/v1/user/care', data)
+
+export const cancelUserFollowApi = (data: {
+  caredUserId: string
+  careUserId: string
+  [property: string]: any
+}): Promise<ResType<any>> =>
+  httpInstance.delete('/api/v1/user/care', {
+    data: data
+  })
