@@ -28,11 +28,22 @@
 
 
     <select id="count" resultType="long">
-        select count(*) from post
+        select count(*) from post,user
         <where>
+            user.id=post.user_id
             <if test="users.size() != 0">
-                <include refid="selectNotInBlackList">
-                </include>
+                and user.id not in
+                <foreach collection="users" item="id" separator="," open="(" close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="color != null">
+                and color = #{color}
+            </if>
+            <if test="text != null">
+                and (content_text like concat('%',#{text},'%')
+                or title like concat('%',#{text},'%')
+                or user.name like concat('%',#{text},'%'))
             </if>
             and exist != 0
         </where>
