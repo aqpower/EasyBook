@@ -14,4 +14,5 @@ public class Home {
     short followNum;
     short fansNum;
     boolean isFollowed;
+    boolean isBlacked;
 }
