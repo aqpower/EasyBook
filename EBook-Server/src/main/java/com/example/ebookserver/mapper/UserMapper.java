@@ -109,4 +109,7 @@ public interface UserMapper {
 
     @Select("select count(*) from comment where user_id = #{id}")
     Long countComment(Integer id);
+
+    @Delete("delete from blacklist where user_id = #{userId} and black_user_id = #{blackUserId}")
+    int disBlack(BlackList blackList);
 }

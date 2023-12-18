@@ -228,6 +228,15 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUserRoleById(id, role);
     }
 
+    @Override
+    public int DisBlackList(BlackList blackList) {
+        List<Integer> blackId = userMapper.selectBlackList(blackList.getUserId());
+        //确保拉黑过
+        if (blackId.contains(blackList.getBlackUserId())){
+            return userMapper.disBlack(blackList);
+        }
+        return 3;
+    }
 
 
     @Override

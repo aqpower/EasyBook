@@ -37,7 +37,7 @@ public class UserController {
      * 获取参数：json{userId,blackUserId}
      * 返回参数：相应的提示语句
      * */
-    @PostMapping("/blackList")
+    @PostMapping("/users/blackList")
     public Result user_blackList(@RequestBody BlackList blackList){
         log.info("实现用户拉黑功能");
         int result = userService.toBlackList(blackList);
@@ -45,6 +45,21 @@ public class UserController {
             return Result.success("拉黑成功");
         }
         return Result.error("拉黑失败，请确保id有效");
+    }
+
+    /*
+     * 用户拉黑功能实现
+     * 获取参数：json{userId,blackUserId}
+     * 返回参数：相应的提示语句
+     * */
+    @DeleteMapping("/users/disBlackList")
+    public Result disBlackList(@RequestBody BlackList blackList){
+        log.info("实现用户取消拉黑功能");
+        int result = userService.DisBlackList(blackList);
+        if (result == 1){
+            return Result.success("取消拉黑成功");
+        }
+        return Result.error("取消拉黑失败，请确保id有效");
     }
 
 
