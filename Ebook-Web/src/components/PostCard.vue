@@ -16,7 +16,11 @@
       <div class="flex justify-between">
         <div class="flex items-center mt-1 hover:cursor-pointer" @click="navUserProfile">
           <Icon class="w-4 h-4 m-1" :icon="avatarList[post.avatar]"></Icon>
-          <p class="text-xs dark:text-slate-100 text-slate-600 hover:text-primary ease-in-out duration-200">{{ post.name }}</p>
+          <p
+            class="text-xs dark:text-slate-100 text-slate-600 hover:text-primary ease-in-out duration-200"
+          >
+            {{ post.name }}
+          </p>
         </div>
         <div class="flex items-center">
           <Icon

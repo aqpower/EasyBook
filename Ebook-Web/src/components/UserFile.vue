@@ -11,11 +11,11 @@
           </div>
         </div>
         <div class="flex ml-2 gap-2">
-          <p>
+          <p @click="isMe == true && (showFollowersModal = true)" :class="{ 'hover:cursor-pointer': isMe == true }">
             <span class="font-extrabold mr-1">{{ user.followNum }}</span
             >关注
           </p>
-          <p>
+          <p @click="isMe == true && (showFansModal = true)" :class="{ 'hover:cursor-pointer': isMe == true }">
             <span class="font-extrabold mr-1">{{ user.fansNum }}</span
             >粉丝
           </p>
@@ -59,6 +59,24 @@
       </div>
     </template>
   </InfoDialog>
+  <InfoDialog :visible="showFollowersModal">
+    <template #content>
+      <div class="flex flex-col items-center font-bold">
+        <FollowList></FollowList>
+        <button class="mt-4 btn min-h-0 h-9 w-full" @click="showFollowersModal = false">
+          确定
+        </button>
+      </div>
+    </template>
+  </InfoDialog>
+  <InfoDialog :visible="showFansModal">
+    <template #content>
+      <div class="flex flex-col items-center font-bold">
+        <FansList></FansList>
+        <button class="mt-4 btn min-h-0 h-9 w-full" @click="showFansModal = false">确定</button>
+      </div>
+    </template>
+  </InfoDialog>
   <RouterView></RouterView>
 </template>
 
@@ -75,12 +93,18 @@ import { cancelUserFollowApi, followUserApi, getUserInfoApi, updateUserInfoApi }
 import AvatarSelector from './AvatarSelector.vue'
 import { useUserStore } from '@/stores/userStores'
 import useCommandComponent from '@/hooks/useCommandComponent'
+import FollowList from '@/components/FollowList.vue'
+import FansList from './FansList.vue'
 const userStore = useUserStore()
 const dialog = useCommandComponent(InfoDialog)
 const userNameInput = ref<string>(userStore.user?.name as string)
 const avatarIndex = ref(-1)
 const showUpdateModal = ref(false)
+const showFollowersModal = ref(false)
 const follow = ref(false)
+const showFansModal = ref(false)
+const page = ref(1)
+const pageSize = ref(20)
 // 声明一个响应性变量并 provide 其自身
 // 孙组件获取后可以保持响应性
 provide('avatarIndex', avatarIndex)
@@ -98,10 +122,10 @@ onMounted(() => {
       avatarIndex.value = user.value.avatar
     }
   })
-  getUserPostApi(userId).then((res) => {
+  getUserPostApi(userId, page.value, pageSize.value).then((res) => {
     console.log(res)
     if (res.code == 200) {
-      userPosts.value = res.data
+      userPosts.value = res.data.posts
     }
   })
 })
@@ -145,6 +169,12 @@ const cancelFollow = () => {
   }
   cancelUserFollowApi(data).then((res) => {
     if (res.code == 200) {
+      dialog({
+        title: '🥳',
+        content: '取消关注成功！',
+        btnContent: '👌'
+      })
+      follow.value = false
     }
   })
 }

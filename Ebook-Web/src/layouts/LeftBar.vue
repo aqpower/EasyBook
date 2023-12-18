@@ -201,7 +201,9 @@ const menuHandler = (e: any) => {
       break
     case '我':
       menuVar.value = 4
-      router.push(`/home/profile/${userStore.user?.id}`)
+      router.push(`/home/profile/${userStore.user?.id}`).then(() => {
+        window.location.reload()
+      })
       break
     case '更多':
       showMenu.value = !showMenu.value

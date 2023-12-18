@@ -66,3 +66,17 @@ export const cancelUserFollowApi = (data: {
   httpInstance.delete('/api/v1/user/care', {
     data: data
   })
+
+export const getFollowersApi = (userId: string): Promise<ResType<any>> =>
+  httpInstance.get('/api/v1/user/care', {
+    params: {
+      id: userId
+    }
+  })
+
+export const getFansApi = (userId: string): Promise<ResType<any>> =>
+  httpInstance.get('/api/v1/user/fans', {
+    params: {
+      id: userId
+    }
+  })
