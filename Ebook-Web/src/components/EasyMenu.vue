@@ -117,11 +117,11 @@
           <img class="w-32" src="../assets//logo-text-nobg.png" />
         </figure>
         <div class="flex justify-center items-center flex-col">
-          <p class="text-success">DESIGNED</p>
-          <p class="text-success">BY</p>
+          <p class="text-success">DESIGNED BY</p>
           <p class="text-success">@aqpower</p>
           <p class="text-success">@zhuxinr</p>
           <p class="text-success">@wzbmkbk</p>
+          <p class="text-success">Copyright©2023 EasyBook</p>
         </div>
       </div>
     </div>
