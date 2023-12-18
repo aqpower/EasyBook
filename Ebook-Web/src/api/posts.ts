@@ -2,7 +2,13 @@ import type { ResType } from '@/types'
 import type { PostApiType, UserPostResType, PostType } from '@/types/post'
 import httpInstance from '@/utils/http'
 
-export const getPostsApi = (data: { id: any; page: any; pageSize: any }): Promise<any> =>
+export const getPostsApi = (data: {
+  id: any
+  page: any
+  pageSize: any
+  color?: number
+  text?: string
+}): Promise<any> =>
   httpInstance.get('/api/v1/posts', {
     params: {
       id: data.id,
@@ -16,13 +22,15 @@ export const getColorPostsApi = (data: {
   page: any
   pageSize: any
   color: number
+  text?: string
 }): Promise<any> =>
   httpInstance.get('/api/v1/posts', {
     params: {
       id: data.id,
       page: data.page,
       pageSize: data.pageSize,
-      color: data.color
+      color: data.color,
+      text: data.text
     }
   })
 
@@ -73,5 +81,22 @@ export const getFollowerPostApi = (
       id: id,
       page: page,
       pageSize: pageSize
+    }
+  })
+
+export const searchPostsApi = (data: {
+  id: any
+  page: any
+  pageSize: any
+  text: string
+  color: number
+}): Promise<ResType<any>> =>
+  httpInstance.get('/api/v1/posts', {
+    params: {
+      id: data.id,
+      page: data.page,
+      pageSize: data.pageSize,
+      text: data.text,
+      color: data.color
     }
   })

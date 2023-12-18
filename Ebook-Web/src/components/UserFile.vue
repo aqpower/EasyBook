@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-center mt-14 items-center">
+    <div class="flex justify-center mt-6 items-center">
       <Icon v-if="avatarIndex != -1" class="w-28 h-28 m-1" :icon="avatarList[avatarIndex]"></Icon>
       <div v-if="user" class="ml-3 flex flex-col gap-3">
         <div class="badge badge-primary">ID: {{ user.id }}</div>

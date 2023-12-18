@@ -191,7 +191,9 @@ eventBus.on('postFinish', (e) => {
 const menuHandler = (e: any) => {
   switch (e.srcElement.innerText) {
     case '发现':
-      router.push('/home/explore')
+      router.push('/home/explore').then(() => {
+        window.location.reload()
+      })
       menuVar.value = 1
       break
     case '发布':

@@ -86,11 +86,19 @@ export const newUserBlackApi = (data: {
   userId: string
 }): Promise<ResType<any>> => httpInstance.post('/api/v1/users/blackList', data)
 
-
 export const cancelBlackApi = (data: {
   userId: string
   balckuserId: string
 }): Promise<ResType<any>> =>
   httpInstance.delete('/api/v1/users/disBlackList', {
+    data: data
+  })
+
+export const deleteUserApi = (data: {
+  id: string
+  password: string
+  [property: string]: any
+}): Promise<ResType<any>> =>
+  httpInstance.delete('/api/v1/delete/user', {
     data: data
   })
