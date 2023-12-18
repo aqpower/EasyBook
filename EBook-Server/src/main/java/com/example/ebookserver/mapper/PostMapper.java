@@ -3,9 +3,7 @@ package com.example.ebookserver.mapper;
 import com.example.ebookserver.pojo.Comments;
 import com.example.ebookserver.pojo.Post;
 import com.example.ebookserver.pojo.Posts;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,15 +25,16 @@ public interface PostMapper {
      * */
     @Select("select url from image where post_id = #{postId}")
     List<String> getUrl(Integer postId);
+
     /*
      * 分页查询帖子
      * */
-    List<Posts> page(List<Integer> users, Integer start, Integer pageSize);
+    //List<Posts> page(List<Integer> users, Integer start, Integer pageSize);
 
     /*
      * 查询帖子总数
      * */
-    long count(List<Integer> users);
+    long count(Short color, String text, List<Integer> users);
 
     @Select("select count(*) from image where post_id = 1")
     long count1();
@@ -46,7 +45,7 @@ public interface PostMapper {
 
     List<Comments> selectComments(Integer postId);
 
-    List<Posts> getPostsByUserId(Integer id);
+    List<Posts> getPostsByUserId(Integer id, Integer start, Integer pageSize);
 
     @Select("select count(*) from comment where post_id = #{postId}")
     Integer countComments(Integer postId);
@@ -54,6 +53,33 @@ public interface PostMapper {
     @Select("select id from post where user_id = #{id}")
     List<Integer> selectIdByUserId(Integer id);
 
-    @Delete("delete from post where id = #{id}")
+    @Update("update post set exist = 0 where id = #{id}")
     void deleteById(Integer id);
+
+    List<Posts> pageSearch(Short color, String text, List<Integer> users, Integer start, Integer pageSize);
+
+    Long countCarePosts(List<Integer> careList);
+
+    List<Posts> pageCare(List<Integer> careList, Integer start, Integer pageSize);
+
+    @Select("select count(*) from post where user_id = #{id} and exist != 0")
+    Long countPostsByUserId(Integer id);
+
+    @Select("select count(*) from post,easylike where easylike.user_id = #{id} and easylike.post_id = post.id")
+    Long countlikePosts(Integer id);
+
+    List<Posts> pageLike(Integer id, Integer start, Integer pageSize);
+
+    @Select("select count(*) from post,collection where collection.user_id = #{id} and collection.post_id = post.id")
+    Long countCollectionPosts(Integer id);
+
+    List<Posts> pageCollection(Integer id, Integer start, Integer pageSize);
+
+    @Update("update post set post.exist = 0 where id = (select post_id from violation where id = #{violationId})")
+    void deletePostByViolation(@Param("violationId") Integer violationId);
+
+
+    @Select("select user_id from post where id = #{postId}")
+    Integer getUserIdById(Integer postId);
+
 }

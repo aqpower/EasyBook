@@ -3,4 +3,5 @@ export type MessageType = {
   postId: number
   userId: number
   content: string
+  avatar: number
 }

@@ -6,6 +6,7 @@ import com.example.ebookserver.pojo.Comment;
 import com.example.ebookserver.pojo.EasyLike;
 import com.example.ebookserver.pojo.Violation;
 import com.example.ebookserver.service.FeedBackPostService;
+import com.example.ebookserver.utils.FileUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,7 @@ public class FeedBackPostServiceImpl implements FeedBackPostService {
     @Override
     public int toComment(Comment comment) {
         comment.setCommentTime(LocalDateTime.now());
+        comment.setContent(FileUntil.filterSensitivityWord(comment.getContent(),'*'));
         return feedBackPostMapper.toComment(comment);
     }
 

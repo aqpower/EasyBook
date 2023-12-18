@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 /*
 * 展示帖子的详细信息，返回给前端
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Posts {
     private Integer id; //帖子id  post
+    private Integer userId;//发帖人id
     private short avatar;  //发帖人头像  user
     private String name;  //发帖人昵称   user
     private String title; //标题   post
@@ -22,4 +24,5 @@ public class Posts {
     private List<String> url;//图片链接集合 image
     private Integer likeNum;  //喜欢数量  post
     private Integer collectionNum;  //收藏数量 post
+    private LocalDateTime createTime;
 }

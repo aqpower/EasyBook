@@ -30,3 +30,5 @@ install -D @tailwindcss/typography
 npm install --save-dev @iconify/vue
 
 pnpm i mitt
+
+pnpm i theme-change --save

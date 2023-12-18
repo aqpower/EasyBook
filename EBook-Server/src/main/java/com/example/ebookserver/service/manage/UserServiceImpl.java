@@ -149,9 +149,36 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectBlackedList(id);
     }
 
+    /*
+    * userId:被查看主页的id
+    * id:查看他人主页的id
+    * */
     @Override
-    public User selectUserDetails(Integer id) {
-        return userMapper.selectUserDetailsByid(id);
+    public Home selectUserDetails(Integer userId, Integer id) {
+        Home home = new Home();
+        //基本信息
+        home = userMapper.selectUserDetailsByid(userId);
+        //查看关注的数量
+        List<Integer> caresId = userMapper.selectCaresId(userId);
+        //查看粉丝的数量
+        List<Integer> fansId = userMapper.selectFansId(userId);
+        //查看拉黑列表
+        List<Integer> blacksId = userMapper.selectBlackList(id);
+
+        home.setFansNum((short) fansId.size());
+        home.setFollowNum((short) caresId.size());
+
+        if (fansId.contains(id)){
+            home.setFollowed(true);
+        }else {
+            home.setFollowed(false);
+        }
+        if (blacksId.contains(userId)){
+            home.setBlacked(true);
+        }else {
+            home.setBlacked(false);
+        }
+        return home;
     }
 
     @Override
@@ -169,5 +196,54 @@ public class UserServiceImpl implements UserService {
             return notifyPageBean;
         }
         return null;
+    }
+
+    @Override
+    public void toCare(Care care) {
+        userMapper.AddCare(care);
+    }
+
+    @Override
+    public List<Integer> selectCareListId(Integer careUserId) {
+        return userMapper.selectCaresId(careUserId);
+    }
+
+    @Override
+    public List<User> selectCareList(Integer id) {
+        return userMapper.selectCares(id);
+    }
+
+    @Override
+    public void toUnCare(Care care) {
+        userMapper.UnCare(care);
+    }
+
+    @Override
+    public List<User> selectFansList(Integer id) {
+        return userMapper.selectFans(id);
+    }
+
+    @Override
+    public void updateUseRole(Integer id, short role) {
+        userMapper.updateUserRoleById(id, role);
+    }
+
+    @Override
+    public int DisBlackList(BlackList blackList) {
+        List<Integer> blackId = userMapper.selectBlackList(blackList.getUserId());
+        //确保拉黑过
+        if (blackId.contains(blackList.getBlackUserId())){
+            return userMapper.disBlack(blackList);
+        }
+        return 3;
+    }
+
+
+    @Override
+    public CommentBean selectComments(Integer id, Integer page, Integer pageSize) {
+        Integer start = (page-1) * pageSize;
+        Long count = userMapper.countComment(id);
+        List<Comment> commentList = userMapper.pageComments(id,start,pageSize);
+        return new CommentBean((count+pageSize-1)/pageSize,commentList);
     }
 }

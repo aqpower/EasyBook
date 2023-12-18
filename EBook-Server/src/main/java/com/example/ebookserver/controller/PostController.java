@@ -57,23 +57,26 @@ public class PostController {
             return Result.error("抱歉，发布失败");
     }
 
-    /*
-    * 系统主页展示所有的帖子，除了使用者拉黑的用户，和拉黑了使用者的用户
-    * */
-    @GetMapping("/posts")
-    public Result page(@RequestParam Integer id,
-                       @RequestParam(defaultValue = "1") Integer page,
-                       @RequestParam(defaultValue = "10") Integer pageSize){
-        log.info("分页查询");
-        PageBean pageBean = postService.allPOst(id,page,pageSize);
-        return Result.success(pageBean);
-    }
+//    /*
+//    * 系统主页展示所有的帖子，除了使用者拉黑的用户，和拉黑了使用者的用户
+//    * */
+//    @GetMapping("/posts")
+//    public Result page(@RequestParam Integer id,
+//                       @RequestParam(defaultValue = "1") Integer page,
+//                       @RequestParam(defaultValue = "10") Integer pageSize){
+//        log.info("分页查询");
+//        PageBean pageBean = postService.allPOst(id,page,pageSize);
+//        return Result.success(pageBean);
+//    }
 
     @GetMapping("/posts/{postId}")
     public Result postDetails(@PathVariable Integer postId){
         log.info("查看某个帖子的详细信息");
         PostDetails postDetails = postService.selectDetails(postId);
-        return Result.success(postDetails);
+        if (postDetails != null){
+            return Result.success(postDetails);
+        }
+        return Result.error("该帖子不存在！");
     }
 
     /*
@@ -89,5 +92,16 @@ public class PostController {
     /*
      * 用户根据关键字搜索帖子
      * */
-    //@GetMapping("/posts/")
+    @GetMapping("/posts")
+    public Result search( Short color,
+                          String text,
+                         @RequestParam Integer id,
+                         @RequestParam(defaultValue = "1") Integer page,
+                         @RequestParam(defaultValue = "10") Integer pageSize){
+        log.info("关键字分类分页查询");
+        PageBean pageBean = postService.search(color,text,id,page,pageSize);
+        return Result.success(pageBean);
+    }
+
+
 }

@@ -35,4 +35,11 @@
             #{id}
         </foreach>
     </select>
+    <select id="pageComments" resultType="com.example.ebookserver.pojo.Comment">
+        select *
+        from comment
+        where user_id = #{id}
+        order by id desc
+        limit #{start},#{pageSize}
+    </select>
 </mapper>

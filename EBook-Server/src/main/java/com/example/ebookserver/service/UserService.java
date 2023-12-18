@@ -20,8 +20,23 @@ public interface UserService {
     List<Integer> selectBlackUsers(Integer id);
     List<Integer> selectBlackedUsers(Integer id);
 
-    User selectUserDetails(Integer id);
+    Home selectUserDetails(Integer id, Integer integer);
 
     NotifyPageBean selectNotifies(Integer id, Integer page, Integer pageSize);
 
+    void toCare(Care care);
+
+    List<Integer> selectCareListId(Integer careUserId);
+
+    List<User> selectCareList(Integer id);
+
+    void toUnCare(Care care);
+
+    List<User> selectFansList(Integer id);
+
+    CommentBean selectComments(Integer id, Integer page, Integer pageSize);
+
+    void updateUseRole(Integer id, short role);
+
+    int DisBlackList(BlackList blackList);
 }

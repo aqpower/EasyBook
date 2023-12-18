@@ -10,6 +10,7 @@ export type PostType = {
   likeNum: number
   collectionNum: number
   ip: string
+  userId: number
 }
 
 export type GetPostResType = {
@@ -29,6 +30,8 @@ export type PostApiType = {
 }
 
 export type PostDetailResType = {
+posts: PostDetailResType | undefined
+commentsList: {}
   id: number
   avatar: number
   name: string
