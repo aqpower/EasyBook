@@ -104,4 +104,9 @@ public interface UserMapper {
     @Update("update user set role = #{role} where id = #{id}")
     int updateUserRoleById(@Param("id") Integer id, @Param("role") short role);
 
+
+    List<Comment> pageComments(Integer id, Integer start, Integer pageSize);
+
+    @Select("select count(*) from comment where user_id = #{id}")
+    Long countComment(Integer id);
 }

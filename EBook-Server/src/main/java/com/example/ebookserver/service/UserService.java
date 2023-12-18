@@ -34,6 +34,8 @@ public interface UserService {
 
     List<User> selectFansList(Integer id);
 
+    CommentBean selectComments(Integer id, Integer page, Integer pageSize);
+
     void updateUseRole(short role, Integer id);
 
 }

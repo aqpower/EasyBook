@@ -166,7 +166,7 @@ public class UserServiceImpl implements UserService {
         home.setFansNum((short) fansId.size());
         home.setFollowNum((short) caresId.size());
 
-        if (fansId.contains(userId)){
+        if (fansId.contains(id)){
             home.setFollowed(true);
         }else {
             home.setFollowed(false);
@@ -222,4 +222,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
+
+    @Override
+    public CommentBean selectComments(Integer id, Integer page, Integer pageSize) {
+        Integer start = (page-1) * pageSize;
+        Long count = userMapper.countComment(id);
+        List<Comment> commentList = userMapper.pageComments(id,start,pageSize);
+        return new CommentBean((count+pageSize-1)/pageSize,commentList);
+    }
 }
