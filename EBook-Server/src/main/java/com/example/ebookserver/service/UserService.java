@@ -33,4 +33,6 @@ public interface UserService {
     void toUnCare(Care care);
 
     List<User> selectFansList(Integer id);
+
+    CommentBean selectComments(Integer id, Integer page, Integer pageSize);
 }

@@ -76,10 +76,35 @@ public class UserController {
     /*
      * 根据用户id查询所有帖子
      * */
-    @GetMapping("/posts/users/{userId}")
-    public Result getPosts(@PathVariable Integer userId){
+    @GetMapping("/posts/users")
+    public Result getPosts(@RequestParam Integer id,
+                           @RequestParam(defaultValue = "1") Integer page,
+                           @RequestParam(defaultValue = "10") Integer pageSize){
         log.info("查询某个用户发的全部帖子");
-        List<Posts> posts = postService.getPosts(userId);
+        PageBean posts = postService.getPosts(id,page,pageSize);
+        return Result.success(posts);
+    }
+
+    /*
+    * 查看用户喜欢的帖子
+    * */
+    @GetMapping("/posts/users/like")
+    public Result getLikePosts(@RequestParam Integer id,
+                               @RequestParam(defaultValue = "1") Integer page,
+                               @RequestParam(defaultValue = "10") Integer pageSize){
+        log.info("查询用户点赞过的帖子");
+        PageBean posts = postService.getLikePosts(id,page,pageSize);
+        return Result.success(posts);
+    }
+    /*
+     * 查看用户喜欢的帖子
+     * */
+    @GetMapping("/posts/users/collection")
+    public Result getCollectionPosts(@RequestParam Integer id,
+                               @RequestParam(defaultValue = "1") Integer page,
+                               @RequestParam(defaultValue = "10") Integer pageSize){
+        log.info("查询用户点赞过的帖子");
+        PageBean posts = postService.getCollectionPosts(id,page,pageSize);
         return Result.success(posts);
     }
 
@@ -156,5 +181,17 @@ public class UserController {
         log.info("查看用户的粉丝列表");
         List<User> users = userService.selectFansList(id);
         return Result.success(users);
+    }
+
+    /*
+     * 通知展示接口
+     * */
+    @GetMapping("/user/comments")
+    public Result AllComments(@RequestParam Integer id,
+                              @RequestParam(defaultValue = "1") Integer page,
+                              @RequestParam(defaultValue = "10") Integer pageSize){
+        log.info("用户查看发出的评论");
+        CommentBean comments = userService.selectComments(id, page, pageSize);
+        return Result.success(comments);
     }
 }

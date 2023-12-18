@@ -4,7 +4,7 @@ import com.example.ebookserver.mapper.PostMapper;
 import com.example.ebookserver.pojo.*;
 import com.example.ebookserver.service.PostService;
 import com.example.ebookserver.service.UserService;
-import com.github.houbb.sensitive.word.core.SensitiveWordHelper;
+import com.example.ebookserver.utils.FileUntil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +27,10 @@ public class PostServiceImpl implements PostService {
         if (role >= 4){   //用户不能发帖
             return 3;
         }else {
-            post.setContentText(SensitiveWordHelper.replace(post.getContentText()));
-            post.setTitle(SensitiveWordHelper.replace(post.getTitle()));
+            post.setContentText(FileUntil.filterSensitivityWord(post.getContentText(),'*'));
+            post.setTitle(FileUntil.filterSensitivityWord(post.getTitle(),'*'));
             if (post.getLyrics() != null){
-                post.setLyrics(SensitiveWordHelper.replace(post.getLyrics()));
+               post.setLyrics(FileUntil.filterSensitivityWord(post.getLyrics(),'*'));
             }
             int result = postMapper.post(post);
             if (post.getUrls() != null){
@@ -90,12 +90,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Posts> getPosts(Integer id) {
-        List<Posts> posts = postMapper.getPostsByUserId(id);
+    public PageBean getPosts(Integer id, Integer page, Integer pageSize) {
+        Long count = postMapper.countPostsByUserId(id);
+        Integer start = (page - 1) * pageSize;
+        List<Posts> posts = postMapper.getPostsByUserId(id,start,pageSize);
         for (Posts post : posts) {
             post.setUrl(postMapper.getUrl(post.getId()));
         }
-        return posts;
+        return new PageBean((count + pageSize - 1) / pageSize, posts);
     }
 
     @Override
@@ -128,9 +130,32 @@ public class PostServiceImpl implements PostService {
             List<Posts> posts = postMapper.pageCare(careList, start, pageSize);
             posts = setUrls(posts);
             //返回的类
-            PageBean pageBean = new PageBean((count + pageSize - 1) / pageSize, posts);
-            return pageBean;
+            return new PageBean((count + pageSize - 1) / pageSize, posts);
         }
         return null;
+    }
+
+    @Override
+    public PageBean getLikePosts(Integer id, Integer page, Integer pageSize) {
+        //查询帖子总数
+        Long count = postMapper.countlikePosts(id);
+        Integer start = (page - 1) * pageSize;
+        //分页查询帖子得到的数据
+        List<Posts> posts = postMapper.pageLike(id, start, pageSize);
+        posts = setUrls(posts);
+        //返回的类
+        return new PageBean((count + pageSize - 1) / pageSize, posts);
+    }
+
+    @Override
+    public PageBean getCollectionPosts(Integer id, Integer page, Integer pageSize) {
+        //查询帖子总数
+        Long count = postMapper.countCollectionPosts(id);
+        Integer start = (page - 1) * pageSize;
+        //分页查询帖子得到的数据
+        List<Posts> posts = postMapper.pageCollection(id, start, pageSize);
+        posts = setUrls(posts);
+        //返回的类
+        return new PageBean((count + pageSize - 1) / pageSize, posts);
     }
 }

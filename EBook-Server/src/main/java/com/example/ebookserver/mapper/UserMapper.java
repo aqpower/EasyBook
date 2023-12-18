@@ -100,4 +100,9 @@ public interface UserMapper {
 
     @Select("select user.id,name,avatar from user,care where care_user_id = user.id and cared_user_id = #{id}")
     List<User> selectFans(Integer id);
+
+    List<Comment> pageComments(Integer id, Integer start, Integer pageSize);
+
+    @Select("select count(*) from comment where user_id = #{id}")
+    Long countComment(Integer id);
 }

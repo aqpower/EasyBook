@@ -64,6 +64,8 @@
     <select id="getPostsByUserId" resultType="com.example.ebookserver.pojo.Posts">
         select post.id,user_id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
         from user,post where user.id=post.user_id and user.id = #{id} and exist != 0
+        order by post.id desc
+        limit #{start},#{pageSize}
     </select>
 
     <select id="pageSearch" resultType="com.example.ebookserver.pojo.Posts">
@@ -106,6 +108,20 @@
         <foreach collection="careList" item="userId" separator="," open="(" close=")">
             #{userId}
         </foreach>
+        and exist != 0
+        order by post.id desc
+        limit #{start},#{pageSize}
+    </select>
+    <select id="pageLike" resultType="com.example.ebookserver.pojo.Posts">
+        select post.id,post.user_id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
+        from user,post,easylike where easylike.user_id = #{id} and easylike.post_id = post.id and user.id=post.user_id
+        and exist != 0
+        order by post.id desc
+        limit #{start},#{pageSize}
+    </select>
+    <select id="pageCollection" resultType="com.example.ebookserver.pojo.Posts">
+        select post.id,post.user_id,avatar,name,title,content_text,color,lyrics,like_num,collection_num
+        from user,post,collection where collection.user_id = #{id} and collection.post_id = post.id and user.id=post.user_id
         and exist != 0
         order by post.id desc
         limit #{start},#{pageSize}
