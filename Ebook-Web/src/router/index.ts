@@ -27,6 +27,10 @@ const router = createRouter({
         {
           path: 'init-profile/:email',
           component: () => import('@/components/InitProfile.vue')
+        },
+        {
+          path: 'adminLogin',
+          component: () => import('@/components/AdminLogin.vue')
         }
       ]
     },
