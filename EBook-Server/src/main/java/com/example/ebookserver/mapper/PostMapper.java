@@ -34,7 +34,7 @@ public interface PostMapper {
     /*
      * 查询帖子总数
      * */
-    long count(List<Integer> users);
+    long count(Short color, String text, List<Integer> users);
 
     @Select("select count(*) from image where post_id = 1")
     long count1();

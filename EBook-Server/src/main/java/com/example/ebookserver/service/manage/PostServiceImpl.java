@@ -110,7 +110,7 @@ public class PostServiceImpl implements PostService {
         List<Integer> users = getBlackList(id);
 
         //查询帖子总数
-        Long count = postMapper.count(users);
+        Long count = postMapper.count(color,text,users);
         Integer start = (page - 1) * pageSize;
         //分页查询帖子得到的数据
         List<Posts> posts = postMapper.pageSearch(color, text, users, start, pageSize);

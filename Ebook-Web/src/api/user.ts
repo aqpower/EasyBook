@@ -80,3 +80,8 @@ export const getFansApi = (userId: string): Promise<ResType<any>> =>
       id: userId
     }
   })
+
+export const newUserBlackApi = (data: {
+  balckuserId: string
+  userId: string
+}): Promise<ResType<any>> => httpInstance.post('/api/v1/blackList', data)
