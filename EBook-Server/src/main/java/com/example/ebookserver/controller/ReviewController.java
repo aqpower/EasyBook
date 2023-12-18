@@ -1,5 +1,6 @@
 package com.example.ebookserver.controller;
 
+import com.example.ebookserver.pojo.Posts;
 import com.example.ebookserver.pojo.Result_Admin;
 import com.example.ebookserver.pojo.Review;
 import com.example.ebookserver.pojo.Violation;
@@ -58,13 +59,13 @@ public class ReviewController {
         // 通过violationId从数据库中获取postId
         Violation violation = violationService.getViolationById(violationId);
         Integer postId = violation.getPostId();
-        Integer userId = violation.getUserId();
+        Integer userId = postService.getUserIdById(postId);
 
         if (type == 1) {
             // 如果type为1，则执行删除帖子的操作
-            userService.updateUseRole(Short.parseShort(String.valueOf(5)), userId);
+            userService.updateUseRole(userId, Short.parseShort(String.valueOf(5)));
         } else if (type == 2) {
-            userService.updateUseRole(Short.parseShort(String.valueOf(4)), userId);
+            userService.updateUseRole(userId, Short.parseShort(String.valueOf(4)));
         }
         postService.deletePost(postId);
 
