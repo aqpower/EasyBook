@@ -91,7 +91,9 @@ const handleClose = () => {
 }
 
 const navUserProfile = () => {
-  router.push(`/home/profile/${post.value.userId}`)
+  router.push(`/home/profile/${post.value.userId}`).then(() => {
+    window.location.reload()
+  })
 }
 
 </script>

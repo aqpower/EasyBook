@@ -24,7 +24,7 @@
           </div>
           <ul
             tabindex="0"
-            class="dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-52"
+            class="dropdown-content z-[1] p-2 shadow-2xl bg-base-200 rounded-box w-52"
           >
             <li>
               <input

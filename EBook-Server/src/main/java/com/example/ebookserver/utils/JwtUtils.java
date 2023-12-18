@@ -9,7 +9,7 @@ import java.util.Map;
 public class JwtUtils {
 
     private static String signKey = "easybook";
-    private static Long expire = 43200000L;
+    private static Long expire = 604800000L;
 
     /**
      * 生成JWT令牌

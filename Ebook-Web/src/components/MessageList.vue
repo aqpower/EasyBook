@@ -43,7 +43,9 @@ const navPost = (postId: number) => {
 }
 
 const navUserProfile = (userId: number) => {
-  router.push(`/home/profile/${userId}`)
+  router.push(`/home/profile/${userId}`).then(() => {
+    window.location.reload()
+  })
 }
 
 onMounted(() => {
