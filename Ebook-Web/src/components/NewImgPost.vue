@@ -33,11 +33,11 @@
         v-model="titleInput"
         type="text"
         placeholder="填写标题，会有更多赞哦"
-        class="input input-bordered w-full h-10"
+        class="input input-bordered w-full"
       />
       <textarea
         v-model="contentInput"
-        class="textarea textarea-bordered"
+        class="textarea textarea-bordered h-36 resize-none"
         placeholder="填写更全面的描述信息"
       >
       </textarea>
@@ -132,6 +132,13 @@ const newImgPost = () => {
       newPostApi(data)
         .then((res) => {
           console.log(res)
+          if (res.code == 401) {
+            dialog({
+              title: '😮‍💨',
+              msg: '对不起捏，你被禁言了',
+              btnContent: '👌'
+            })
+          }
           eventBus.emit('postFinish', true)
         })
         .catch((e) => {
