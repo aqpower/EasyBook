@@ -45,6 +45,16 @@ const router = createRouter({
           ]
         },
         {
+          path: 'search/:keyword',
+          component: () => import('@/components/CardList.vue'),
+          children: [
+            {
+              path: ':postId',
+              component: () => import('@/components/CardDetail.vue')
+            }
+          ]
+        },
+        {
           path: 'profile/:userId',
           component: () => import('@/components/UserFile.vue'),
           children: [
@@ -61,7 +71,7 @@ const router = createRouter({
             {
               path: 'posts/:postId',
               component: () => import('@/components/CardDetail.vue')
-            },
+            }
           ]
         }
       ]

@@ -137,7 +137,10 @@ const navUserProfile = (id) => {
         <div class="flex flex-col flex-1 overflow-y-auto">
           <div class="ml-4 mr-1">
             <div class="flex justify-between items-center gap-1">
-              <div class="flex items-center gap-2 hover:cursor-pointer" @click="navUserProfile(post.userId)">
+              <div
+                class="flex items-center gap-2 hover:cursor-pointer"
+                @click="navUserProfile(post.userId)"
+              >
                 <Icon class="w-8 h-8 m-1" :icon="avatarList[post.avatar]"></Icon>
                 <p class="font-medium">{{ post.name }}</p>
               </div>
