@@ -6,14 +6,56 @@
         <div class="badge badge-primary">ID: {{ user.id }}</div>
         <div class="flex items-center gap-1">
           <p class="text-xl font-bold">{{ user.name }}</p>
-          <div class="cursor-pointer" @click="showUpdateModal = true">
+          <div class="cursor-pointer" v-show="isMe == true" @click="showUpdateModal = true">
             <Icon icon="solar:pen-2-bold" />
           </div>
         </div>
+        <div class="flex ml-2 gap-2">
+          <p
+            @click="isMe == true && (showFollowersModal = true)"
+            :class="{ 'hover:cursor-pointer': isMe == true }"
+          >
+            <span class="font-extrabold mr-1">{{ user.followNum }}</span
+            >关注
+          </p>
+          <p
+            @click="isMe == true && (showFansModal = true)"
+            :class="{ 'hover:cursor-pointer': isMe == true }"
+          >
+            <span class="font-extrabold mr-1">{{ user.fansNum }}</span
+            >粉丝
+          </p>
+        </div>
       </div>
       <div class="flex gap-3 ml-4">
-        <button class="btn btn-primary min-h-0 h-8" @click="followUser">关注</button>
-        <button class="btn btn-primary min-h-0 h-8">拉黑</button>
+        <button
+          class="btn btn-info btn-outline min-h-0 h-8"
+          @click="followUser"
+          v-show="isMe == false && follow == false && black == false"
+        >
+          关注
+        </button>
+        <button
+          class="btn btn-success btn-outline min-h-0 h-8"
+          @click="cancelFollow"
+          v-show="isMe == false && follow == true"
+        >
+          ✅已关注
+        </button>
+        <button
+          class="btn btn-error btn-outline min-h-0 h-8"
+          v-show="isMe == false && black == false && follow == false"
+          @click="newBlack"
+        >
+          拉黑
+        </button>
+        <button
+          class="btn btn-error btn-outline min-h-0 h-8"
+          v-show="isMe == false && black == true"
+          @click="cancelBlack"
+        >
+          ⭕已拉黑
+        </button>
       </div>
     </div>
     <div class="divider text-gray-400">帖子</div>
@@ -36,27 +78,60 @@
       </div>
     </template>
   </InfoDialog>
+  <InfoDialog :visible="showFollowersModal">
+    <template #content>
+      <div class="flex flex-col items-center font-bold">
+        <FollowList></FollowList>
+        <button class="mt-4 btn min-h-0 h-9 w-full" @click="showFollowersModal = false">
+          确定
+        </button>
+      </div>
+    </template>
+  </InfoDialog>
+  <InfoDialog :visible="showFansModal">
+    <template #content>
+      <div class="flex flex-col items-center font-bold">
+        <FansList></FansList>
+        <button class="mt-4 btn min-h-0 h-9 w-full" @click="showFansModal = false">确定</button>
+      </div>
+    </template>
+  </InfoDialog>
   <RouterView></RouterView>
 </template>
 
 <script setup lang="ts">
 import InfoDialog from './InfoDialog.vue'
 import { getUserPostApi } from '@/api/posts'
-import { onMounted, provide, ref } from 'vue'
+import { computed, onMounted, provide, ref } from 'vue'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import type { UserPostResType } from '@/types/post'
 import { useRoute } from 'vue-router'
 import PostCard from './PostCard.vue'
 import { avatarList } from '@/utils/icon'
-import { followUserApi, getUserInfoApi, updateUserInfoApi } from '@/api/user'
+import {
+cancelBlackApi,
+  cancelUserFollowApi,
+  followUserApi,
+  getUserInfoApi,
+  newUserBlackApi,
+  updateUserInfoApi
+} from '@/api/user'
 import AvatarSelector from './AvatarSelector.vue'
 import { useUserStore } from '@/stores/userStores'
 import useCommandComponent from '@/hooks/useCommandComponent'
+import FollowList from '@/components/FollowList.vue'
+import FansList from './FansList.vue'
 const userStore = useUserStore()
 const dialog = useCommandComponent(InfoDialog)
 const userNameInput = ref<string>(userStore.user?.name as string)
 const avatarIndex = ref(-1)
 const showUpdateModal = ref(false)
+const showFollowersModal = ref(false)
+const follow = ref(false)
+const black = ref(false)
+const showFansModal = ref(false)
+const page = ref(1)
+const pageSize = ref(20)
 // 声明一个响应性变量并 provide 其自身
 // 孙组件获取后可以保持响应性
 provide('avatarIndex', avatarIndex)
@@ -70,15 +145,26 @@ onMounted(() => {
     console.log(res)
     if (res.code == 200) {
       user.value = res.data
+      follow.value = user.value.followed
+      black.value = user.value.blacked
       avatarIndex.value = user.value.avatar
     }
   })
-  getUserPostApi(userId).then((res) => {
+  getUserPostApi(userId, page.value, pageSize.value).then((res) => {
     console.log(res)
     if (res.code == 200) {
-      userPosts.value = res.data
+      userPosts.value = res.data.posts
     }
   })
+})
+
+const isMe = computed((): boolean => {
+  if (route.params.userId != null) {
+    if (route.params.userId == userStore.user?.id) {
+      return true
+    }
+  }
+  return false
 })
 
 const followUser = () => {
@@ -93,12 +179,64 @@ const followUser = () => {
         content: '关注成功！',
         btnContent: '👌'
       })
+      follow.value = true
     } else {
       dialog({
         title: '😢',
         content: res.msg,
         btnContent: '👌'
       })
+    }
+  })
+}
+
+const newBlack = () => {
+  let data = {
+    userId: id,
+    blackUserId: userId
+  }
+  newUserBlackApi(data).then((res) => {
+    if (res.code == 200) {
+      dialog({
+        title: '🥳',
+        content: '拉黑成功！',
+        btnContent: '👌'
+      })
+      black.value = true
+    }
+  })
+}
+
+const cancelBlack = () => {
+  let data = {
+    userId: id,
+    blackUserId: userId
+  }
+  cancelBlackApi(data).then(res => {
+    if(res.code == 200){
+      dialog({
+        title: '🥳',
+        content: '取消拉黑成功！',
+        btnContent: '👌'
+      })
+      black.value = false
+    }
+  })
+}
+
+const cancelFollow = () => {
+  let data = {
+    careUserId: id,
+    caredUserId: userId
+  }
+  cancelUserFollowApi(data).then((res) => {
+    if (res.code == 200) {
+      dialog({
+        title: '🥳',
+        content: '取消关注成功！',
+        btnContent: '👌'
+      })
+      follow.value = false
     }
   })
 }

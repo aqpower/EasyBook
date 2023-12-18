@@ -43,6 +43,9 @@ import PostCard from './PostCard.vue'
 import eventBus from '@/libs/eventBus'
 import { useUserStore } from '@/stores/userStores'
 import { colorList } from '@/utils/var'
+import useCommandComponent from '@/hooks/useCommandComponent'
+import InfoDialog from './InfoDialog.vue'
+const dialog = useCommandComponent(InfoDialog)
 const page = ref(1)
 const pageSize = ref(100)
 const postList = ref([])
@@ -78,7 +81,15 @@ const getPosts = () => {
     if (res.code == 200) {
       skeletonShow.value = false
       console.log(data)
-      postList.value = data.posts
+      if (data.posts != null) {
+        postList.value = data.posts
+      } else {
+        dialog({
+          title: '😞',
+          content: '当前分区没有帖子哦~',
+          btnContent: '👌'
+        })
+      }
     }
   })
 }
@@ -104,7 +115,16 @@ const getFollowPosts = () => {
   getFollowerPostApi(userStore.user?.id, page.value, pageSize.value).then((res) => {
     const data: GetPostResType = res.data
     if (res.code == 200) {
-      postList.value = data.posts
+      if (data != null) {
+        postList.value = data.posts
+      } else {
+        dialog({
+          title: '😞',
+          content: '当前分区没有帖子哦~',
+          btnContent: '👌'
+        })
+        postList.value = []
+      }
     }
   })
 }

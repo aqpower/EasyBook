@@ -162,6 +162,8 @@ public class UserServiceImpl implements UserService {
         List<Integer> caresId = userMapper.selectCaresId(userId);
         //查看粉丝的数量
         List<Integer> fansId = userMapper.selectFansId(userId);
+        //查看拉黑列表
+        List<Integer> blacksId = userMapper.selectBlackList(id);
 
         home.setFansNum((short) fansId.size());
         home.setFollowNum((short) caresId.size());
@@ -170,6 +172,11 @@ public class UserServiceImpl implements UserService {
             home.setFollowed(true);
         }else {
             home.setFollowed(false);
+        }
+        if (blacksId.contains(userId)){
+            home.setBlacked(true);
+        }else {
+            home.setBlacked(false);
         }
         return home;
     }
@@ -221,6 +228,15 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUserRoleById(id, role);
     }
 
+    @Override
+    public int DisBlackList(BlackList blackList) {
+        List<Integer> blackId = userMapper.selectBlackList(blackList.getUserId());
+        //确保拉黑过
+        if (blackId.contains(blackList.getBlackUserId())){
+            return userMapper.disBlack(blackList);
+        }
+        return 3;
+    }
 
 
     @Override

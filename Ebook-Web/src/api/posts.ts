@@ -26,8 +26,18 @@ export const getColorPostsApi = (data: {
     }
   })
 
-export const getUserPostApi = (userId: any): Promise<ResType<UserPostResType>> =>
-  httpInstance.get(`/api/v1/posts/users/${userId}`)
+export const getUserPostApi = (
+  id: any,
+  page: number,
+  pageSize: number
+): Promise<ResType<UserPostResType>> =>
+  httpInstance.get('/api/v1/posts/users', {
+    params: {
+      id: id,
+      page: page,
+      pageSize: pageSize
+    }
+  })
 
 export const getPostApi = (postId: String): Promise<ResType<PostType>> =>
   httpInstance.get(`/api/v1/posts/${postId}`)
@@ -39,7 +49,8 @@ export const uploadImgApi = (data: FormData) =>
     }
   })
 
-export const newPostApi = (data: PostApiType) => httpInstance.post('/api/v1/post', data)
+export const newPostApi = (data: PostApiType): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/post', data)
 
 export const newPostLikeApi = (data: any): Promise<ResType<any>> =>
   httpInstance.post('/api/v1/posts/like', data)

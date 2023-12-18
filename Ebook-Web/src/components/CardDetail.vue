@@ -9,6 +9,7 @@ import { avatarList } from '@/utils/icon'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import { useUserStore } from '@/stores/userStores'
 import useCommandComponent from '@/hooks/useCommandComponent'
+import { formatTime } from '@/utils/time'
 const route = useRoute()
 const router = useRouter()
 const showDig = ref(true)
@@ -45,6 +46,10 @@ const imgRightVal = computed(() => {
 })
 
 onMounted(() => {
+  getPost()
+})
+
+const getPost = () => {
   const postId = route.params.postId as string
   getPostApi(postId).then((res: ResType<PostDetailResType>) => {
     console.log(res)
@@ -54,7 +59,7 @@ onMounted(() => {
       console.log(post)
     }
   })
-})
+}
 
 const showDelete = (): boolean => {
   if (route.params.userId != null) {
@@ -80,8 +85,9 @@ const newComment = () => {
   }
   newCommentApi(data).then((res) => {
     if (res.code == 200) {
-      dialog({ content: '帖子评论', btnContent: '👌' })
-      router.go(0)
+      commentInput.value = ''
+      dialog({ content: '帖子评论成功', btnContent: '👌' })
+      getPost()
     }
   })
 }
@@ -90,10 +96,11 @@ const handleClose = () => {
   router.go(-1)
 }
 
-const navUserProfile = () => {
-  router.push(`/home/profile/${post.value.userId}`)
+const navUserProfile = (id) => {
+  router.push(`/home/profile/${id}`).then(() => {
+    window.location.reload()
+  })
 }
-
 </script>
 
 <template>
@@ -130,7 +137,7 @@ const navUserProfile = () => {
         <div class="flex flex-col flex-1 overflow-y-auto">
           <div class="ml-4 mr-1">
             <div class="flex justify-between items-center gap-1">
-              <div class="flex items-center gap-2 hover:cursor-pointer" @click="navUserProfile">
+              <div class="flex items-center gap-2 hover:cursor-pointer" @click="navUserProfile(post.userId)">
                 <Icon class="w-8 h-8 m-1" :icon="avatarList[post.avatar]"></Icon>
                 <p class="font-medium">{{ post.name }}</p>
               </div>
@@ -158,13 +165,13 @@ const navUserProfile = () => {
             </div>
             <div class="flex flex-col mt-1">
               <div v-for="(item, index) in commentList" :key="index" class="flex flex-col p-3">
-                <div class="flex gap-3">
+                <div class="flex gap-3 hover:cursor-pointer" @click="navUserProfile(item.userId)">
                   <Icon class="w-6 h-6" :icon="avatarList[item.avatar]"></Icon>
                   <p class="font-medium">{{ item.name }}</p>
                 </div>
                 <p class="mt-1">{{ item.content }}</p>
                 <div class="flex justify-end mr-5">
-                  <p class="text-xs text-slate-400">{{ item.commentTime }}</p>
+                  <p class="text-xs text-slate-400">{{ formatTime(item.commentTime) }}</p>
                 </div>
               </div>
             </div>

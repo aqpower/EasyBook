@@ -1,14 +1,5 @@
 export interface Color {
-  name:
-    | '活力橙'
-    | '奇迹紫'
-    | '生机绿'
-    | '激情红'
-    | '闪耀黄'
-    | '宁静青'
-    | '天空蓝'
-    | '奇异黑'
-    | '纯净白'
+  name:string
   var: string
 }
 
@@ -22,7 +13,7 @@ export const colorList: Color[] = [
     var: '#AC92ED'
   },
   {
-    name: '生机绿',
+    name: '跃动绿',
     var: '#7FFF00'
   },
   {
@@ -38,15 +29,15 @@ export const colorList: Color[] = [
     var: '#008B8B'
   },
   {
-    name: '天空蓝',
+    name: '安全蓝',
     var: '#87CEEB'
   },
   {
-    name: '奇异黑',
+    name: '浩瀚黑',
     var: '#000000'
   },
   {
-    name: '纯净白',
-    var: '#F6F7FB'
+    name: '暖暖粉',
+    var: '#EC87BF'
   }
 ]
