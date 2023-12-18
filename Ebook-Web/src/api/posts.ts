@@ -100,3 +100,6 @@ export const searchPostsApi = (data: {
       color: data.color
     }
   })
+
+
+  

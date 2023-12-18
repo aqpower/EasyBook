@@ -135,9 +135,10 @@
       </div>
     </div>
 
-    <InfoDialogVue :visible="loadingShow" title="正在上传，请耐心等待！😍">
+    <InfoDialogVue :visible="loadingShow">
       <template #content>
         <div class="flex justify-center mt-6">
+          <p>正在上传，请耐心等待~ 😊</p>
           <span class="loading loading-spinner loading-md"></span>
         </div>
       </template>

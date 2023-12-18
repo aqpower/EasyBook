@@ -12,6 +12,7 @@
         class="badge mx-2 px-3 py-4 hover:bg-base-200 hover:cursor-pointer hover:font-bold"
         :class="{ 'bg-base-300 font-bold': colorIndex == -1 }"
         @click="changeColorIndex(-1)"
+        v-show="isSearch == false"
       >
         我的关注
       </span>
@@ -91,7 +92,7 @@ const getPosts = () => {
       if (res.code == 200) {
         skeletonShow.value = false
         console.log(data)
-        if (data.posts != null) {
+        if (data.posts.length != 0) {
           postList.value = data.posts
         } else {
           dialog({
@@ -99,6 +100,7 @@ const getPosts = () => {
             content: '当前分区没有帖子哦~',
             btnContent: '👌'
           })
+          postList.value = []
         }
       }
     })
@@ -121,6 +123,7 @@ const getPosts = () => {
             content: '当前分区没有帖子哦~',
             btnContent: '👌'
           })
+          postList.value = []
         }
       }
     })
@@ -140,9 +143,17 @@ const getColorPosts = () => {
   getColorPostsApi(data).then((res) => {
     const data: GetPostResType = res.data
     if (res.code == 200) {
-      skeletonShow.value = false
-      console.log(data)
-      postList.value = data.posts
+      if (data.posts.length != 0) {
+        postList.value = data.posts
+      } else {
+        console.log('a')
+        dialog({
+          title: '😞',
+          content: '当前分区没有帖子哦~',
+          btnContent: '👌'
+        })
+        postList.value = []
+      }
     }
   })
 }
