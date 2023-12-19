@@ -39,4 +39,6 @@ public interface UserService {
     void updateUseRole(Integer id, short role);
 
     int DisBlackList(BlackList blackList);
+
+    int getUserCount();
 }

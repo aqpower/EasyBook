@@ -197,6 +197,10 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+    @Override
+    public int getUserCount(){
+        return userMapper.getUserCount();
+    }
 
     @Override
     public void toCare(Care care) {

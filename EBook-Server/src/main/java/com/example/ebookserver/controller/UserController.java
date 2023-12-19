@@ -209,4 +209,10 @@ public class UserController {
         CommentBean comments = userService.selectComments(id, page, pageSize);
         return Result.success(comments);
     }
+
+    @GetMapping("/count")
+    public UserCountResponse getUserCount(){
+        int count = userService.getUserCount();
+        return new UserCountResponse(count);
+    }
 }
