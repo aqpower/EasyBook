@@ -44,4 +44,7 @@ public interface UserService {
 
     List<MostPopularAvatar> getMostPopularAvatar();
 
+
+    List<MostPopularAvatar> getMostPopularAvatar();
+
 }

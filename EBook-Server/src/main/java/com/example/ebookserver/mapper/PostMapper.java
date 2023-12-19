@@ -92,4 +92,9 @@ public interface PostMapper {
     int countAllPosts();
 
     int getTotalViewCount();
+    @Update("update post set visit_count = visit_count + 1 where id = #{postId}")
+    void updateVisit(Integer postId);
+
+    @Select("select count(*) from post where exist != 0")
+    int countAllPosts();
 }

@@ -42,4 +42,19 @@
         order by id desc
         limit #{start},#{pageSize}
     </select>
+    <select id="selectMostPopularAvatar" resultType="com.example.ebookserver.pojo.MostPopularAvatar">
+        SELECT avatar, COUNT(*) AS count
+        FROM user
+        GROUP BY avatar
+        HAVING count = (
+            SELECT MAX(count)
+            FROM (
+            SELECT COUNT(*) AS count
+            FROM user
+            GROUP BY avatar
+            ) AS counts
+            )
+    </select>
+
+
 </mapper>

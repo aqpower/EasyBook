@@ -117,4 +117,6 @@ public interface UserMapper {
     int getUserCount();
 
     List<MostPopularAvatar> selectMostPopularAvatar();
+
+    List<MostPopularAvatar> selectMostPopularAvatar();
 }
