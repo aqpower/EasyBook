@@ -13,7 +13,9 @@ export const getPostsApi = (data: {
     params: {
       id: data.id,
       page: data.page,
-      pageSize: data.pageSize
+      pageSize: data.pageSize,
+      color: data.color,
+      text: data.text
     }
   })
 

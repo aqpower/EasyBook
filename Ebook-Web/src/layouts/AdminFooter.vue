@@ -11,7 +11,10 @@
         <div class="grid grid-flow-col gap-4">
           <Icon class="w-12 h-12" icon="devicon:vscode" />
           <Icon class="w-12 h-12" icon="logos:intellij-idea" />
+          <Icon class="w-12 h-12" icon="logos:datagrip" />
           <Icon class="w-12 h-12" icon="logos:pinia" />
+          <Icon class="w-12 h-12" icon="file-icons:pnpm" />
+          <Icon class="w-12 h-12" icon="cib:prettier" />
           <!-- <Icon class="w-12 h-12" icon="logos:html-5" /> -->
           <Icon class="w-12 h-12" icon="devicon-plain:html5-wordmark" />
           <!-- <Icon class="w-12 h-12" icon="logos:vue" /> -->
@@ -30,6 +33,7 @@
           <Icon class="w-12 h-12" icon="entypo-social:qq" />
           <Icon class="w-12 h-12" icon="ant-design:aliyun-outlined" />
           <Icon class="w-12 h-12" icon="bxl:java" />
+          <Icon class="w-12 h-12" icon="cib:gradle" />
           <!-- <Icon class="w-12 h-12" icon="logos:java" /> -->
           <!-- <Icon class="w-12 h-12" icon="devicon:git" /> -->
           <Icon class="w-12 h-12" icon="mdi:git" />

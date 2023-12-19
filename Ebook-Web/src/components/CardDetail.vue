@@ -198,7 +198,7 @@ const navUserProfile = (id) => {
                     举报
                   </button>
                   <div class="absolute top-14 right-0" v-show="showVio == true">
-                    <div class="bg-warning w-96 rounded-3xl shadow-xl p-3">
+                    <div class="bg-warning w-96 rounded-xl shadow-xl p-3">
                       <h3 class="text-warning-content font-bold text-lg text-center mb-4">
                         请选择违规类型
                       </h3>
