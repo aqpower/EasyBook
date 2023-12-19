@@ -137,4 +137,7 @@
         order by post.id desc
         limit #{start},#{pageSize}
     </select>
+    <select id="getTotalViewCount" resultType="int">
+        SELECT SUM(visit_count) FROM post
+    </select>
 </mapper>

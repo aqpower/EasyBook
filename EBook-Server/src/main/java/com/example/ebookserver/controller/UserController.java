@@ -210,6 +210,16 @@ public class UserController {
         return Result.success(comments);
     }
 
+    /*
+    * 获取使用人数最多的头像
+    * */
+    @GetMapping("/user/avatar")
+    public Result MostPopularAvatar(){
+        log.info("查询使用人数最多的头像");
+        List<MostPopularAvatar> avatar = userService.getMostPopularAvatar();
+        return Result.success(avatar);
+    }
+
     @GetMapping("/count")
     public UserCountResponse getUserCount(){
         int count = userService.getUserCount();

@@ -112,6 +112,9 @@ public interface UserMapper {
 
     @Delete("delete from blacklist where user_id = #{userId} and black_user_id = #{blackUserId}")
     int disBlack(BlackList blackList);
-    @Select("SELECT COUNT(*) FROM user")
+
+    @Select("SELECT  COUNT(*) FROM user")
     int getUserCount();
+
+    List<MostPopularAvatar> selectMostPopularAvatar();
 }

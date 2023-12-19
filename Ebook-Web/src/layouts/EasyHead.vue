@@ -23,12 +23,34 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue/dist/iconify.js'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import useCommandComponent from '@/hooks/useCommandComponent'
+import InfoDialog from '@/components/InfoDialog.vue'
+const dialog = useCommandComponent(InfoDialog)
 const router = useRouter()
+const route = useRoute()
 const searchInput = ref('')
 
+const isSearch = computed(() => {
+  return router.currentRoute.value.fullPath.includes('search')
+})
+
+onMounted(() => {
+  if (isSearch.value == true) {
+    searchInput.value = route.params.keyword as string
+  }
+})
+
 const searchPosts = () => {
+  if (searchInput.value.length == 0 || searchInput.value.length > 25) {
+    dialog({
+      title: '😭',
+      content: '搜索的信息可不能为空',
+      btnContent: '👌'
+    })
+    return
+  }
   router.push(`/home/search/${searchInput.value}`).then(() => {
     window.location.reload()
   })

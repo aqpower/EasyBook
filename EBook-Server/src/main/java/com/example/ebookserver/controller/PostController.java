@@ -8,6 +8,7 @@ import com.example.ebookserver.service.PostService;
 import com.example.ebookserver.utils.AliOSSUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -115,6 +116,24 @@ public class PostController {
         response.put("count",count);
 
         return response;
+    }
+
+    @GetMapping("/visit")
+    public ResponseEntity<?> getTotalViewCount() {
+        int count = postService.getTotalViewCount();
+        return ResponseEntity.ok().body(new CountResponse(count));
+    }
+
+    private static class CountResponse {
+        private final int count;
+
+        public CountResponse(int count) {
+            this.count = count;
+        }
+
+        public int getCount() {
+            return count;
+        }
     }
 
 

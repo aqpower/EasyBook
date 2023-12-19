@@ -11,7 +11,7 @@
       <div class="card-body">
         <div class="dropdown">
           <div tabindex="0" role="button" class="btn btn-info btn-outline min-h-0 h-9 w-full">
-            Theme
+            更换主题
             <svg
               width="12px"
               height="12px"
@@ -24,14 +24,14 @@
           </div>
           <ul
             tabindex="0"
-            class="dropdown-content z-[1] p-2 shadow-2xl bg-base-200 rounded-box w-52"
+            class="right-0 dropdown-content z-[1] p-2 shadow-2xl bg-base-200 rounded-box w-44"
           >
             <li>
               <input
                 type="radio"
                 name="theme-dropdown"
                 class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                aria-label="Default"
+                aria-label="😊 默认"
                 value="light"
                 v-model="selectedTheme"
               />
@@ -41,7 +41,7 @@
                 type="radio"
                 name="theme-dropdown"
                 class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                aria-label="dracula"
+                aria-label="🧛‍♂️ 吸血鬼"
                 value="dracula"
                 v-model="selectedTheme"
               />
@@ -51,7 +51,7 @@
                 type="radio"
                 name="theme-dropdown"
                 class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                aria-label="forest"
+                aria-label="🌳 森林"
                 value="forest"
                 v-model="selectedTheme"
               />
@@ -61,7 +61,7 @@
                 type="radio"
                 name="theme-dropdown"
                 class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                aria-label="Valentine"
+                aria-label="💖 情人节"
                 value="valentine"
                 v-model="selectedTheme"
               />
@@ -71,7 +71,7 @@
                 type="radio"
                 name="theme-dropdown"
                 class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                aria-label="Aqua"
+                aria-label="💦 海洋"
                 value="aqua"
                 v-model="selectedTheme"
               />
@@ -81,8 +81,8 @@
                 type="radio"
                 name="theme-dropdown"
                 class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                aria-label="pastel"
-                value="pastel"
+                aria-label="🕰 复古"
+                value="retro"
                 v-model="selectedTheme"
               />
             </li>
@@ -91,7 +91,7 @@
                 type="radio"
                 name="theme-dropdown"
                 class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                aria-label="cyberpunk"
+                aria-label="⚡ 赛博朋克"
                 value="cyberpunk"
                 v-model="selectedTheme"
               />
@@ -101,8 +101,8 @@
                 type="radio"
                 name="theme-dropdown"
                 class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-                aria-label="coffee"
-                value="coffee"
+                aria-label="🧁 纸杯蛋糕"
+                value="cupcake"
                 v-model="selectedTheme"
               />
             </li>
@@ -117,11 +117,11 @@
           <img class="w-32" src="../assets//logo-text-nobg.png" />
         </figure>
         <div class="flex justify-center items-center flex-col">
-          <p class="text-success">DESIGNED</p>
-          <p class="text-success">BY</p>
+          <p class="text-success">DESIGNED BY</p>
           <p class="text-success">@aqpower</p>
           <p class="text-success">@zhuxinr</p>
           <p class="text-success">@wzbmkbk</p>
+          <p class="text-success">Copyright©2023 EasyBook</p>
         </div>
       </div>
     </div>

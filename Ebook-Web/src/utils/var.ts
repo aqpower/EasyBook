@@ -1,5 +1,5 @@
 export interface Color {
-  name:string
+  name: string
   var: string
 }
 
@@ -40,4 +40,27 @@ export const colorList: Color[] = [
     name: '暖暖粉',
     var: '#EC87BF'
   }
+]
+
+// 定义内容违规类型
+export type ContentViolationType =
+  | '暴力'
+  | '色情'
+  | '辱骂'
+  | '违法信息'
+  | '诈骗'
+  | '侵权'
+  | '骚扰'
+  | '恐怖主义'
+
+// 创建内容违规类型数组
+export const violationTypes: ContentViolationType[] = [
+  '暴力',
+  '色情',
+  '辱骂',
+  '违法信息',
+  '诈骗',
+  '侵权',
+  '骚扰',
+  '恐怖主义'
 ]

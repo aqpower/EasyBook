@@ -15,7 +15,6 @@ import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostService {
-
     @Autowired
     private PostMapper postMapper;
     @Autowired
@@ -26,29 +25,30 @@ public class PostServiceImpl implements PostService {
     @Override
     public int toPost(Post post) {
         int role = postMapper.selectRole(post.getUserId());
-        if (role >= 4){   //用户不能发帖
+        if (role >= 4) {   //用户不能发帖
             return 3;
-        }else {
-            post.setContentText(FileUntil.filterSensitivityWord(post.getContentText(),'*'));
-            post.setTitle(FileUntil.filterSensitivityWord(post.getTitle(),'*'));
-            if (post.getLyrics() != null){
-               post.setLyrics(FileUntil.filterSensitivityWord(post.getLyrics(),'*'));
+        } else {
+            post.setContentText(FileUntil.filterSensitivityWord(post.getContentText(), '*'));
+            post.setTitle(FileUntil.filterSensitivityWord(post.getTitle(), '*'));
+            if (post.getLyrics() != null) {
+                post.setLyrics(FileUntil.filterSensitivityWord(post.getLyrics(), '*'));
             }
             int result = postMapper.post(post);
-            if (post.getUrls() != null){
-                postMapper.toImages(post.getId(),post.getUrls());
+            if (post.getUrls() != null) {
+                postMapper.toImages(post.getId(), post.getUrls());
             }
             return result;
         }
     }
 
-    public List<Integer> getBlackList(Integer id){
+    public List<Integer> getBlackList(Integer id) {
         List<Integer> users = new ArrayList<>();
         users.addAll(userService.selectBlackUsers(id));
         users.addAll(userService.selectBlackedUsers(id));
         return users;
     }
-    public List<Posts> setUrls(List<Posts> posts){
+
+    public List<Posts> setUrls(List<Posts> posts) {
         for (Posts post : posts) {
             //通过帖子id查url集合
             post.setUrl(postMapper.getUrl(post.getId()));
@@ -79,10 +79,10 @@ public class PostServiceImpl implements PostService {
     public PostDetails selectDetails(Integer postId) {
 
         Posts post = postMapper.selectPost(postId);
-        if (post != null){
+        if (post != null) {
             post.setUrl(postMapper.getUrl(postId));
-            List<Comments> commentsList= postMapper.selectComments(postId);
-            PostDetails postDetails= new PostDetails();
+            List<Comments> commentsList = postMapper.selectComments(postId);
+            PostDetails postDetails = new PostDetails();
             postDetails.setCommentsNum(postMapper.countComments(postId));
             postDetails.setPosts(post);
             postDetails.setCommentsList(commentsList);
@@ -95,7 +95,7 @@ public class PostServiceImpl implements PostService {
     public PageBean getPosts(Integer id, Integer page, Integer pageSize) {
         Long count = postMapper.countPostsByUserId(id);
         Integer start = (page - 1) * pageSize;
-        List<Posts> posts = postMapper.getPostsByUserId(id,start,pageSize);
+        List<Posts> posts = postMapper.getPostsByUserId(id, start, pageSize);
         for (Posts post : posts) {
             post.setUrl(postMapper.getUrl(post.getId()));
         }
@@ -112,7 +112,7 @@ public class PostServiceImpl implements PostService {
         List<Integer> users = getBlackList(id);
 
         //查询帖子总数
-        Long count = postMapper.count(color,text,users);
+        Long count = postMapper.count(color, text, users);
         Integer start = (page - 1) * pageSize;
         //分页查询帖子得到的数据
         List<Posts> posts = postMapper.pageSearch(color, text, users, start, pageSize);
@@ -124,7 +124,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PageBean showCarePosts(Integer id, Integer page, Integer pageSize, List<Integer> careList) {
-        if (careList.size() != 0){
+        if (careList.size() != 0) {
             //查询帖子总数
             Long count = postMapper.countCarePosts(careList);
             Integer start = (page - 1) * pageSize;
@@ -172,8 +172,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public int getTodayPostCount(){
+    public int getTodayPostCount() {
         LocalDate today = LocalDate.now();
-        return postMapper.getTodayCount(today);
+        return postMapper.getTodayPostCount(today);
+    }
+
+    @Override
+    public int countAllPosts() {
+        return postMapper.countAllPosts();
+    }
+
+    @Override
+    public int getTotalViewCount(){
+        return postMapper.getTotalViewCount();
     }
 }

@@ -41,4 +41,7 @@ public interface UserService {
     int DisBlackList(BlackList blackList);
 
     int getUserCount();
+
+    List<MostPopularAvatar> getMostPopularAvatar();
+
 }

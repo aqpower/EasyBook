@@ -27,6 +27,10 @@ const router = createRouter({
         {
           path: 'init-profile/:email',
           component: () => import('@/components/InitProfile.vue')
+        },
+        {
+          path: 'adminLogin',
+          component: () => import('@/components/AdminLogin.vue')
         }
       ]
     },
@@ -73,6 +77,20 @@ const router = createRouter({
               component: () => import('@/components/CardDetail.vue')
             }
           ]
+        }
+      ]
+    },
+    {
+      path: '/admin',
+      component: () => import('@/views/AdminView.vue'),
+      children: [
+        {
+          path: 'home',
+          component: () => import('@/layouts/SysStat.vue')
+        },
+        {
+          path: 'review',
+          component: () => import('@/components/VioList.vue')
         }
       ]
     }

@@ -102,3 +102,16 @@ export const deleteUserApi = (data: {
   httpInstance.delete('/api/v1/delete/user', {
     data: data
   })
+
+export const collectPostApi = (data: { userId: string; postId: string }): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/posts/collection', data)
+
+export type violationPostApiRequest = {
+  postId: string
+  userId: string
+  violationReason: string
+  [property: string]: any
+}
+
+export const violationPostApi = (data: violationPostApiRequest): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/posts/violation', data)

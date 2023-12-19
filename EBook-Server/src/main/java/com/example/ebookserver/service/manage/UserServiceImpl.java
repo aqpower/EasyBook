@@ -203,6 +203,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<MostPopularAvatar> getMostPopularAvatar() {
+        return null;
+    }
+
+    @Override
     public void toCare(Care care) {
         userMapper.AddCare(care);
     }

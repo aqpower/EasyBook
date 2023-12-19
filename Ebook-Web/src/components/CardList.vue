@@ -12,6 +12,7 @@
         class="badge mx-2 px-3 py-4 hover:bg-base-200 hover:cursor-pointer hover:font-bold"
         :class="{ 'bg-base-300 font-bold': colorIndex == -1 }"
         @click="changeColorIndex(-1)"
+        v-show="isSearch == false"
       >
         我的关注
       </span>
@@ -25,7 +26,7 @@
         </span>
       </div>
     </div>
-    <div class="pr-6 flex-1 overflow-scroll">
+    <div ref="scrollContainer" @scroll="handleScroll" class="pr-6 flex-1 overflow-scroll">
       <div class="sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5">
         <!-- <div show="skeletonShow" class="skeleton w-28 h-28"></div> -->
         <PostCard v-for="(item, index) in postList" :key="index" :post="item"></PostCard>
@@ -37,8 +38,8 @@
 
 <script setup lang="ts">
 import { getColorPostsApi, getFollowerPostApi, getPostsApi, searchPostsApi } from '@/api/posts'
-import type { GetPostResType } from '@/types/post'
-import { computed, onMounted, ref, watch } from 'vue'
+import type { GetPostResType, PostType } from '@/types/post'
+import { computed, onMounted, ref } from 'vue'
 import PostCard from './PostCard.vue'
 import eventBus from '@/libs/eventBus'
 import { useUserStore } from '@/stores/userStores'
@@ -50,100 +51,131 @@ const router = useRouter()
 const route = useRoute()
 const dialog = useCommandComponent(InfoDialog)
 const page = ref(1)
-const pageSize = ref(100)
-const postList = ref([])
+const pageSize = ref(25)
+const postList = ref<PostType[]>([])
 const userStore = useUserStore()
 const skeletonShow = ref(true)
 const colorIndex = ref(-2)
+const scrollContainer = ref(null) // 创建一个 ref 来获取滚动容器的引用
 eventBus.on('postFinish', (e) => {
   console.log(e)
   if (e == true) {
     getPosts()
   }
 })
+onMounted(() => {
+  getPosts()
+})
+
+// 锁🔒
+let isFetching = false // 增加一个标志位来表示是否正在获取数据
+
+const handleScroll = () => {
+  if (!isFetching) {
+    // 如果没有在获取数据，则执行操作
+    const container = scrollContainer.value
+    if (container) {
+      const { scrollTop, clientHeight, scrollHeight } = container
+      // 检查是否滚动到页面底部（这里假设滚动到离底部 200px 的地方）
+      if (scrollTop + clientHeight >= scrollHeight) {
+        isFetching = true // 设置标志位为 true，表示开始获取数据
+        // 更新页面值
+        page.value += 1
+        getPosts()
+      }
+    }
+  }
+}
 
 const isSearch = computed(() => {
   return router.currentRoute.value.fullPath.includes('search')
 })
 
 const changeColorIndex = (index: number) => {
+  page.value = 1
   colorIndex.value = index
   if (index == -2) {
     getPosts()
   } else if (index == -1) {
     getFollowPosts()
   } else {
-    getColorPosts()
+    getPosts()
   }
 }
 
 const getPosts = () => {
+  const data: {
+    id: any
+    page: any
+    pageSize: any
+    color?: number
+    text?: string
+  } = {
+    id: userStore.user?.id,
+    page: page.value,
+    pageSize: pageSize.value,
+    color: undefined,
+    text: undefined
+  }
+  if (colorIndex.value >= 0) {
+    data.color = colorIndex.value // 仅在颜色索引值存在时才赋值
+  }
   if (isSearch.value == true) {
     console.log(router)
-    let data: { id: any; page: any; pageSize: any; text: string; color: number } = {
-      id: userStore.user?.id,
-      page: page.value,
-      pageSize: pageSize.value,
-      text: route.params.keyword as string
-    }
+    data.text = route.params.keyword as string
     searchPostsApi(data).then((res) => {
       const data: GetPostResType = res.data
       if (res.code == 200) {
-        skeletonShow.value = false
         console.log(data)
-        if (data.posts != null) {
-          postList.value = data.posts
+        if (data.posts.length != 0) {
+          if (isFetching) {
+            data.posts.forEach((newPost) => {
+              postList.value.push(newPost)
+            })
+          } else {
+            postList.value = data.posts
+          }
         } else {
-          dialog({
-            title: '😞',
-            content: '当前分区没有帖子哦~',
-            btnContent: '👌'
-          })
+          if (isFetching) {
+            noPostDia('已经没有帖子啦')
+          } else {
+            noPostDia('当前分区没有帖子哦~')
+          }
         }
       }
+      isFetching = false
     })
   } else {
-    const data = {
-      id: userStore.user.id,
-      page: page.value,
-      pageSize: pageSize.value
-    }
     getPostsApi(data).then((res) => {
       const data: GetPostResType = res.data
       if (res.code == 200) {
-        skeletonShow.value = false
         console.log(data)
-        if (data.posts != null) {
-          postList.value = data.posts
+        if (data.posts.length != 0) {
+          if (isFetching) {
+            data.posts.forEach((newPost) => {
+              postList.value.push(newPost)
+            })
+          } else {
+            postList.value = data.posts
+          }
         } else {
-          dialog({
-            title: '😞',
-            content: '当前分区没有帖子哦~',
-            btnContent: '👌'
-          })
+          if (isFetching) {
+            noPostDia('已经没有帖子啦')
+          } else {
+            noPostDia('当前分区没有帖子哦~')
+          }
         }
       }
+      isFetching = false
     })
   }
 }
 
-const getColorPosts = () => {
-  const data = {
-    id: userStore.user.id,
-    page: page.value,
-    pageSize: pageSize.value,
-    color: colorIndex.value
-  }
-  if (isSearch.value == true) {
-    data.text = route.params.keyword
-  }
-  getColorPostsApi(data).then((res) => {
-    const data: GetPostResType = res.data
-    if (res.code == 200) {
-      skeletonShow.value = false
-      console.log(data)
-      postList.value = data.posts
-    }
+const noPostDia = (msg) => {
+  dialog({
+    title: '😞',
+    content: msg,
+    btnContent: '👌'
   })
 }
 
@@ -164,9 +196,6 @@ const getFollowPosts = () => {
     }
   })
 }
-onMounted(() => {
-  getPosts()
-})
 </script>
 
 <style scoped></style>

@@ -5,9 +5,16 @@
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <div class="space-y-6">
       <div>
-        <label for="email" class="block text-sm font-medium leading-6 text-base-content"
-          >账户</label
-        >
+        <div class="flex items-center justify-between">
+          <label for="email" class="block text-sm font-medium leading-6 text-base-content"
+            >账户</label
+          >
+          <div class="text-sm">
+            <a href="#/account/adminLogin" class="font-semibold text-rose-400 hover:text-rose-300"
+              >管理员登录</a
+            >
+          </div>
+        </div>
         <div class="mt-2">
           <input
             id="email"
@@ -45,7 +52,7 @@
 
       <div>
         <button
-          class="min-h-0 h-9 btn btn-primary flex w-full justify-center rounded-md hover:bg-rose-300 px-3 py-1.5 leading-6 text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+          class="min-h-0 h-9 btn btn-primary flex w-full justify-center rounded-md px-3 py-1.5 leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           @click="userLogin"
         >
           <span v-if="loadingShow" class="loading loading-bars loading-xs h-6"></span>
@@ -54,7 +61,7 @@
       </div>
     </div>
 
-    <p class="mt-10 text-base-content text-center text-sm">
+    <p class="mt-3 text-base-content text-center text-sm">
       还没有账户🤔
       {{ ' ' }}
       <a

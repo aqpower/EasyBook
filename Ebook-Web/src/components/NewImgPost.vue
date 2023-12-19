@@ -110,10 +110,10 @@ const getImagePreviews = (files: any) => {
 }
 
 const newImgPost = () => {
-  if (!(titleInput.value.length < 30 && titleInput.value.length > 0)) {
+  if (!(titleInput.value.length < 45 && titleInput.value.length > 0)) {
     dialog({
       title: '😮',
-      content: '标题长度必须大于0并且小于30。',
+      content: '标题长度必须大于0并且小于45。',
       btnContent: '👌'
     })
     return
