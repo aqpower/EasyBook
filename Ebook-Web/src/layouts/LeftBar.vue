@@ -30,7 +30,7 @@
         </button>
         <label
           for="my_modal_6"
-          class="btn btn-neutral h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
+          class="btn btn-neutral h-10 min-h-min w-56  justify-start items-center gap-3"
           @click="menuHandler"
           :class="{
             '': menuVar == 2,
@@ -55,7 +55,7 @@
           >
         </label>
         <button
-          class="btn btn-neutral h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
+          class="btn btn-neutral h-10 min-h-min w-56 justify-start items-center gap-3"
           :class="{ '': menuVar == 3, 'bg-transparent shadow-transparent border-0': menuVar != 3 }"
           @click="menuHandler"
         >
@@ -77,7 +77,7 @@
           >
         </button>
         <button
-          class="btn btn-neutral h-10 min-h-min w-56 rounded-3xl justify-start items-center gap-3"
+          class="btn btn-neutral h-10 min-h-min w-56 justify-start items-center gap-3"
           :class="{ '': menuVar == 4, ' bg-transparent shadow-transparent border-0': menuVar != 4 }"
           @click="menuHandler"
         >
@@ -135,7 +135,7 @@
       </div>
     </div>
 
-    <InfoDialogVue :visible="loadingShow">
+    <InfoDialogVue :visible="loadingShow" title="😊">
       <template #content>
         <div class="flex justify-center mt-6">
           <p>正在上传，请耐心等待~ 😊</p>

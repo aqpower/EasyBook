@@ -18,9 +18,11 @@
       <RouterView></RouterView>
     </div>
   </div>
+  <AdminFooter></AdminFooter>
 </template>
 
 <script setup lang="ts">
+import AdminFooter from '@/layouts/AdminFooter.vue';
 import { computed } from 'vue'
 import { RouterView, onBeforeRouteUpdate } from 'vue-router'
 import { useRoute } from 'vue-router'

@@ -8,12 +8,15 @@ import com.example.ebookserver.service.PostService;
 import com.example.ebookserver.utils.AliOSSUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -102,6 +105,46 @@ public class PostController {
         PageBean pageBean = postService.search(color,text,id,page,pageSize);
         return Result.success(pageBean);
     }
+    /*
+    *管理员获取帖子数量
+    * */
+    @GetMapping("/posts/today/count")
+    public Map<String,Integer> getTodayPostCount(){
+        int count = postService.getTodayPostCount();
+
+        Map<String,Integer> response = new HashMap<>();
+        response.put("count",count);
+
+        return response;
+    }
+
+    @GetMapping("/visit")
+    public ResponseEntity<?> getTotalViewCount() {
+        int count = postService.getTotalViewCount();
+        return ResponseEntity.ok().body(new CountResponse(count));
+    }
+
+    private static class CountResponse {
+        private final int count;
+
+        public CountResponse(int count) {
+            this.count = count;
+        }
+
+        public int getCount() {
+            return count;
+        }
+    }
 
 
+    /*
+    *系统所有的帖子
+    * */
+
+    @GetMapping("/posts/all")
+    public Result AllPosts(){
+        log.info("查询系统所有帖子的总数");
+        int count = postService.countAllPosts();
+        return Result.success(count);
+    }
 }

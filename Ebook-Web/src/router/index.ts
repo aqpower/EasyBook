@@ -79,6 +79,26 @@ const router = createRouter({
           ]
         }
       ]
+    },
+    {
+      path: '/admin',
+      component: () => import('@/views/AdminView.vue'),
+      children: [
+        {
+          path: 'home',
+          component: () => import('@/layouts/SysStat.vue')
+        },
+        {
+          path: 'review',
+          component: () => import('@/components/VioList.vue'),
+          children: [
+            {
+              path: 'posts/:postId',
+              component: () => import('@/components/CardDetail.vue')
+            }
+          ]
+        }
+      ]
     }
   ]
 })

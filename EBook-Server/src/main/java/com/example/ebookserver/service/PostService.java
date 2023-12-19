@@ -3,7 +3,6 @@ package com.example.ebookserver.service;
 import com.example.ebookserver.pojo.PageBean;
 import com.example.ebookserver.pojo.Post;
 import com.example.ebookserver.pojo.PostDetails;
-import com.example.ebookserver.pojo.Posts;
 
 import java.util.List;
 
@@ -29,4 +28,11 @@ public interface PostService {
     void deletePostByViolation(Integer violationId);
 
     Integer getUserIdById(Integer postId);
+
+    int getTodayPostCount();
+
+
+    int getTotalViewCount();
+
+    int countAllPosts();
 }

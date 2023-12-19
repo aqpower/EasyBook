@@ -197,6 +197,11 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+    @Override
+    public int getUserCount(){
+        return userMapper.getUserCount();
+    }
+
 
     @Override
     public void toCare(Care care) {
@@ -236,6 +241,11 @@ public class UserServiceImpl implements UserService {
             return userMapper.disBlack(blackList);
         }
         return 3;
+    }
+
+    @Override
+    public List<MostPopularAvatar> getMostPopularAvatar() {
+        return userMapper.selectMostPopularAvatar();
     }
 
 

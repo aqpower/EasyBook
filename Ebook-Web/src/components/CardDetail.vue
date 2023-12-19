@@ -62,13 +62,22 @@ const getPost = () => {
       post.value = res.data.posts
       commentList.value = res.data.commentsList
       console.log(post)
+    } else if (res.code == 401) {
+      dialog({
+        title: '😢',
+        content: '该帖子不存在',
+        btnContent: '👌',
+        onClose: () => {
+          router.go(-1)
+        }
+      })
     }
   })
 }
 
 const isMe = computed((): boolean => {
   if (route.params.userId != null) {
-    if (route.params.userId == userStore.user?.id) {
+    if (post.value.userId == userStore.user?.id) {
       return true
     }
   }
@@ -85,6 +94,7 @@ const violationPost = (reason: string) => {
   violationPostApi(data).then((res) => {
     if (res.code == 200) {
       dialog({
+        title: '🥳',
         content: '举报帖子成功',
         btnContent: '👌'
       })
@@ -99,16 +109,28 @@ const collectPost = () => {
   }
   collectPostApi(data).then((res) => {
     if (res.code == 200) {
-      dialog({ content: '收藏帖子成功', btnContent: '👌' })
+      dialog({
+        title: '🥳',
+        content: '收藏帖子成功',
+        btnContent: '👌'
+      })
     } else {
-      dialog({ content: res.msg, btnContent: '👌' })
+      dialog({
+        title: '🥳',
+        content: res.msg,
+        btnContent: '👌'
+      })
     }
   })
 }
 
 const deletePost = () => {
   deletePostApi(route.params.postId).then((res) => {
-    dialog({ content: '删除帖子成功', btnContent: '👌' })
+    dialog({
+      title: '🥳',
+      content: '删除帖子成功',
+      btnContent: '👌'
+    })
     router.go(-1)
   })
 }
@@ -122,7 +144,11 @@ const newComment = () => {
   newCommentApi(data).then((res) => {
     if (res.code == 200) {
       commentInput.value = ''
-      dialog({ content: '帖子评论成功', btnContent: '👌' })
+      dialog({
+        title: '🥳',
+        content: '帖子评论成功',
+        btnContent: '👌'
+      })
       getPost()
     }
   })
@@ -181,10 +207,18 @@ const navUserProfile = (id) => {
                 <p class="font-medium">{{ post.name }}</p>
               </div>
               <div class="flex flex-row justify-center items-center gap-3">
-                <button class="btn btn-error min-h-0 h-10" v-show="isMe == true" @click="deletePost">
+                <button
+                  class="btn btn-error min-h-0 h-10"
+                  v-show="isMe == true"
+                  @click="deletePost"
+                >
                   删除帖子
                 </button>
-                <button class="btn btn-success min-h-0 h-10" v-show="isMe == false" @click="collectPost">
+                <button
+                  class="btn btn-success min-h-0 h-10"
+                  v-show="isMe == false"
+                  @click="collectPost"
+                >
                   收藏
                 </button>
 
@@ -198,7 +232,7 @@ const navUserProfile = (id) => {
                     举报
                   </button>
                   <div class="absolute top-14 right-0" v-show="showVio == true">
-                    <div class="bg-warning w-96 rounded-3xl shadow-xl p-3">
+                    <div class="bg-warning w-96 rounded-xl shadow-xl p-3">
                       <h3 class="text-warning-content font-bold text-lg text-center mb-4">
                         请选择违规类型
                       </h3>
@@ -215,7 +249,7 @@ const navUserProfile = (id) => {
                     </div>
                   </div>
                 </div>
-                <button class="btn  min-h-0 h-10" @click="handleClose">❌</button>
+                <button class="btn min-h-0 h-10" @click="handleClose">❌</button>
               </div>
             </div>
             <div class="mt-1">

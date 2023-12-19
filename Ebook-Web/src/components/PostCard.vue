@@ -2,7 +2,7 @@
   <div class="w-full break-inside-avoid">
     <figure>
       <img
-        class="inline-block rounded-2xl AqImage hover:brightness-75 ease-in-out duration-500"
+        class="max-h-96 w-full object-cover inline-block rounded-2xl AqImage hover:brightness-75 ease-in-out duration-500"
         v-if="post.url != null"
         :src="post.url[0]"
         :alt="post.title"
