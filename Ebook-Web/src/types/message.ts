@@ -4,4 +4,5 @@ export type MessageType = {
   userId: number
   content: string
   avatar: number
+  title: string
 }

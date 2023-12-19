@@ -30,8 +30,8 @@ export type PostApiType = {
 }
 
 export type PostDetailResType = {
-posts: PostDetailResType | undefined
-commentsList: {}
+  posts: PostDetailResType | undefined
+  commentsList: {}
   id: number
   avatar: number
   name: string

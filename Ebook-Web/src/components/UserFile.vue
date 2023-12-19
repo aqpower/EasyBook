@@ -58,13 +58,52 @@
         </button>
       </div>
     </div>
-    <div class="divider text-gray-400">帖子</div>
-    <div class="pr-6 mt-5">
-      <div class="flex justify-center mt-10 text-xl text-gray-400" v-show="userPosts.length == 0">
-        该用户没有发送过帖子
-      </div>
-      <div class="sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5">
-        <PostCard v-for="(item, index) in userPosts" :key="index" :post="item"></PostCard>
+
+    <div class="mt-3 flex justify-center items-center gap-6">
+      <button
+        class="btn btn-neutral btn-outline w-44 text-left min-h-0 h-9"
+        @click="handleChangePart('帖子')"
+        name="options"
+        :class="{ ' btn-active': selectedPart == '帖子' }"
+      >
+        我发布的帖子
+      </button>
+      <button
+        class="btn btn-neutral btn-outline w-44 text-left min-h-0 h-9"
+        @click="handleChangePart('点赞')"
+        :class="{ ' btn-active': selectedPart == '点赞' }"
+        name="options"
+      >
+        点赞
+      </button>
+      <button
+        class="btn btn-neutral btn-outline w-44 text-left min-h-0 h-9"
+        @click="handleChangePart('收藏')"
+        :class="{ ' btn-active': selectedPart == '收藏' }"
+        name="options"
+      >
+        收藏
+      </button>
+      <button
+        class="btn btn-neutral btn-outline w-44 text-left min-h-0 h-9"
+        value="帖子"
+        name="options"
+        :class="{ ' btn-active': selectedPart == '评论' }"
+        @click="handleChangePart('评论')"
+      >
+        评论
+      </button>
+    </div>
+
+    <div class="my-5">
+      <CommentListVue v-show="showComment == true"></CommentListVue>
+      <div class="pr-6" v-show="showComment == false">
+        <div class="flex justify-center mt-10 text-xl text-gray-400" v-show="userPosts.length == 0">
+          该用户没有发送过帖子
+        </div>
+        <div class="sm:columns-3 md:columns-3 lg:columns-4 xl:columns-5">
+          <PostCard v-for="(item, index) in userPosts" :key="index" :post="item"></PostCard>
+        </div>
       </div>
     </div>
   </div>
@@ -101,7 +140,7 @@
 
 <script setup lang="ts">
 import InfoDialog from './InfoDialog.vue'
-import { getUserPostApi } from '@/api/posts'
+import { getLikePostsApi, getStarPostsApi, getUserPostApi } from '@/api/posts'
 import { computed, onMounted, provide, ref } from 'vue'
 import { Icon } from '@iconify/vue/dist/iconify.js'
 import type { UserPostResType } from '@/types/post'
@@ -109,7 +148,7 @@ import { useRoute } from 'vue-router'
 import PostCard from './PostCard.vue'
 import { avatarList } from '@/utils/icon'
 import {
-cancelBlackApi,
+  cancelBlackApi,
   cancelUserFollowApi,
   followUserApi,
   getUserInfoApi,
@@ -121,7 +160,9 @@ import { useUserStore } from '@/stores/userStores'
 import useCommandComponent from '@/hooks/useCommandComponent'
 import FollowList from '@/components/FollowList.vue'
 import FansList from './FansList.vue'
+import CommentListVue from './CommentList.vue'
 const userStore = useUserStore()
+const selectedPart = ref('帖子')
 const dialog = useCommandComponent(InfoDialog)
 const userNameInput = ref<string>(userStore.user?.name as string)
 const avatarIndex = ref(-1)
@@ -132,6 +173,7 @@ const black = ref(false)
 const showFansModal = ref(false)
 const page = ref(1)
 const pageSize = ref(20)
+const showComment = ref(false)
 // 声明一个响应性变量并 provide 其自身
 // 孙组件获取后可以保持响应性
 provide('avatarIndex', avatarIndex)
@@ -150,13 +192,42 @@ onMounted(() => {
       avatarIndex.value = user.value.avatar
     }
   })
-  getUserPostApi(userId, page.value, pageSize.value).then((res) => {
-    console.log(res)
-    if (res.code == 200) {
-      userPosts.value = res.data.posts
-    }
-  })
+  getPosts()
 })
+
+const handleChangePart = (part: string) => {
+  selectedPart.value = part
+  if (part == '评论') {
+    showComment.value = true
+  } else {
+    showComment.value = false
+    page.value = 1
+    getPosts()
+  }
+}
+
+const getPosts = () => {
+  let part = selectedPart.value
+  if (part == '帖子') {
+    getUserPostApi(userId, page.value, pageSize.value).then((res) => {
+      if (res.code == 200) {
+        userPosts.value = res.data.posts
+      }
+    })
+  } else if (part == '点赞') {
+    getLikePostsApi(userId, page.value, pageSize.value).then((res) => {
+      if (res.code == 200) {
+        userPosts.value = res.data.posts
+      }
+    })
+  } else if (part == '收藏') {
+    getStarPostsApi(userId, page.value, pageSize.value).then((res) => {
+      if (res.code == 200) {
+        userPosts.value = res.data.posts
+      }
+    })
+  }
+}
 
 const isMe = computed((): boolean => {
   if (route.params.userId != null) {
@@ -212,8 +283,8 @@ const cancelBlack = () => {
     userId: id,
     blackUserId: userId
   }
-  cancelBlackApi(data).then(res => {
-    if(res.code == 200){
+  cancelBlackApi(data).then((res) => {
+    if (res.code == 200) {
       dialog({
         title: '🥳',
         content: '取消拉黑成功！',

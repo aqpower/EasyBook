@@ -1,5 +1,6 @@
 <template>
   <div>
+    <RouterView></RouterView>
     <div class="overflow-x-auto">
       <table class="table">
         <thead>
@@ -22,7 +23,9 @@
             <th>{{ formatTime(item.violationTime) }}</th>
             <th>{{ item.violationReason }}</th>
             <th class="flex gap-3">
-              <button class="btn btn-success btn-outline min-h-0 h-8">查看帖子详情</button>
+              <button class="btn btn-success btn-outline min-h-0 h-8" @click="navPost(item.postId)">
+                查看帖子详情
+              </button>
               <button class="min-h-0 h-8 btn btn-info btn-outline" @click="vioHandler(1, item.id)">
                 删帖
               </button>
@@ -57,12 +60,19 @@
 </template>
 
 <script setup lang="ts">
-import { getViolationsApi, type Violation } from '@/api/admin'
+import { getViolationsApi, handleVioApi, type handleVioRequest, type Violation } from '@/api/admin'
 import { formatTime } from '@/utils/time'
 import { onMounted, ref } from 'vue'
-
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStores'
+import useCommandComponent from '@/hooks/useCommandComponent'
+import InfoDialog from './InfoDialog.vue'
+const dialog = useCommandComponent(InfoDialog)
+const userStore = useUserStore()
+const user = userStore.user
+const router = useRouter()
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(9)
 const vioList = ref<Violation[]>()
 const pageCount = ref(0)
 
@@ -84,8 +94,25 @@ onMounted(() => {
   getVios()
 })
 
-const vioHandler = (type: number, vioId: number) => {
-  console.log(type, vioId)
+const navPost = (postId: number) => {
+  router.push(`/admin/review/posts/${postId}`)
+}
+
+const vioHandler = (type: number, vioId: any) => {
+  let data: handleVioRequest = {
+    adminId: user?.id as string,
+    type: type,
+    violationId: vioId
+  }
+  handleVioApi(data).then((res) => {
+    if (res.code == 200) {
+      dialog({
+        title: '🥳',
+        content: '处理成功！',
+        btnContent: '1'
+      })
+    }
+  })
 }
 </script>
 

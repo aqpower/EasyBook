@@ -90,7 +90,13 @@ const router = createRouter({
         },
         {
           path: 'review',
-          component: () => import('@/components/VioList.vue')
+          component: () => import('@/components/VioList.vue'),
+          children: [
+            {
+              path: 'posts/:postId',
+              component: () => import('@/components/CardDetail.vue')
+            }
+          ]
         }
       ]
     }
