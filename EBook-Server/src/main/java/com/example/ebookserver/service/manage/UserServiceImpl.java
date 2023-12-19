@@ -202,10 +202,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserCount();
     }
 
-    @Override
-    public List<MostPopularAvatar> getMostPopularAvatar() {
-        return null;
-    }
 
     @Override
     public void toCare(Care care) {

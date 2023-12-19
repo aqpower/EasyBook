@@ -118,5 +118,4 @@ public interface UserMapper {
 
     List<MostPopularAvatar> selectMostPopularAvatar();
 
-    List<MostPopularAvatar> selectMostPopularAvatar();
 }

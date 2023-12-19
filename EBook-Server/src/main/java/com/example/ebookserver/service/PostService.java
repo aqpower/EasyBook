@@ -31,7 +31,6 @@ public interface PostService {
 
     int getTodayPostCount();
 
-    int countAllPosts();
 
     int getTotalViewCount();
 

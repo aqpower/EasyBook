@@ -177,10 +177,6 @@ public class PostServiceImpl implements PostService {
         return postMapper.getTodayPostCount(today);
     }
 
-    @Override
-    public int countAllPosts() {
-        return postMapper.countAllPosts();
-    }
 
     @Override
     public int getTotalViewCount(){

@@ -42,7 +42,6 @@ public interface UserService {
 
     int getUserCount();
 
-    List<MostPopularAvatar> getMostPopularAvatar();
 
 
     List<MostPopularAvatar> getMostPopularAvatar();

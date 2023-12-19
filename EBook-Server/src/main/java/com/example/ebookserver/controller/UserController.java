@@ -226,13 +226,5 @@ public class UserController {
         return new UserCountResponse(count);
     }
 
-    /*
-    * 获取使用人数最多的头像
-    * */
-    @GetMapping("/user/avatar")
-    public Result MostPopularAvatar(){
-        log.info("查询使用人数最多的头像");
-        List<MostPopularAvatar> avatar = userService.getMostPopularAvatar();
-        return Result.success(avatar);
-    }
+
 }
