@@ -29,4 +29,6 @@ public interface PostService {
     void deletePostByViolation(Integer violationId);
 
     Integer getUserIdById(Integer postId);
+
+    int getTodayPostCount();
 }

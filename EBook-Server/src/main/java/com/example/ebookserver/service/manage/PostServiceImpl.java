@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PostServiceImpl implements PostService {
+
     @Autowired
     private PostMapper postMapper;
     @Autowired
@@ -167,5 +169,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public Integer getUserIdById(Integer postId) {
         return postMapper.getUserIdById(postId);
+    }
+
+    @Override
+    public int getTodayPostCount(){
+        LocalDate today = LocalDate.now();
+        return postMapper.getTodayCount(today);
     }
 }

@@ -13,7 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -102,6 +104,19 @@ public class PostController {
         PageBean pageBean = postService.search(color,text,id,page,pageSize);
         return Result.success(pageBean);
     }
+    /*
+    *管理员获取帖子数量
+    * */
+    @GetMapping("/posts/today/count")
+    public Map<String,Integer> getTodayPostCount(){
+        int count = postService.getTodayPostCount();
+
+        Map<String,Integer> response = new HashMap<>();
+        response.put("count",count);
+
+        return response;
+    }
+
 
 
 }
