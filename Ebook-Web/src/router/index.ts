@@ -27,6 +27,10 @@ const router = createRouter({
         {
           path: 'init-profile/:email',
           component: () => import('@/components/InitProfile.vue')
+        },
+        {
+          path: 'adminLogin',
+          component: () => import('@/components/AdminLogin.vue')
         }
       ]
     },
@@ -36,6 +40,16 @@ const router = createRouter({
       children: [
         {
           path: 'explore',
+          component: () => import('@/components/CardList.vue'),
+          children: [
+            {
+              path: ':postId',
+              component: () => import('@/components/CardDetail.vue')
+            }
+          ]
+        },
+        {
+          path: 'search/:keyword',
           component: () => import('@/components/CardList.vue'),
           children: [
             {
@@ -61,7 +75,7 @@ const router = createRouter({
             {
               path: 'posts/:postId',
               component: () => import('@/components/CardDetail.vue')
-            },
+            }
           ]
         }
       ]

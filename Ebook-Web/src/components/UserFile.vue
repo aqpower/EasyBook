@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-center mt-14 items-center">
+    <div class="flex justify-center mt-6 items-center">
       <Icon v-if="avatarIndex != -1" class="w-28 h-28 m-1" :icon="avatarList[avatarIndex]"></Icon>
       <div v-if="user" class="ml-3 flex flex-col gap-3">
         <div class="badge badge-primary">ID: {{ user.id }}</div>
@@ -52,6 +52,7 @@
         <button
           class="btn btn-error btn-outline min-h-0 h-8"
           v-show="isMe == false && black == true"
+          @click="cancelBlack"
         >
           ⭕已拉黑
         </button>
@@ -108,6 +109,7 @@ import { useRoute } from 'vue-router'
 import PostCard from './PostCard.vue'
 import { avatarList } from '@/utils/icon'
 import {
+cancelBlackApi,
   cancelUserFollowApi,
   followUserApi,
   getUserInfoApi,
@@ -201,6 +203,23 @@ const newBlack = () => {
         btnContent: '👌'
       })
       black.value = true
+    }
+  })
+}
+
+const cancelBlack = () => {
+  let data = {
+    userId: id,
+    blackUserId: userId
+  }
+  cancelBlackApi(data).then(res => {
+    if(res.code == 200){
+      dialog({
+        title: '🥳',
+        content: '取消拉黑成功！',
+        btnContent: '👌'
+      })
+      black.value = false
     }
   })
 }

@@ -84,4 +84,34 @@ export const getFansApi = (userId: string): Promise<ResType<any>> =>
 export const newUserBlackApi = (data: {
   balckuserId: string
   userId: string
-}): Promise<ResType<any>> => httpInstance.post('/api/v1/blackList', data)
+}): Promise<ResType<any>> => httpInstance.post('/api/v1/users/blackList', data)
+
+export const cancelBlackApi = (data: {
+  userId: string
+  balckuserId: string
+}): Promise<ResType<any>> =>
+  httpInstance.delete('/api/v1/users/disBlackList', {
+    data: data
+  })
+
+export const deleteUserApi = (data: {
+  id: string
+  password: string
+  [property: string]: any
+}): Promise<ResType<any>> =>
+  httpInstance.delete('/api/v1/delete/user', {
+    data: data
+  })
+
+export const collectPostApi = (data: { userId: string; postId: string }): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/posts/collection', data)
+
+export type violationPostApiRequest = {
+  postId: string
+  userId: string
+  violationReason: string
+  [property: string]: any
+}
+
+export const violationPostApi = (data: violationPostApiRequest): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/posts/violation', data)

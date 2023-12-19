@@ -16,9 +16,7 @@
       <div class="flex justify-between">
         <div class="flex items-center mt-1 hover:cursor-pointer" @click="navUserProfile">
           <Icon class="w-4 h-4 m-1" :icon="avatarList[post.avatar]"></Icon>
-          <p
-            class="text-xs hover:text-primary ease-in-out duration-200"
-          >
+          <p class="text-xs hover:text-primary ease-in-out duration-200">
             {{ post.name }}
           </p>
         </div>
@@ -61,9 +59,14 @@ const props = defineProps({
 const navDetailHandler = () => {
   if (router.currentRoute.value.path.includes('explore')) {
     router.push(`/home/explore/${props.post.id}`)
-  } else {
-    let path = router.currentRoute.value.path
+  } else if (router.currentRoute.value.path.includes('profile')) {
+    let path = router.currentRoute.value.fullPath
     path += '/posts/'
+    path += props.post.id
+    router.push(path)
+  } else {
+    let path = router.currentRoute.value.fullPath
+    path += '/'
     path += props.post.id
     router.push(path)
   }

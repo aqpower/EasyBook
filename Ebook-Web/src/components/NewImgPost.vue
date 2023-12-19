@@ -99,7 +99,7 @@ const getImagePreviews = (files: any) => {
     const reader = new FileReader()
     reader.onload = () => {
       if (imagePreviews.value.length == 9) {
-        dialog({ content: '最多只允许添加9张照片，超出部分未上传!', btnContent: '👌' })
+        dialog({ content: '最多只允许添加9张照片,超出部分未上传!', btnContent: '👌' })
       } else {
         imagePreviews.value.push(reader.result)
       }
@@ -110,11 +110,28 @@ const getImagePreviews = (files: any) => {
 }
 
 const newImgPost = () => {
+  if (!(titleInput.value.length < 30 && titleInput.value.length > 0)) {
+    dialog({
+      title: '😮',
+      content: '标题长度必须大于0并且小于30。',
+      btnContent: '👌'
+    })
+    return
+  }
+  if (!(contentInput.value.length < 2000 && contentInput.value.length > 0)) {
+    dialog({
+      title: '😮',
+      content: '文章内容必须大于0并且小于2000。',
+      btnContent: '👌'
+    })
+    return
+  }
   const formData = new FormData()
   console.log('files: ', imageFiles.value)
   for (let i = 0; i < imageFiles.value.length; i++) {
     formData.append('image', imageFiles.value[i])
   }
+  eventBus.emit('startUpload', true)
   uploadImgApi(formData)
     .then((res) => {
       console.log(res)
@@ -141,7 +158,7 @@ const newImgPost = () => {
           }
           eventBus.emit('postFinish', true)
         })
-        .catch((e) => {
+        .catch(() => {
           eventBus.emit('postFinish', false)
         })
     })

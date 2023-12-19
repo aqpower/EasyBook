@@ -135,9 +135,10 @@
       </div>
     </div>
 
-    <InfoDialogVue :visible="loadingShow" title="正在上传，请耐心等待！😍">
+    <InfoDialogVue :visible="loadingShow">
       <template #content>
         <div class="flex justify-center mt-6">
+          <p>正在上传，请耐心等待~ 😊</p>
           <span class="loading loading-spinner loading-md"></span>
         </div>
       </template>
@@ -168,7 +169,6 @@ const router = useRouter()
 const showMenu = ref(false)
 const newPostHandler = () => {
   newPostRef.value.newPost()
-  loadingShow.value = true
 }
 
 onMounted(() => {
@@ -181,15 +181,20 @@ onMounted(() => {
 
 const userStore = useUserStore()
 
+eventBus.on('startUpload', (e) => {
+  loadingShow.value = true
+})
+
 eventBus.on('postFinish', (e) => {
-  console.log(e)
   loadingShow.value = false
 })
 
 const menuHandler = (e: any) => {
   switch (e.srcElement.innerText) {
     case '发现':
-      router.push('/home/explore')
+      router.push('/home/explore').then(() => {
+        window.location.reload()
+      })
       menuVar.value = 1
       break
     case '发布':
