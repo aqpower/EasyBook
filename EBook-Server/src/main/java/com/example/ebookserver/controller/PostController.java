@@ -103,5 +103,14 @@ public class PostController {
         return Result.success(pageBean);
     }
 
+    /*
+    *系统所有的帖子
+    * */
 
+    @GetMapping("/posts/all")
+    public Result AllPosts(){
+        log.info("查询系统所有帖子的总数");
+        int count = postService.countAllPosts();
+        return Result.success(count);
+    }
 }
