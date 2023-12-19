@@ -82,4 +82,9 @@ public interface PostMapper {
     @Select("select user_id from post where id = #{postId}")
     Integer getUserIdById(Integer postId);
 
+    @Update("update post set visit_count = visit_count + 1 where id = #{postId}")
+    void updateVisit(Integer postId);
+
+    @Select("select count(*) from post where exist != 0")
+    int countAllPosts();
 }

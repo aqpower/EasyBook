@@ -238,6 +238,11 @@ public class UserServiceImpl implements UserService {
         return 3;
     }
 
+    @Override
+    public List<MostPopularAvatar> getMostPopularAvatar() {
+        return userMapper.selectMostPopularAvatar();
+    }
+
 
     @Override
     public CommentBean selectComments(Integer id, Integer page, Integer pageSize) {

@@ -75,7 +75,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDetails selectDetails(Integer postId) {
-
         Posts post = postMapper.selectPost(postId);
         if (post != null){
             post.setUrl(postMapper.getUrl(postId));
@@ -84,6 +83,7 @@ public class PostServiceImpl implements PostService {
             postDetails.setCommentsNum(postMapper.countComments(postId));
             postDetails.setPosts(post);
             postDetails.setCommentsList(commentsList);
+            postMapper.updateVisit(postId);
             return postDetails;
         }
         return null;
@@ -167,5 +167,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public Integer getUserIdById(Integer postId) {
         return postMapper.getUserIdById(postId);
+    }
+
+    @Override
+    public int countAllPosts() {
+        return postMapper.countAllPosts();
     }
 }
