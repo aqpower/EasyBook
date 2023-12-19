@@ -30,3 +30,13 @@ export const getViolationsApi = (page: number, pageSize: number): Promise<ResTyp
       pageSize: pageSize
     }
   })
+
+export const getPostCountApi = (): Promise<ResType<number>> => httpInstance.get('/api/v1/posts/all')
+
+export type WelcomeAvatar = {
+  avatar: number
+  count: number
+}
+
+export const getPopularAvatarApi = (): Promise<ResType<WelcomeAvatar[]>> =>
+  httpInstance.get('/api/v1/user/avatar')

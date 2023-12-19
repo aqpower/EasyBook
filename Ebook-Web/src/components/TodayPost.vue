@@ -1,14 +1,18 @@
 <template>
   <div class="flex flex-col gap-3 items-center justify-center">
-    <div class="stat shadow w-56 h-56 flex flex-col justify-center items-center">
-      <div class="stat-title mb-5 font-medium">今日发帖个数</div>
-      <div class="flex items-center">
-        <div class="stat-value text-warning" style="font-size: 5rem">9</div>
-        <div class="stat-figure text-warning">
-          <Icon class="w-20 h-20" icon="iconamoon:lightning-2" />
+    <div class="flex">
+      <div class="flex justify-center items-center" style="font-size: 3rem">🎉</div>
+      <div class="stat w-56 h-56 flex flex-col justify-center items-center">
+        <div class="stat-title mb-5 font-medium">今日发帖个数</div>
+        <div class="flex items-center">
+          <div class="stat-value text-warning" style="font-size: 5rem">9</div>
+          <div class="stat-figure text-warning">
+            <Icon class="w-20 h-20" icon="iconamoon:lightning-2" />
+          </div>
         </div>
+        <div class="stat-desc mt-4 font-medium">{{ formattedTime }}</div>
       </div>
-      <div class="stat-desc mt-4 font-medium">{{ formattedTime }}</div>
+      <div class="scale-x-[-1] flex justify-center items-center" style="font-size: 3rem">🎉</div>
     </div>
     <div class="stats shadow">
       <div class="stat">
@@ -16,7 +20,7 @@
           <Icon class="w-10 h-10" icon="line-md:lightbulb" />
         </div>
         <div class="stat-title">总发帖数</div>
-        <div class="stat-value text-primary">31K</div>
+        <div class="stat-value text-primary">{{ postCount }}</div>
         <div class="stat-desc">2023.12.10 - {{ formattedTime }}</div>
       </div>
 
@@ -42,9 +46,11 @@
 </template>
 
 <script setup lang="ts">
+import { getPostCountApi } from '@/api/admin'
 import { Icon } from '@iconify/vue/dist/iconify.js'
+import { onMounted, ref } from 'vue'
 const now = new Date() // 创建一个表示当前时间的 Date 对象
-
+const postCount = ref()
 // 如果你希望将当前时间转换为特定格式的字符串，可以使用以下方法：
 const year = now.getFullYear() // 获取年份
 const month = now.getMonth() + 1 // 获取月份（注意月份是从 0 开始的，所以要加 1）
@@ -52,6 +58,18 @@ const day = now.getDate() // 获取日期
 
 // 你可以根据需要自定义时间的格式
 const formattedTime = `${year}.${month}.${day}`
+
+onMounted(() => {
+  getPostCount()
+})
+
+const getPostCount = () => {
+  getPostCountApi().then((res) => {
+    if (res.code == 200) {
+      postCount.value = res.data
+    }
+  })
+}
 </script>
 
 <style scoped></style>

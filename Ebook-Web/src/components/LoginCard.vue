@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <p class="mt-10 text-base-content text-center text-sm">
+    <p class="mt-3 text-base-content text-center text-sm">
       还没有账户🤔
       {{ ' ' }}
       <a

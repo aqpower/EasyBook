@@ -11,7 +11,7 @@
               >账户</label
             >
             <div class="text-sm">
-              <a href="#/account/login" class="font-semibold rounded-xl text-success">用户登录</a>
+              <a href="#/account/login" class="font-semibold rounded-xl text-info">用户登录</a>
             </div>
           </div>
           <div class="mt-2">
@@ -29,7 +29,7 @@
               >密码</label
             >
             <div class="text-sm">
-              <a href="#/account/resetPassword" class="font-semibold text-success">忘记密码?</a>
+              <a href="#/account/resetPassword" class="font-semibold text-info">忘记密码?</a>
             </div>
           </div>
           <div class="mt-2">
@@ -46,7 +46,7 @@
         <div>
           <button
             @click="adminLogin()"
-            class="min-h-0 h-9 btn btn-success flex w-full justify-center rounded-md px-3 py-1.5 leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            class="min-h-0 h-9 btn btn-info flex w-full justify-center rounded-md px-3 py-1.5 leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             <span v-if="loadingShow" class="loading loading-bars loading-xs h-6"></span>
             <span v-if="!loadingShow" class="h-6">登录</span>
