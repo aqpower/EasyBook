@@ -1,5 +1,6 @@
 package com.example.ebookserver.service.manage;
 
+import com.example.ebookserver.exception.UnauthorizedException;
 import com.example.ebookserver.mapper.AdminMapper;
 import com.example.ebookserver.pojo.Admin;
 import com.example.ebookserver.pojo.LoginData;
@@ -52,17 +53,21 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin createAdmin(Admin admin) {
-        short role = 2;
-        admin.setRole(role);
-        //TODO:自定义密码
-        String password = this.generatePassword();
-        admin.setPassword(MD5Util.encode(password));
-        admin.setName(admin.getName());
-        adminMapper.insertAdmin(admin);
-        System.out.println("admin" + admin);
-        admin.setPassword(password);
-        return admin;
+    public Admin createAdmin(Admin admin,Integer adminId) {
+        if (adminId != 10000) {
+            throw new UnauthorizedException("当前管理员没有创建新管理员的权限。");
+        } else {
+            short role = 2;
+            admin.setRole(role);
+            //TODO:自定义密码
+            String password = this.generatePassword();
+            admin.setPassword(MD5Util.encode(password));
+            admin.setName(admin.getName());
+            adminMapper.insertAdmin(admin);
+            System.out.println("admin" + admin);
+            admin.setPassword(password);
+            return admin;
+        }
     }
     @Override
     public boolean updateRole(int adminId, int role) {

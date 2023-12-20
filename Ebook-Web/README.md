@@ -31,4 +31,3 @@ npm install --save-dev @iconify/vue
 
 pnpm i mitt
 
-pnpm i theme-change --save

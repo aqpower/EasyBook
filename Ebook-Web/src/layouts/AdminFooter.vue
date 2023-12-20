@@ -21,6 +21,7 @@
           <Icon class="w-12 h-12" icon="teenyicons:vue-solid" />
           <Icon class="w-12 h-12" icon="file-icons:vite" />
           <!-- <Icon class="w-12 h-12" icon="vscode-icons:file-type-typescript-official" /> -->
+          <Icon class="w-12 h-12" icon="simple-icons:iconify" />
           <Icon class="w-12 h-12" icon="akar-icons:typescript-fill" />
           <!-- <Icon class="w-12 h-12" icon="devicon:tailwindcss" /> -->
           <Icon class="w-12 h-12" icon="file-icons:tailwind" />
