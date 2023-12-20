@@ -34,10 +34,12 @@ public class AdminController {
     }
 
     @PostMapping("/admins")
-    public Result createAdmin(@RequestBody Admin admin) {
+    public Result createAdmin(@RequestBody AdminCreationDTO adminCreationDTO) {
         log.info("管理员创建功能");
+        Admin admin = adminCreationDTO.getAdmin();
+        Integer adminId = adminCreationDTO.getAdminId(); // Assuming this is the ID of the current admin
 
-        Admin createdAdmin = adminService.createAdmin(admin);
+        Admin createdAdmin = adminService.createAdmin(admin, adminId);
 
         if (createdAdmin != null) {
             return Result.success(createdAdmin);
