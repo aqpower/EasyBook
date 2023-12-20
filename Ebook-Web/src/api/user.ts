@@ -115,3 +115,5 @@ export type violationPostApiRequest = {
 
 export const violationPostApi = (data: violationPostApiRequest): Promise<ResType<any>> =>
   httpInstance.post('/api/v1/posts/violation', data)
+
+

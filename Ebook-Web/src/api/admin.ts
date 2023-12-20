@@ -40,3 +40,18 @@ export type WelcomeAvatar = {
 
 export const getPopularAvatarApi = (): Promise<ResType<WelcomeAvatar[]>> =>
   httpInstance.get('/api/v1/user/avatar')
+
+export const getAllPostCountApi = () => httpInstance.get('/api/v1/visit')
+
+export const getUserCountApi = () => httpInstance.get('/api/v1/count')
+
+export const getTodayPostCountApi = () => httpInstance.get('/api/v1/posts/today/count')
+
+export type handleVioRequest = {
+  adminId: string
+  type: number
+  violationId: string
+}
+
+export const handleVioApi = (data: handleVioRequest): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/admin/operations', data)

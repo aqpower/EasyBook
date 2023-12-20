@@ -9,14 +9,12 @@ import com.example.ebookserver.service.UserService;
 import com.example.ebookserver.service.ViolationService;
 import com.example.ebookserver.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1/admin/operations")
 public class ReviewController {
     @Autowired
