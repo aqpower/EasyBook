@@ -1,5 +1,6 @@
 package com.example.ebookserver;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
@@ -7,7 +8,7 @@ import java.io.IOException;
 @SpringBootApplication
 public class EBookServerApplication {
     public static void main(String[] args) throws IOException {
-        //SpringApplication.run(EBookServerApplication.class, args);
+        SpringApplication.run(EBookServerApplication.class, args);
         //System.out.printf(MD5Util.encode("easybook123"));
         //System.out.printf(FileUntil.filterSensitivityWord("tmd你就是一个sb", '*'));
 //        File file = new File("D:\\EBook\\EBook-Server\\src\\main\\resources\\static\\keywords.txt");
