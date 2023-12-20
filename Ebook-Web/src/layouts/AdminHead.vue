@@ -4,10 +4,12 @@
       <div class="flex-1">
         <a class="text-primary btn btn-ghost text-xl" href="/#/admin/home">EasyBook</a>
         <span class="badge-primary rounded-2xl px-2 py-1 font-medium">管理员</span>
+        <span class=" badge-secondary rounded-2xl px-2 py-1 font-medium ml-2">超级</span>
       </div>
       <div class="flex-none">
         <p class="mx-2 text-base">{{ greeting + admin?.name }}</p>
         <ul class="menu menu-horizontal px-1">
+          <li><a v-if="isSuper" href="/#/admin/createAdmin">创建管理员</a></li>
           <li><a href="/#/admin/review">审核举报</a></li>
           <li>
             <details>
@@ -143,8 +145,8 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const userStore = useUserStore()
 const admin = userStore.user
-const selectedTheme = ref('')
 const themeStore = useThemeStore()
+const selectedTheme = ref(themeStore.getTheme())
 watch(selectedTheme, () => {
   themeStore.setTheme(selectedTheme.value)
 })
@@ -153,12 +155,16 @@ const greeting = computed(() => {
   const hour = now.getHours()
 
   if (hour >= 6 && hour < 12) {
-    return '🌞 上午好,'
+    return '🌞 上午好, '
   } else if (hour >= 12 && hour < 18) {
-    return '😊 下午好,'
+    return '😊 下午好, '
   } else {
-    return '🌙 晚上好,'
+    return '🌙 晚上好, '
   }
+})
+
+const isSuper = computed(() => {
+  return userStore.user?.id == '10000'
 })
 
 const logout = () => {

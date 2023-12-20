@@ -66,13 +66,14 @@
         name="options"
         :class="{ ' btn-active': selectedPart == '帖子' }"
       >
-        我发布的帖子
+        发布的帖子
       </button>
       <button
         class="btn btn-neutral btn-outline w-44 text-left min-h-0 h-9"
         @click="handleChangePart('点赞')"
         :class="{ ' btn-active': selectedPart == '点赞' }"
         name="options"
+        v-show="isMe == true"
       >
         点赞
       </button>
@@ -80,7 +81,8 @@
         class="btn btn-neutral btn-outline w-44 text-left min-h-0 h-9"
         @click="handleChangePart('收藏')"
         :class="{ ' btn-active': selectedPart == '收藏' }"
-        name="options"
+        v-show="isMe == true"
+        name="options" 
       >
         收藏
       </button>
@@ -89,7 +91,8 @@
         value="帖子"
         name="options"
         :class="{ ' btn-active': selectedPart == '评论' }"
-        @click="handleChangePart('评论')"
+        v-show="isMe == true"
+        @click="handleChangePart('评论')" 
       >
         评论
       </button>

@@ -1,6 +1,8 @@
 <template>
   <AdminHead></AdminHead>
-  <RouterView class="mt-4 mb-8"></RouterView>
+  <RouterView class="mt-4 mb-8"
+  style="min-height: 66vh;"
+  ></RouterView>
   <AdminFooter></AdminFooter>
 </template>
 

@@ -97,6 +97,10 @@ const router = createRouter({
               component: () => import('@/components/CardDetail.vue')
             }
           ]
+        },
+        {
+          path: 'createAdmin',
+          component: () => import('@/components/CreateAdmin.vue')
         }
       ]
     }

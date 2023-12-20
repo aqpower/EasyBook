@@ -55,3 +55,6 @@ export type handleVioRequest = {
 
 export const handleVioApi = (data: handleVioRequest): Promise<ResType<any>> =>
   httpInstance.post('/api/v1/admin/operations', data)
+
+export const createAdminApi = (data: { name: string }): Promise<ResType<any>> =>
+  httpInstance.post('/api/v1/admins', data)
