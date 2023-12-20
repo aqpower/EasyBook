@@ -175,7 +175,7 @@ const follow = ref(false)
 const black = ref(false)
 const showFansModal = ref(false)
 const page = ref(1)
-const pageSize = ref(20)
+const pageSize = ref(35)
 const showComment = ref(false)
 // 声明一个响应性变量并 provide 其自身
 // 孙组件获取后可以保持响应性

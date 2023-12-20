@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pt-16">
     <h1 class="text-center font-bold text-3xl">创建管理员</h1>
     <div class="flex gap-5 flex-col justify-center items-center mt-14">
       <input
@@ -19,9 +19,10 @@ import { createAdminApi } from '@/api/admin'
 import useCommandComponent from '@/hooks/useCommandComponent'
 import { ref } from 'vue'
 import InfoDialog from './InfoDialog.vue'
+import { useUserStore } from '@/stores/userStores'
 const nameInput = ref('')
 const dialog = useCommandComponent(InfoDialog)
-
+const userStore = useUserStore()
 const createAdmin = () => {
   if (nameInput.value.length == 0) {
     dialog({
@@ -40,7 +41,10 @@ const createAdmin = () => {
     return
   }
   let data = {
-    name: nameInput.value
+    adminId: userStore.user?.id,
+    admin: {
+      name: nameInput.value
+    }
   }
   createAdminApi(data).then((result) => {
     if (result.code == 200) {
