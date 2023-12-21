@@ -43,11 +43,12 @@ const isAdmin = computed((): boolean => {
 
 onBeforeMount(() => {
   const userStore = useUserStore()
-  let id = String(userStore.user?.id)
+  let id = String(userStore.user.id)
+  console.log(userStore.user)
   if (id != '') {
     if (id.length == 8) {
       router.push('/home/explore')
-    } else {
+    } else if (id.length == 5) {
       router.push('/admin/home')
     }
   }

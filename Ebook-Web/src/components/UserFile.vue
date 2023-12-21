@@ -109,36 +109,36 @@
         </div>
       </div>
     </div>
+    <InfoDialog :visible="showUpdateModal">
+      <template #content>
+        <div class="flex flex-col gap-7 items-center font-bold">
+          <p>修改个人信息</p>
+          <AvatarSelector></AvatarSelector>
+          <input class="input input-primary h-12 w-full" v-model="userNameInput" />
+          <button class="btn btn-primary min-h-0 h-9 w-full" @click="updateUserInfo">确定</button>
+        </div>
+      </template>
+    </InfoDialog>
+    <InfoDialog :visible="showFollowersModal">
+      <template #content>
+        <div class="flex flex-col items-center font-bold">
+          <FollowList></FollowList>
+          <button class="mt-4 btn min-h-0 h-9 w-full" @click="showFollowersModal = false">
+            确定
+          </button>
+        </div>
+      </template>
+    </InfoDialog>
+    <InfoDialog :visible="showFansModal">
+      <template #content>
+        <div class="flex flex-col items-center font-bold">
+          <FansList></FansList>
+          <button class="mt-4 btn min-h-0 h-9 w-full" @click="showFansModal = false">确定</button>
+        </div>
+      </template>
+    </InfoDialog>
+    <RouterView></RouterView>
   </div>
-  <InfoDialog :visible="showUpdateModal">
-    <template #content>
-      <div class="flex flex-col gap-7 items-center font-bold">
-        <p>修改个人信息</p>
-        <AvatarSelector></AvatarSelector>
-        <input class="input input-primary h-12 w-full" v-model="userNameInput" />
-        <button class="btn btn-primary min-h-0 h-9 w-full" @click="updateUserInfo">确定</button>
-      </div>
-    </template>
-  </InfoDialog>
-  <InfoDialog :visible="showFollowersModal">
-    <template #content>
-      <div class="flex flex-col items-center font-bold">
-        <FollowList></FollowList>
-        <button class="mt-4 btn min-h-0 h-9 w-full" @click="showFollowersModal = false">
-          确定
-        </button>
-      </div>
-    </template>
-  </InfoDialog>
-  <InfoDialog :visible="showFansModal">
-    <template #content>
-      <div class="flex flex-col items-center font-bold">
-        <FansList></FansList>
-        <button class="mt-4 btn min-h-0 h-9 w-full" @click="showFansModal = false">确定</button>
-      </div>
-    </template>
-  </InfoDialog>
-  <RouterView></RouterView>
 </template>
 
 <script setup lang="ts">

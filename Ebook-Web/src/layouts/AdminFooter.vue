@@ -1,6 +1,6 @@
 <template>
   <div>
-    <footer class="footer footer-center p-10 bg-primary text-primary-content">
+    <footer class="footer footer-center p-10 bg-primary text-primary-content w-full">
       <aside>
         <p class="font-bold text-lg">
           Presenting a Database Course Project<br />Supported BY MySQL
@@ -8,7 +8,7 @@
         <p>Copyright © 2023 - EasyBook Designers</p>
       </aside>
       <nav>
-        <div class="grid grid-flow-col gap-4">
+        <div class="gap-4 flex flex-wrap items-center justify-center">
           <Icon class="w-12 h-12" icon="devicon:vscode" />
           <Icon class="w-12 h-12" icon="logos:intellij-idea" />
           <Icon class="w-12 h-12" icon="logos:datagrip" />
