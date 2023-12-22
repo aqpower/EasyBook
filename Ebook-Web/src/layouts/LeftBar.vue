@@ -137,7 +137,7 @@
 
     <InfoDialogVue :visible="loadingShow" title="😊">
       <template #content>
-        <div class="flex justify-center mt-6">
+        <div class="flex justify-center">
           <p>正在上传，请耐心等待~ 😊</p>
           <span class="loading loading-spinner loading-md"></span>
         </div>

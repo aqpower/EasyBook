@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { getColorPostsApi, getFollowerPostApi, getPostsApi, searchPostsApi } from '@/api/posts'
+import {  getFollowerPostApi, getPostsApi, searchPostsApi } from '@/api/posts'
 import type { GetPostResType, PostType } from '@/types/post'
 import { computed, onMounted, ref } from 'vue'
 import PostCard from './PostCard.vue'
@@ -51,10 +51,9 @@ const router = useRouter()
 const route = useRoute()
 const dialog = useCommandComponent(InfoDialog)
 const page = ref(1)
-const pageSize = ref(25)
+const pageSize = ref(35)
 const postList = ref<PostType[]>([])
 const userStore = useUserStore()
-const skeletonShow = ref(true)
 const colorIndex = ref(-2)
 const scrollContainer = ref(null) // 创建一个 ref 来获取滚动容器的引用
 eventBus.on('postFinish', (e) => {

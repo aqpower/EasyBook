@@ -3,7 +3,7 @@
     <div v-for="(item, index) in commentList" :key="index" class="ml-2 mr-7 my-6 break-inside-avoid">
       <div class="card w-full bg-base-100 shadow-xl">
         <div class="card-body p-5">
-          <p class=" text-lg" style="font-family: LXGWWenKai,sans-serif">{{ item.content }}</p>
+          <p class=" text-xl" style="font-family: LXGWWenKai,sans-serif">{{ item.content }}</p>
           <p class="text-right">{{ formatTime(item.commentTime) }}</p>
           <div class="card-actions justify-end mt-1">
             <button class="btn btn-neutral btn-outline min-h-0 h-9" @click="navPost(item.postId)">

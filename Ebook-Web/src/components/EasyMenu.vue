@@ -157,9 +157,9 @@ import useCommandComponent from '@/hooks/useCommandComponent'
 const dialog = useCommandComponent(InfoDialog)
 const userStore = useUserStore()
 const router = useRouter()
-const selectedTheme = ref('')
-const showUserDelete = ref(false)
 const themeStore = useThemeStore()
+const selectedTheme = ref(themeStore.getTheme())
+const showUserDelete = ref(false)
 const passwordInput = ref('')
 watch(selectedTheme, () => {
   themeStore.setTheme(selectedTheme.value)

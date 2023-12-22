@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
 public interface AdminService  {
     //Admin adminLogin(Admin admin);
     LoginData adminLogin(Admin admin);
-    Admin createAdmin(Admin admin);
+    Admin createAdmin(Admin admin,Integer adminId);
     boolean updateRole(int adminId, int role);
 }
