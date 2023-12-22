@@ -1,4 +1,4 @@
--- auto-generated definition
+
 create table admin
 (
     id       int auto_increment
@@ -10,7 +10,7 @@ create table admin
     collate = utf8mb4_general_ci;
 
 
--- auto-generated definition
+
 create table blacklist
 (
     id            int auto_increment
@@ -29,7 +29,7 @@ create index black_user_id
 
 create index user_id
     on blacklist (user_id);
--- auto-generated definition
+
 
 
 create table care
@@ -44,7 +44,7 @@ create table care
         foreign key (cared_user_id) references user (id)
 )
     collate = utf8mb4_general_ci;
--- auto-generated definition
+
 
 
 create table collection
@@ -66,7 +66,7 @@ create index post_id
 
 create index user_id
     on collection (user_id);
--- auto-generated definition
+
 
 
 create table comment
@@ -89,7 +89,7 @@ create index commented_id
 
 create index user_id
     on comment (user_id);
--- auto-generated definition
+
 
 
 create table easylike
@@ -111,7 +111,7 @@ create index post_id
 
 create index user_id
     on easylike (user_id);
--- auto-generated definition
+
 
 
 create table image
@@ -127,7 +127,7 @@ create table image
 
 create index post_id
     on image (post_id);
--- auto-generated definition
+
 
 
 create table notify
@@ -149,7 +149,7 @@ create index post_id
 
 create index user_id
     on notify (user_id);
--- auto-generated definition
+
 
 
 create table post
@@ -172,7 +172,7 @@ create table post
         foreign key (user_id) references user (id)
 )
     collate = utf8mb4_general_ci;
--- auto-generated definition
+
 
 
 create table review
@@ -195,7 +195,7 @@ create index admin_id
 
 create index violation_id
     on review (violation_id);
--- auto-generated definition
+
 
 
 create table user
@@ -209,7 +209,7 @@ create table user
     role     tinyint default 3 not null
 )
     collate = utf8mb4_general_ci;
--- auto-generated definition
+
 
 
 create table violation
